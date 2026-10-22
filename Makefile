@@ -2,7 +2,7 @@ PY := .venv/bin/python
 
 .PHONY: venv corpus test test-python test-java package it bench docs demo docker
 venv:
-	python3 -m venv .venv && .venv/bin/pip install -q pytest fastavro jsonschema kafka-python mkdocs-material && \
+	python3 -m venv .venv && .venv/bin/pip install -q -r python/requirements-dev.txt -r docs/requirements.txt kafka-python && \
 	.venv/bin/pip install -q -e python
 corpus:
 	$(PY) corpus/generator/gen_corpus.py
