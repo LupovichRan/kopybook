@@ -19,6 +19,7 @@
     <confluent.version>7.8.0</confluent.version>
     <avro.version>1.11.4</avro.version>
     <junit.version>5.10.3</junit.version>
+    <jackson.version>2.18.12</jackson.version>
     <corpus.dir>${project.basedir}/../corpus</corpus.dir>
   </properties>
 
@@ -28,6 +29,19 @@
       <url>https://packages.confluent.io/maven/</url>
     </repository>
   </repositories>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- keep every com.fasterxml.jackson.* artifact (direct and transitive) on one patched version -->
+      <dependency>
+        <groupId>com.fasterxml.jackson</groupId>
+        <artifactId>jackson-bom</artifactId>
+        <version>${jackson.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>
@@ -45,7 +59,6 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <version>2.17.2</version>
       <scope>test</scope>
     </dependency>
     <dependency>
