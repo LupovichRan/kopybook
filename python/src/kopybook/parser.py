@@ -162,7 +162,7 @@ def tokenize(src: List[Tuple[int, str]]) -> List[Tok]:
 
 # ----------------------------------------------------------------------------- COPY / REPLACING
 
-COPY_EXTS = (".cpy", ".CPY", ".cbl", ".CBL", ".cob", ".COB", ".copy", ".txt")
+COPY_EXTS = ("", ".cpy", ".CPY", ".cbl", ".CBL", ".cob", ".COB", ".copy", ".txt")
 MAX_COPY_DEPTH = 16
 
 

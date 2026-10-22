@@ -72,11 +72,33 @@ def test_symlink_inside_library_allowed(layout):
     assert _copy("COPY ALIAS.", lib).record().size == 3
 
 
-def test_extensionless_file_not_matched(layout):
+def test_extensionless_member_found(layout):
     lib, _ = layout
-    (lib / "BARE").write_text("           05  B PIC X.\n")
-    with pytest.raises(CopybookError, match="not found"):
-        _copy("COPY BARE.", lib)
+    (lib / "BARE").write_text("           05  B PIC X(4).\n")
+    assert _copy("COPY BARE.", lib).record().size == 4
+
+
+def test_extensionless_traversal_rejected(layout):
+    lib, _ = layout
+    # outside/secret has no extension: still blocked by the name check
+    with pytest.raises(CopybookError, match="not a plain member name") as ei:
+        _copy("COPY '../outside/secret'.", lib)
+    assert SECRET not in str(ei.value)
+
+
+def test_extensionless_symlink_escape_rejected(layout):
+    lib, outside = layout
+    os.symlink(outside / "secret", lib / "LEAK")
+    with pytest.raises(CopybookError, match="outside the copy library") as ei:
+        _copy("COPY LEAK.", lib)
+    assert SECRET not in str(ei.value)
+
+
+def test_extensionless_symlinked_library_escape_rejected(layout):
+    lib, outside = layout
+    os.symlink(outside, lib / "evil")
+    with pytest.raises(CopybookError, match="outside the copy library"):
+        _copy("COPY SECRET OF EVIL.", lib)  # resolves to outside/secret (no extension) first
 
 
 def test_error_message_does_not_leak_content(tmp_path):

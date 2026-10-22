@@ -73,9 +73,26 @@ class SecurityTest {
     }
 
     @Test
-    void extensionlessFileNotMatched() throws Exception {
-        Files.writeString(lib.resolve("BARE"), "           05  B PIC X.\n");
-        rejects("COPY BARE.", "not found");
+    void extensionlessMemberFound() throws Exception {
+        Files.writeString(lib.resolve("BARE"), "           05  B PIC X(4).\n");
+        assertEquals(4, copy("COPY BARE."));
+    }
+
+    @Test
+    void extensionlessTraversalRejected() {
+        rejects("COPY '../outside/secret'.", "not a plain member name");
+    }
+
+    @Test
+    void extensionlessSymlinkEscapeRejected() throws Exception {
+        Files.createSymbolicLink(lib.resolve("LEAK"), outside.resolve("secret"));
+        rejects("COPY LEAK.", "outside the copy library");
+    }
+
+    @Test
+    void extensionlessSymlinkedLibraryEscapeRejected() throws Exception {
+        Files.createSymbolicLink(lib.resolve("evil"), outside);
+        rejects("COPY SECRET OF EVIL.", "outside the copy library");
     }
 
     @Test

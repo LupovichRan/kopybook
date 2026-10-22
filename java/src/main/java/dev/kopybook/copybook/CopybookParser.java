@@ -41,7 +41,7 @@ public final class CopybookParser {
     private record Tok(String text, int line, boolean literal, List<Tok> pseudo) {
         Tok(String text, int line, boolean literal) { this(text, line, literal, null); }
     }
-    private static final String[] COPY_EXTS = {".cpy", ".CPY", ".cbl", ".CBL", ".cob", ".COB", ".copy", ".txt"};
+    private static final String[] COPY_EXTS = {"", ".cpy", ".CPY", ".cbl", ".CBL", ".cob", ".COB", ".copy", ".txt"};
     private static final int MAX_COPY_DEPTH = 16;
     /**
      * Upper bound (bytes) for any single field and for a whole record. Real z/OS records top out around

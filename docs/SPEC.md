@@ -14,7 +14,7 @@ Semantics follow IBM Enterprise COBOL for z/OS.
 | Free format, `*>` floating comments, lower case | yes |
 | Several 01 records in one copybook | yes, choose with `--record` / `copybook.record` (default: first) |
 | Fragment without an 01 (starts at 05) | yes, wrapped in a synthetic `RECORD` |
-| `COPY name [OF\|IN lib] [SUPPRESS] [REPLACING ...]` | yes: members searched on the copy path (`-I` / `copybook.include.path`, then the copybook's own directory), names tried as-is/lower/upper with `.cpy .cbl .cob .copy .txt` (upper/lower), `lib` as a subdirectory; nested COPY (depth 16, recursion rejected). Member and library names must be plain names: `/`, `\`, `..` and absolute paths are rejected, and a member whose real path (after symlinks) leaves the copy directory is rejected |
+| `COPY name [OF\|IN lib] [SUPPRESS] [REPLACING ...]` | yes: members searched on the copy path (`-I` / `copybook.include.path`, then the copybook's own directory), names tried as-is/lower/upper with no extension (PDS-style members) or `.cpy .cbl .cob .copy .txt` (upper/lower), `lib` as a subdirectory; nested COPY (depth 16, recursion rejected). Member and library names must be plain names: `/`, `\`, `..` and absolute paths are rejected, and a member whose real path (after symlinks) leaves the copy directory is rejected |
 | `REPLACING` operands | `==pseudo-text==` (single line), words, literals; `LEADING` / `TRAILING` partial-word; IBM-style `:TAG:` partial-word replacement inside words; `BY ====` deletes |
 
 ## Data description clauses
