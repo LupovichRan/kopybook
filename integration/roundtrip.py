@@ -25,11 +25,13 @@ from kafka.admin import KafkaAdminClient, NewTopic
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(ROOT, "python", "src"))
-PRO = os.environ.get("KOPYBOOK_PRO", os.path.join(os.path.dirname(ROOT), "kopybook-pro"))
-sys.path.insert(0, os.path.join(PRO, "python", "src"))
+# Optional Kopybook Pro checkout, only from the environment (no sibling-path guessing).
+PRO = os.environ.get("KOPYBOOK_PRO", "")
+if PRO:
+    sys.path.insert(0, os.path.join(PRO, "python", "src"))
 from kopybook import avro, codec, parser  # noqa: E402
 
-try:  # the live compatibility replay needs the private Pro repo
+try:  # the live compatibility replay needs Kopybook Pro (set KOPYBOOK_PRO)
     from kopybook_pro import compat  # noqa: E402
 except ImportError:
     compat = None
@@ -165,10 +167,10 @@ def pipeline():
 
 
 def live_compat():
-    if compat is None:
-        print("Kopybook Pro not found next to this repo: skipping the live compatibility replay")
+    root = os.path.join(PRO, "corpus-compat") if PRO else ""
+    if compat is None or not os.path.isdir(root):
+        print("KOPYBOOK_PRO not set (or Kopybook Pro not available): skipping the live compatibility replay")
         return True
-    root = os.path.join(PRO, "corpus-compat")
     agree = disagree = 0
     for name in sorted(os.listdir(root)):
         d = os.path.join(root, name)

@@ -15,6 +15,7 @@ import org.apache.kafka.connect.errors.DataException;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.TestFactory;
 
 import java.nio.file.Files;
@@ -194,9 +195,14 @@ class ConnectTest {
 
     @TestFactory
     Stream<DynamicTest> compatVerdictsMatchSchemaRegistryChecker() throws Exception {
-        // The evolution corpus belongs to the private Pro repo; run these checks only when it is checked out next to us.
-        Path dir = Path.of(System.getProperty("kopybook.pro.compat", Corpus.DIR.resolve("../../kopybook-pro/corpus-compat").toString())).normalize();
-        if (!Files.isDirectory(dir)) return Stream.empty();
+        // The evolution corpus is not part of this repo: point -Dkopybook.pro.compat=<dir> at it to run these checks.
+        // Without it, report one visibly skipped test instead of silently generating none.
+        String prop = System.getProperty("kopybook.pro.compat", "");
+        Path dir = prop.isBlank() ? null : Path.of(prop).normalize();
+        if (dir == null || !Files.isDirectory(dir)) {
+            return Stream.of(DynamicTest.dynamicTest("evolution corpus not available", () ->
+                    Assumptions.assumeTrue(false, "set -Dkopybook.pro.compat=<evolution corpus dir> to run the Schema Registry compat cross-check")));
+        }
         List<Path> pairs;
         try (var s = Files.list(dir)) {
             pairs = s.filter(Files::isDirectory).sorted().toList();
