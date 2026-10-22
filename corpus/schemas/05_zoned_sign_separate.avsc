@@ -1,0 +1,61 @@
+{
+  "type": "record",
+  "name": "SignSepRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "amt_ts",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 7,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "AMT-TS",
+        "offset": 0,
+        "size": 8,
+        "pic": "S9(5)V99",
+        "usage": "DISPLAY",
+        "sign": "TRAILING SEPARATE"
+      }
+    },
+    {
+      "name": "amt_ls",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 7,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "AMT-LS",
+        "offset": 8,
+        "size": 8,
+        "pic": "S9(5)V99",
+        "usage": "DISPLAY",
+        "sign": "LEADING SEPARATE"
+      }
+    },
+    {
+      "name": "qty_ls",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "QTY-LS",
+        "offset": 16,
+        "size": 4,
+        "pic": "S9(3)",
+        "usage": "DISPLAY",
+        "sign": "LEADING SEPARATE"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "SIGN-SEP-REC",
+    "recordLength": 20,
+    "minRecordLength": 20
+  }
+}

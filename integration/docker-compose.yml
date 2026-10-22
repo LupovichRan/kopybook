@@ -1,0 +1,59 @@
+# Local round-trip test bed: Kafka (KRaft) + Schema Registry + Kafka Connect with the kopybook plugin.
+# Build the plugin first:  (cd ../java && mvn -q package -DskipTests)
+# Host networking is used because bridge networking between containers is blocked on the
+# build box; on a normal Docker host either mode works.
+services:
+  kafka:
+    image: confluentinc/cp-kafka:7.8.0
+    network_mode: host
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:29093
+      KAFKA_LISTENERS: PLAINTEXT://localhost:9092,CONTROLLER://localhost:29093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      CLUSTER_ID: kopyLocalClusterId0001
+      KAFKA_HEAP_OPTS: -Xmx512m -Xms256m
+
+  schema-registry:
+    image: confluentinc/cp-schema-registry:7.8.0
+    network_mode: host
+    restart: on-failure
+    depends_on: [kafka]
+    environment:
+      SCHEMA_REGISTRY_HOST_NAME: localhost
+      SCHEMA_REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS: localhost:9092
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+      SCHEMA_REGISTRY_HEAP_OPTS: -Xmx256m -Xms128m
+
+  connect:
+    image: confluentinc/cp-kafka-connect:7.8.0
+    network_mode: host
+    restart: on-failure
+    depends_on: [kafka, schema-registry]
+    volumes:
+      - ../java/target/kopybook-connect-0.1.0-SNAPSHOT/kopybook-connect-0.1.0-SNAPSHOT:/usr/share/kopybook-plugins/kopybook-connect:ro
+      - ../corpus/copybooks:/etc/kopybook/copybooks:ro
+    environment:
+      CONNECT_BOOTSTRAP_SERVERS: localhost:9092
+      CONNECT_REST_ADVERTISED_HOST_NAME: localhost
+      CONNECT_REST_PORT: 8083
+      CONNECT_GROUP_ID: kopybook-connect
+      CONNECT_CONFIG_STORAGE_TOPIC: _connect-configs
+      CONNECT_OFFSET_STORAGE_TOPIC: _connect-offsets
+      CONNECT_STATUS_STORAGE_TOPIC: _connect-status
+      CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_OFFSET_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_STATUS_STORAGE_REPLICATION_FACTOR: 1
+      CONNECT_KEY_CONVERTER: org.apache.kafka.connect.converters.ByteArrayConverter
+      CONNECT_VALUE_CONVERTER: org.apache.kafka.connect.converters.ByteArrayConverter
+      CONNECT_PLUGIN_PATH: /usr/share/java,/usr/share/kopybook-plugins
+      CONNECT_LOG4J_LOGGERS: org.reflections=ERROR
+      KAFKA_HEAP_OPTS: -Xmx768m -Xms256m

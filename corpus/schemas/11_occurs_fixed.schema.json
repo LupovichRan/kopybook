@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OccursRec",
+  "type": "object",
+  "properties": {
+    "cust_id": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "CUST-ID",
+        "offset": 0,
+        "size": 6,
+        "pic": "9(6)",
+        "usage": "DISPLAY"
+      }
+    },
+    "monthly_total": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^-?[0-9]{1,7}\\.[0-9]{2}$",
+        "x-decimal": {
+          "precision": 9,
+          "scale": 2
+        }
+      },
+      "minItems": 12,
+      "maxItems": 12,
+      "x-cobol": {
+        "level": 5,
+        "name": "MONTHLY-TOTAL",
+        "offset": 6,
+        "size": 5,
+        "pic": "S9(7)V99",
+        "usage": "COMP-3",
+        "occurs": [
+          12,
+          12
+        ]
+      }
+    },
+    "flags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 1
+      },
+      "minItems": 8,
+      "maxItems": 8,
+      "x-cobol": {
+        "level": 5,
+        "name": "FLAGS",
+        "offset": 66,
+        "size": 1,
+        "pic": "X",
+        "usage": "DISPLAY",
+        "occurs": [
+          8,
+          8
+        ]
+      }
+    },
+    "scores": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 999
+      },
+      "minItems": 5,
+      "maxItems": 5,
+      "x-cobol": {
+        "level": 5,
+        "name": "SCORES",
+        "offset": 74,
+        "size": 3,
+        "pic": "9(3)",
+        "usage": "DISPLAY",
+        "occurs": [
+          5,
+          5
+        ]
+      }
+    }
+  },
+  "required": [
+    "cust_id",
+    "monthly_total",
+    "flags",
+    "scores"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "OCCURS-REC",
+    "recordLength": 89,
+    "minRecordLength": 89
+  }
+}

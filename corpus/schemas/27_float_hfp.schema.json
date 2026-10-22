@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FloatRec",
+  "type": "object",
+  "properties": {
+    "f_short": {
+      "type": "number",
+      "x-cobol": {
+        "level": 5,
+        "name": "F-SHORT",
+        "offset": 0,
+        "size": 4,
+        "usage": "COMP-1"
+      }
+    },
+    "f_long": {
+      "type": "number",
+      "x-cobol": {
+        "level": 5,
+        "name": "F-LONG",
+        "offset": 4,
+        "size": 8,
+        "usage": "COMP-2"
+      }
+    },
+    "f_usage": {
+      "type": "number",
+      "x-cobol": {
+        "level": 5,
+        "name": "F-USAGE",
+        "offset": 12,
+        "size": 8,
+        "usage": "COMP-2"
+      }
+    },
+    "f_arr": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      },
+      "minItems": 3,
+      "maxItems": 3,
+      "x-cobol": {
+        "level": 5,
+        "name": "F-ARR",
+        "offset": 20,
+        "size": 4,
+        "usage": "COMP-1",
+        "occurs": [
+          3,
+          3
+        ]
+      }
+    }
+  },
+  "required": [
+    "f_short",
+    "f_long",
+    "f_usage",
+    "f_arr"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "FLOAT-REC",
+    "recordLength": 32,
+    "minRecordLength": 32
+  }
+}

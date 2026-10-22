@@ -1,0 +1,252 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "InsClaim",
+  "type": "object",
+  "properties": {
+    "ic_header": {
+      "type": "object",
+      "properties": {
+        "ic_claim_no": {
+          "type": "string",
+          "maxLength": 14,
+          "x-cobol": {
+            "level": 10,
+            "name": "IC-CLAIM-NO",
+            "offset": 0,
+            "size": 14,
+            "pic": "X(14)",
+            "usage": "DISPLAY"
+          }
+        },
+        "ic_policy_no": {
+          "type": "string",
+          "maxLength": 12,
+          "x-cobol": {
+            "level": 10,
+            "name": "IC-POLICY-NO",
+            "offset": 14,
+            "size": 12,
+            "pic": "X(12)",
+            "usage": "DISPLAY"
+          }
+        },
+        "ic_loss_date": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 99999999,
+          "x-cobol": {
+            "level": 10,
+            "name": "IC-LOSS-DATE",
+            "offset": 26,
+            "size": 8,
+            "pic": "9(8)",
+            "usage": "DISPLAY"
+          }
+        },
+        "ic_loss_parts": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "ic_loss_yy": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9999,
+              "x-cobol": {
+                "level": 15,
+                "name": "IC-LOSS-YY",
+                "offset": 26,
+                "size": 4,
+                "pic": "9(4)",
+                "usage": "DISPLAY"
+              }
+            },
+            "ic_loss_mm": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 99,
+              "x-cobol": {
+                "level": 15,
+                "name": "IC-LOSS-MM",
+                "offset": 30,
+                "size": 2,
+                "pic": "99",
+                "usage": "DISPLAY"
+              }
+            },
+            "ic_loss_dd": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 99,
+              "x-cobol": {
+                "level": 15,
+                "name": "IC-LOSS-DD",
+                "offset": 32,
+                "size": 2,
+                "pic": "99",
+                "usage": "DISPLAY"
+              }
+            }
+          },
+          "required": [
+            "ic_loss_yy",
+            "ic_loss_mm",
+            "ic_loss_dd"
+          ],
+          "additionalProperties": false,
+          "x-cobol": {
+            "level": 10,
+            "name": "IC-LOSS-PARTS",
+            "offset": 26,
+            "size": 8,
+            "redefines": "IC-LOSS-DATE"
+          }
+        },
+        "ic_status": {
+          "type": "string",
+          "maxLength": 1,
+          "x-cobol": {
+            "level": 10,
+            "name": "IC-STATUS",
+            "offset": 34,
+            "size": 1,
+            "pic": "X",
+            "usage": "DISPLAY",
+            "conditions88": {
+              "IC-OPEN": [
+                "O"
+              ],
+              "IC-CLOSED": [
+                "C"
+              ]
+            }
+          }
+        }
+      },
+      "required": [
+        "ic_claim_no",
+        "ic_policy_no",
+        "ic_status"
+      ],
+      "additionalProperties": false,
+      "x-cobol": {
+        "level": 5,
+        "name": "IC-HEADER",
+        "offset": 0,
+        "size": 35
+      }
+    },
+    "ic_reserve": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,9}\\.[0-9]{2}$",
+      "x-decimal": {
+        "precision": 11,
+        "scale": 2
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "IC-RESERVE",
+        "offset": 35,
+        "size": 6,
+        "pic": "S9(9)V99",
+        "usage": "COMP-3"
+      }
+    },
+    "ic_line_cnt": {
+      "type": "integer",
+      "minimum": -9999,
+      "maximum": 9999,
+      "x-cobol": {
+        "level": 5,
+        "name": "IC-LINE-CNT",
+        "offset": 41,
+        "size": 2,
+        "pic": "S9(4)",
+        "usage": "BINARY"
+      }
+    },
+    "ic_lines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ic_ln_type": {
+            "type": "string",
+            "maxLength": 2,
+            "x-cobol": {
+              "level": 10,
+              "name": "IC-LN-TYPE",
+              "offset": 43,
+              "size": 2,
+              "pic": "XX",
+              "usage": "DISPLAY"
+            }
+          },
+          "ic_ln_amount": {
+            "type": "string",
+            "pattern": "^-?[0-9]{1,7}\\.[0-9]{2}$",
+            "x-decimal": {
+              "precision": 9,
+              "scale": 2
+            },
+            "x-cobol": {
+              "level": 10,
+              "name": "IC-LN-AMOUNT",
+              "offset": 45,
+              "size": 5,
+              "pic": "S9(7)V99",
+              "usage": "COMP-3"
+            }
+          },
+          "ic_ln_desc": {
+            "type": "string",
+            "maxLength": 20,
+            "x-cobol": {
+              "level": 10,
+              "name": "IC-LN-DESC",
+              "offset": 50,
+              "size": 20,
+              "pic": "X(20)",
+              "usage": "DISPLAY"
+            }
+          }
+        },
+        "required": [
+          "ic_ln_type",
+          "ic_ln_amount",
+          "ic_ln_desc"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 0,
+      "maxItems": 10,
+      "x-cobol": {
+        "level": 5,
+        "name": "IC-LINES",
+        "offset": 43,
+        "size": 27,
+        "occurs": [
+          0,
+          10
+        ],
+        "dependingOn": "IC-LINE-CNT"
+      }
+    }
+  },
+  "required": [
+    "ic_header",
+    "ic_reserve",
+    "ic_line_cnt",
+    "ic_lines"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "INS-CLAIM",
+    "recordLength": 313,
+    "minRecordLength": 43
+  }
+}

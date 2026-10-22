@@ -1,0 +1,72 @@
+{
+  "type": "record",
+  "name": "EditedRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "ed_amount",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "ED-AMOUNT",
+        "offset": 0,
+        "size": 11,
+        "pic": "ZZZ,ZZ9.99-",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "ed_currency",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "ED-CURRENCY",
+        "offset": 11,
+        "size": 10,
+        "pic": "$$$,$$9.99",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "ed_stars",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "ED-STARS",
+        "offset": 21,
+        "size": 4,
+        "pic": "***9",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "ed_cr",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "ED-CR",
+        "offset": 25,
+        "size": 11,
+        "pic": "Z(5)9.99CR",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "ed_date",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "ED-DATE",
+        "offset": 36,
+        "size": 10,
+        "pic": "99/99/9999",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "EDITED-REC",
+    "recordLength": 46,
+    "minRecordLength": 46
+  }
+}

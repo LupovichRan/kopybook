@@ -1,0 +1,115 @@
+{
+  "type": "record",
+  "name": "DecimalRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "d_lead_v",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 2,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "D-LEAD-V",
+        "offset": 0,
+        "size": 2,
+        "pic": "V99",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "d_one_one",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 2,
+        "scale": 1
+      },
+      "cobol": {
+        "level": 5,
+        "name": "D-ONE-ONE",
+        "offset": 2,
+        "size": 2,
+        "pic": "9V9",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "d_bin_scaled",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 4,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "D-BIN-SCALED",
+        "offset": 4,
+        "size": 2,
+        "pic": "S99V99",
+        "usage": "BINARY"
+      }
+    },
+    {
+      "name": "d_pack_scaled",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 9,
+        "scale": 8
+      },
+      "cobol": {
+        "level": 5,
+        "name": "D-PACK-SCALED",
+        "offset": 6,
+        "size": 5,
+        "pic": "S9V9(8)",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "d_zone_neg",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 6,
+        "scale": 3
+      },
+      "cobol": {
+        "level": 5,
+        "name": "D-ZONE-NEG",
+        "offset": 11,
+        "size": 6,
+        "pic": "S9(3)V9(3)",
+        "usage": "DISPLAY",
+        "sign": "TRAILING"
+      }
+    },
+    {
+      "name": "d_repeat_style",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 6,
+        "scale": 3
+      },
+      "cobol": {
+        "level": 5,
+        "name": "D-REPEAT-STYLE",
+        "offset": 17,
+        "size": 6,
+        "pic": "999V999",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "DECIMAL-REC",
+    "recordLength": 23,
+    "minRecordLength": 23
+  }
+}

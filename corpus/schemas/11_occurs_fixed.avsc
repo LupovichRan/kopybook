@@ -1,0 +1,86 @@
+{
+  "type": "record",
+  "name": "OccursRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "cust_id",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "CUST-ID",
+        "offset": 0,
+        "size": 6,
+        "pic": "9(6)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "monthly_total",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "bytes",
+          "logicalType": "decimal",
+          "precision": 9,
+          "scale": 2
+        }
+      },
+      "cobol": {
+        "level": 5,
+        "name": "MONTHLY-TOTAL",
+        "offset": 6,
+        "size": 5,
+        "pic": "S9(7)V99",
+        "usage": "COMP-3",
+        "occurs": [
+          12,
+          12
+        ]
+      }
+    },
+    {
+      "name": "flags",
+      "type": {
+        "type": "array",
+        "items": "string"
+      },
+      "cobol": {
+        "level": 5,
+        "name": "FLAGS",
+        "offset": 66,
+        "size": 1,
+        "pic": "X",
+        "usage": "DISPLAY",
+        "occurs": [
+          8,
+          8
+        ]
+      }
+    },
+    {
+      "name": "scores",
+      "type": {
+        "type": "array",
+        "items": "int"
+      },
+      "cobol": {
+        "level": 5,
+        "name": "SCORES",
+        "offset": 74,
+        "size": 3,
+        "pic": "9(3)",
+        "usage": "DISPLAY",
+        "occurs": [
+          5,
+          5
+        ]
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "OCCURS-REC",
+    "recordLength": 89,
+    "minRecordLength": 89
+  }
+}

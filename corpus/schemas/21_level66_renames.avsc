@@ -1,0 +1,77 @@
+{
+  "type": "record",
+  "name": "RenameRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "first_name",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "FIRST-NAME",
+        "offset": 0,
+        "size": 10,
+        "pic": "X(10)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "last_name",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "LAST-NAME",
+        "offset": 10,
+        "size": 15,
+        "pic": "X(15)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "phone_area",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "PHONE-AREA",
+        "offset": 25,
+        "size": 3,
+        "pic": "9(3)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "phone_num",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "PHONE-NUM",
+        "offset": 28,
+        "size": 7,
+        "pic": "9(7)",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "RENAME-REC",
+    "recordLength": 35,
+    "minRecordLength": 35,
+    "renames66": [
+      {
+        "name": "FULL-NAME",
+        "from": "FIRST-NAME",
+        "thru": "LAST-NAME"
+      },
+      {
+        "name": "PHONE",
+        "from": "PHONE-AREA",
+        "thru": "PHONE-NUM"
+      },
+      {
+        "name": "SURNAME",
+        "from": "LAST-NAME",
+        "thru": null
+      }
+    ]
+  }
+}

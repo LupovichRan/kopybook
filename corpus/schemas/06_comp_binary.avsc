@@ -1,0 +1,113 @@
+{
+  "type": "record",
+  "name": "CompRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "half_s",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "HALF-S",
+        "offset": 0,
+        "size": 2,
+        "pic": "S9(4)",
+        "usage": "BINARY"
+      }
+    },
+    {
+      "name": "half_u",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "HALF-U",
+        "offset": 2,
+        "size": 2,
+        "pic": "9(4)",
+        "usage": "BINARY"
+      }
+    },
+    {
+      "name": "full_s",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "FULL-S",
+        "offset": 4,
+        "size": 4,
+        "pic": "S9(9)",
+        "usage": "BINARY"
+      }
+    },
+    {
+      "name": "full_u",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "FULL-U",
+        "offset": 8,
+        "size": 4,
+        "pic": "9(9)",
+        "usage": "BINARY"
+      }
+    },
+    {
+      "name": "dbl_s",
+      "type": "long",
+      "cobol": {
+        "level": 5,
+        "name": "DBL-S",
+        "offset": 12,
+        "size": 8,
+        "pic": "S9(18)",
+        "usage": "BINARY"
+      }
+    },
+    {
+      "name": "dbl_u",
+      "type": "long",
+      "cobol": {
+        "level": 5,
+        "name": "DBL-U",
+        "offset": 20,
+        "size": 8,
+        "pic": "9(18)",
+        "usage": "BINARY"
+      }
+    },
+    {
+      "name": "small",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "SMALL",
+        "offset": 28,
+        "size": 2,
+        "pic": "S9(2)",
+        "usage": "BINARY"
+      }
+    },
+    {
+      "name": "price",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 9,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "PRICE",
+        "offset": 30,
+        "size": 4,
+        "pic": "S9(7)V99",
+        "usage": "BINARY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "COMP-REC",
+    "recordLength": 34,
+    "minRecordLength": 34
+  }
+}

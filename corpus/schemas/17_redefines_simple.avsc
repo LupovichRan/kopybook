@@ -1,0 +1,78 @@
+{
+  "type": "record",
+  "name": "RedefRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "raw_key",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null,
+      "cobol": {
+        "level": 5,
+        "name": "RAW-KEY",
+        "offset": 0,
+        "size": 8,
+        "pic": "X(8)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "num_key",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null,
+      "cobol": {
+        "level": 5,
+        "name": "NUM-KEY",
+        "offset": 0,
+        "size": 8,
+        "pic": "9(8)",
+        "usage": "DISPLAY",
+        "redefines": "RAW-KEY"
+      }
+    },
+    {
+      "name": "amount_text",
+      "type": [
+        "null",
+        "string"
+      ],
+      "default": null,
+      "cobol": {
+        "level": 5,
+        "name": "AMOUNT-TEXT",
+        "offset": 8,
+        "size": 4,
+        "pic": "X(4)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "amount_bin",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null,
+      "cobol": {
+        "level": 5,
+        "name": "AMOUNT-BIN",
+        "offset": 8,
+        "size": 4,
+        "pic": "S9(9)",
+        "usage": "BINARY",
+        "redefines": "AMOUNT-TEXT"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "REDEF-REC",
+    "recordLength": 12,
+    "minRecordLength": 12
+  }
+}

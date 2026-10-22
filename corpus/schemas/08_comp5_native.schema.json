@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Comp5Rec",
+  "type": "object",
+  "properties": {
+    "n_half_u": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 65535,
+      "x-cobol": {
+        "level": 5,
+        "name": "N-HALF-U",
+        "offset": 0,
+        "size": 2,
+        "pic": "9(4)",
+        "usage": "COMP-5"
+      }
+    },
+    "n_half_s": {
+      "type": "integer",
+      "minimum": -32768,
+      "maximum": 32767,
+      "x-cobol": {
+        "level": 5,
+        "name": "N-HALF-S",
+        "offset": 2,
+        "size": 2,
+        "pic": "S9(4)",
+        "usage": "COMP-5"
+      }
+    },
+    "n_full_u": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4294967295,
+      "x-cobol": {
+        "level": 5,
+        "name": "N-FULL-U",
+        "offset": 4,
+        "size": 4,
+        "pic": "9(9)",
+        "usage": "COMP-5"
+      }
+    },
+    "n_full_s": {
+      "type": "integer",
+      "minimum": -2147483648,
+      "maximum": 2147483647,
+      "x-cobol": {
+        "level": 5,
+        "name": "N-FULL-S",
+        "offset": 8,
+        "size": 4,
+        "pic": "S9(9)",
+        "usage": "COMP-5"
+      }
+    },
+    "n_dbl_s": {
+      "type": "integer",
+      "minimum": -9223372036854775808,
+      "maximum": 9223372036854775807,
+      "x-cobol": {
+        "level": 5,
+        "name": "N-DBL-S",
+        "offset": 12,
+        "size": 8,
+        "pic": "S9(18)",
+        "usage": "COMP-5"
+      }
+    },
+    "n_dbl_u": {
+      "type": "string",
+      "pattern": "^[0-9]{1,20}$",
+      "x-decimal": {
+        "precision": 20,
+        "scale": 0
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "N-DBL-U",
+        "offset": 20,
+        "size": 8,
+        "pic": "9(18)",
+        "usage": "COMP-5"
+      }
+    },
+    "n_scaled": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,8}\\.[0-9]{2}$",
+      "x-decimal": {
+        "precision": 10,
+        "scale": 2
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "N-SCALED",
+        "offset": 28,
+        "size": 4,
+        "pic": "S9(5)V99",
+        "usage": "COMP-5"
+      }
+    }
+  },
+  "required": [
+    "n_half_u",
+    "n_half_s",
+    "n_full_u",
+    "n_full_s",
+    "n_dbl_s",
+    "n_dbl_u",
+    "n_scaled"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "COMP5-REC",
+    "recordLength": 32,
+    "minRecordLength": 32
+  }
+}

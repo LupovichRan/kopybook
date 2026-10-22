@@ -1,0 +1,84 @@
+{
+  "type": "record",
+  "name": "BinSynRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "a_comp4",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "A-COMP4",
+        "offset": 0,
+        "size": 2,
+        "pic": "S9(4)",
+        "usage": "BINARY"
+      }
+    },
+    {
+      "name": "a_binary",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "A-BINARY",
+        "offset": 2,
+        "size": 4,
+        "pic": "S9(9)",
+        "usage": "BINARY"
+      }
+    },
+    {
+      "name": "a_computational",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "A-COMPUTATIONAL",
+        "offset": 6,
+        "size": 4,
+        "pic": "S9(9)",
+        "usage": "BINARY"
+      }
+    },
+    {
+      "name": "a_computational_4",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "A-COMPUTATIONAL-4",
+        "offset": 10,
+        "size": 4,
+        "pic": "9(5)",
+        "usage": "BINARY"
+      }
+    },
+    {
+      "name": "a_usage",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "A-USAGE",
+        "offset": 14,
+        "size": 4,
+        "pic": "S9(9)",
+        "usage": "BINARY"
+      }
+    },
+    {
+      "name": "a_usage2",
+      "type": "long",
+      "cobol": {
+        "level": 5,
+        "name": "A-USAGE2",
+        "offset": 18,
+        "size": 8,
+        "pic": "9(18)",
+        "usage": "BINARY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "BIN-SYN-REC",
+    "recordLength": 26,
+    "minRecordLength": 26
+  }
+}

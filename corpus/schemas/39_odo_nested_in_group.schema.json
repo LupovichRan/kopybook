@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PortfolioRec",
+  "type": "object",
+  "properties": {
+    "pf_id": {
+      "type": "string",
+      "maxLength": 8,
+      "x-cobol": {
+        "level": 5,
+        "name": "PF-ID",
+        "offset": 0,
+        "size": 8,
+        "pic": "X(8)",
+        "usage": "DISPLAY"
+      }
+    },
+    "pf_holdings": {
+      "type": "object",
+      "properties": {
+        "pf_n": {
+          "type": "integer",
+          "minimum": -999,
+          "maximum": 999,
+          "x-cobol": {
+            "level": 10,
+            "name": "PF-N",
+            "offset": 8,
+            "size": 2,
+            "pic": "S9(3)",
+            "usage": "COMP-3"
+          }
+        },
+        "pf_position": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "pf_symbol": {
+                "type": "string",
+                "maxLength": 6,
+                "x-cobol": {
+                  "level": 15,
+                  "name": "PF-SYMBOL",
+                  "offset": 10,
+                  "size": 6,
+                  "pic": "X(6)",
+                  "usage": "DISPLAY"
+                }
+              },
+              "pf_qty": {
+                "type": "integer",
+                "minimum": -999999999,
+                "maximum": 999999999,
+                "x-cobol": {
+                  "level": 15,
+                  "name": "PF-QTY",
+                  "offset": 16,
+                  "size": 4,
+                  "pic": "S9(9)",
+                  "usage": "BINARY"
+                }
+              },
+              "pf_price": {
+                "type": "string",
+                "pattern": "^-?[0-9]{1,5}\\.[0-9]{4}$",
+                "x-decimal": {
+                  "precision": 9,
+                  "scale": 4
+                },
+                "x-cobol": {
+                  "level": 15,
+                  "name": "PF-PRICE",
+                  "offset": 20,
+                  "size": 5,
+                  "pic": "S9(5)V9(4)",
+                  "usage": "COMP-3"
+                }
+              }
+            },
+            "required": [
+              "pf_symbol",
+              "pf_qty",
+              "pf_price"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 0,
+          "maxItems": 6,
+          "x-cobol": {
+            "level": 10,
+            "name": "PF-POSITION",
+            "offset": 10,
+            "size": 15,
+            "occurs": [
+              0,
+              6
+            ],
+            "dependingOn": "PF-N"
+          }
+        }
+      },
+      "required": [
+        "pf_n",
+        "pf_position"
+      ],
+      "additionalProperties": false,
+      "x-cobol": {
+        "level": 5,
+        "name": "PF-HOLDINGS",
+        "offset": 8,
+        "size": 92
+      }
+    },
+    "pf_as_of": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 99999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "PF-AS-OF",
+        "offset": 100,
+        "size": 8,
+        "pic": "9(8)",
+        "usage": "DISPLAY"
+      }
+    }
+  },
+  "required": [
+    "pf_id",
+    "pf_holdings",
+    "pf_as_of"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "PORTFOLIO-REC",
+    "recordLength": 108,
+    "minRecordLength": 18
+  }
+}

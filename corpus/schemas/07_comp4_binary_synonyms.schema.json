@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BinSynRec",
+  "type": "object",
+  "properties": {
+    "a_comp4": {
+      "type": "integer",
+      "minimum": -9999,
+      "maximum": 9999,
+      "x-cobol": {
+        "level": 5,
+        "name": "A-COMP4",
+        "offset": 0,
+        "size": 2,
+        "pic": "S9(4)",
+        "usage": "BINARY"
+      }
+    },
+    "a_binary": {
+      "type": "integer",
+      "minimum": -999999999,
+      "maximum": 999999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "A-BINARY",
+        "offset": 2,
+        "size": 4,
+        "pic": "S9(9)",
+        "usage": "BINARY"
+      }
+    },
+    "a_computational": {
+      "type": "integer",
+      "minimum": -999999999,
+      "maximum": 999999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "A-COMPUTATIONAL",
+        "offset": 6,
+        "size": 4,
+        "pic": "S9(9)",
+        "usage": "BINARY"
+      }
+    },
+    "a_computational_4": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 99999,
+      "x-cobol": {
+        "level": 5,
+        "name": "A-COMPUTATIONAL-4",
+        "offset": 10,
+        "size": 4,
+        "pic": "9(5)",
+        "usage": "BINARY"
+      }
+    },
+    "a_usage": {
+      "type": "integer",
+      "minimum": -999999999,
+      "maximum": 999999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "A-USAGE",
+        "offset": 14,
+        "size": 4,
+        "pic": "S9(9)",
+        "usage": "BINARY"
+      }
+    },
+    "a_usage2": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 999999999999999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "A-USAGE2",
+        "offset": 18,
+        "size": 8,
+        "pic": "9(18)",
+        "usage": "BINARY"
+      }
+    }
+  },
+  "required": [
+    "a_comp4",
+    "a_binary",
+    "a_computational",
+    "a_computational_4",
+    "a_usage",
+    "a_usage2"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "BIN-SYN-REC",
+    "recordLength": 26,
+    "minRecordLength": 26
+  }
+}

@@ -1,0 +1,55 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.10", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install pytest fastavro jsonschema -e python
+      - run: cd python && python -m pytest -q tests
+      - name: corpus is reproducible
+        run: python corpus/generator/gen_corpus.py && git diff --exit-code corpus/
+
+  java:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      - run: cd java && mvn -B -ntp verify
+      - uses: actions/upload-artifact@v4
+        with:
+          name: kopybook-connect-plugin
+          path: java/target/*.zip
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install mkdocs-material && mkdocs build --strict
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t kopybook:ci .
+      - run: docker run --rm -v "$PWD/corpus:/data" kopybook:ci layout /data/copybooks/30_customer_master.cpy

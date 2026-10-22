@@ -1,0 +1,52 @@
+{
+  "name": "kopybook-connect",
+  "version": "${project.version}",
+  "title": "Kopybook COBOL Copybook Converter and SMT",
+  "description": "Decode mainframe EBCDIC records into typed Kafka Connect Structs using the COBOL copybook, then let AvroConverter, ProtobufConverter or JsonSchemaConverter register a proper schema.\\n\\nSupports zoned decimal (all sign forms), COMP-3, COMP/COMP-4/BINARY (TRUNC STD or BIN), COMP-5, COMP-1/COMP-2 IBM hex float, OCCURS and OCCURS DEPENDING ON, REDEFINES (all views, or select the view by a record-type field or 88-level), COPY ... REPLACING, level 66/88, FILLER, fixed and free source format, RDW framing, and EBCDIC code pages cp037, cp1140, cp500, cp273, cp1047 and others. Decimals keep exact precision and scale (Connect Decimal with connect.decimal.precision).\\n\\nShips as a Converter (decode and encode) and as Value/Key SMTs that work behind any source delivering bytes (MirrorSource, MQ, S3, SFTP). No runtime dependencies beyond the Kafka Connect API. Tested against a public 43-case golden corpus and end to end with Kafka, Schema Registry and Connect.\\n\\nLimitations: SYNCHRONIZED, national/DBCS (PIC N/G), PIC P scaling and REDEFINES of variable-length data are rejected with a clear error.",
+  "owner": {
+    "username": "lupovichran",
+    "name": "Ran Lupovich",
+    "type": "user",
+    "url": "https://github.com/LupovichRan"
+  },
+  "component_types": [
+    "converter",
+    "transform"
+  ],
+  "documentation_url": "https://github.com/LupovichRan/kopybook#readme",
+  "tags": [
+    "cobol",
+    "copybook",
+    "ebcdic",
+    "mainframe",
+    "comp-3",
+    "packed-decimal",
+    "vsam",
+    "zos",
+    "cdc"
+  ],
+  "requirements": [
+    "Kafka Connect 3.x (Confluent Platform 7.x or later)",
+    "Java 17"
+  ],
+  "license": [
+    {
+      "name": "Apache License, Version 2.0",
+      "url": "https://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
+  "support": {
+    "provider_name": "Community",
+    "summary": "Community support through GitHub issues.",
+    "url": "https://github.com/LupovichRan/kopybook/issues"
+  },
+  "features": {
+    "supported_encodings": [
+      "any"
+    ],
+    "single_message_transforms": true,
+    "confluent_control_center_integration": true,
+    "kafka_connect_api": true,
+    "delivery_guarantee": []
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AlnumRec",
+  "type": "object",
+  "properties": {
+    "code_1": {
+      "type": "string",
+      "maxLength": 1,
+      "x-cobol": {
+        "level": 5,
+        "name": "CODE-1",
+        "offset": 0,
+        "size": 1,
+        "pic": "X",
+        "usage": "DISPLAY"
+      }
+    },
+    "code_2": {
+      "type": "string",
+      "maxLength": 2,
+      "x-cobol": {
+        "level": 5,
+        "name": "CODE-2",
+        "offset": 1,
+        "size": 2,
+        "pic": "XX",
+        "usage": "DISPLAY"
+      }
+    },
+    "name": {
+      "type": "string",
+      "maxLength": 20,
+      "x-cobol": {
+        "level": 5,
+        "name": "NAME",
+        "offset": 3,
+        "size": 20,
+        "pic": "X(20)",
+        "usage": "DISPLAY"
+      }
+    },
+    "initials": {
+      "type": "string",
+      "maxLength": 3,
+      "x-cobol": {
+        "level": 5,
+        "name": "INITIALS",
+        "offset": 23,
+        "size": 3,
+        "pic": "AAA",
+        "usage": "DISPLAY"
+      }
+    },
+    "city": {
+      "type": "string",
+      "maxLength": 15,
+      "x-cobol": {
+        "level": 5,
+        "name": "CITY",
+        "offset": 26,
+        "size": 15,
+        "pic": "A(15)",
+        "usage": "DISPLAY"
+      }
+    },
+    "note": {
+      "type": "string",
+      "maxLength": 10,
+      "x-cobol": {
+        "level": 5,
+        "name": "NOTE",
+        "offset": 41,
+        "size": 10,
+        "pic": "X(5)X(5)",
+        "usage": "DISPLAY"
+      }
+    }
+  },
+  "required": [
+    "code_1",
+    "code_2",
+    "name",
+    "initials",
+    "city",
+    "note"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "ALNUM-REC",
+    "recordLength": 51,
+    "minRecordLength": 51
+  }
+}

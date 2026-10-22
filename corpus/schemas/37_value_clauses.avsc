@@ -1,0 +1,96 @@
+{
+  "type": "record",
+  "name": "ValueRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "v_text",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "V-TEXT",
+        "offset": 0,
+        "size": 5,
+        "pic": "X(5)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "v_num",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "V-NUM",
+        "offset": 5,
+        "size": 5,
+        "pic": "9(5)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "v_pack",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "V-PACK",
+        "offset": 10,
+        "size": 3,
+        "pic": "S9(5)",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "v_quote",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "V-QUOTE",
+        "offset": 13,
+        "size": 4,
+        "pic": "X(4)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "v_hex",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "V-HEX",
+        "offset": 17,
+        "size": 2,
+        "pic": "X(2)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "v_just",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "V-JUST",
+        "offset": 19,
+        "size": 8,
+        "pic": "X(8)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "v_blank",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "V-BLANK",
+        "offset": 27,
+        "size": 4,
+        "pic": "9(4)",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "VALUE-REC",
+    "recordLength": 31,
+    "minRecordLength": 31
+  }
+}

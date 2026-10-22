@@ -1,0 +1,48 @@
+{
+  "type": "record",
+  "name": "FillerRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "keep_1",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "KEEP-1",
+        "offset": 3,
+        "size": 4,
+        "pic": "X(4)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "keep_2",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "KEEP-2",
+        "offset": 9,
+        "size": 3,
+        "pic": "S9(5)",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "keep_3",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "KEEP-3",
+        "offset": 21,
+        "size": 2,
+        "pic": "9(2)",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "FILLER-REC",
+    "recordLength": 23,
+    "minRecordLength": 23
+  }
+}

@@ -1,0 +1,169 @@
+{
+  "type": "record",
+  "name": "BankTxn",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "bt_txn_id",
+      "type": "long",
+      "cobol": {
+        "level": 5,
+        "name": "BT-TXN-ID",
+        "offset": 0,
+        "size": 16,
+        "pic": "9(16)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "bt_acct",
+      "type": "long",
+      "cobol": {
+        "level": 5,
+        "name": "BT-ACCT",
+        "offset": 16,
+        "size": 12,
+        "pic": "9(12)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "bt_ts",
+      "type": {
+        "type": "record",
+        "name": "BtTs",
+        "fields": [
+          {
+            "name": "bt_date",
+            "type": "int",
+            "cobol": {
+              "level": 10,
+              "name": "BT-DATE",
+              "offset": 28,
+              "size": 8,
+              "pic": "9(8)",
+              "usage": "DISPLAY"
+            }
+          },
+          {
+            "name": "bt_time",
+            "type": "int",
+            "cobol": {
+              "level": 10,
+              "name": "BT-TIME",
+              "offset": 36,
+              "size": 6,
+              "pic": "9(6)",
+              "usage": "DISPLAY"
+            }
+          },
+          {
+            "name": "bt_micros",
+            "type": "int",
+            "cobol": {
+              "level": 10,
+              "name": "BT-MICROS",
+              "offset": 42,
+              "size": 4,
+              "pic": "9(6)",
+              "usage": "COMP-3"
+            }
+          }
+        ]
+      },
+      "cobol": {
+        "level": 5,
+        "name": "BT-TS",
+        "offset": 28,
+        "size": 18
+      }
+    },
+    {
+      "name": "bt_type",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "BT-TYPE",
+        "offset": 46,
+        "size": 3,
+        "pic": "X(3)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "bt_amount",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 15,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "BT-AMOUNT",
+        "offset": 49,
+        "size": 8,
+        "pic": "S9(13)V99",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "bt_currency",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "BT-CURRENCY",
+        "offset": 57,
+        "size": 3,
+        "pic": "X(3)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "bt_fx_rate",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 9,
+        "scale": 6
+      },
+      "cobol": {
+        "level": 5,
+        "name": "BT-FX-RATE",
+        "offset": 60,
+        "size": 5,
+        "pic": "9(3)V9(6)",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "bt_channel",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "BT-CHANNEL",
+        "offset": 65,
+        "size": 2,
+        "pic": "S9(4)",
+        "usage": "COMP-5"
+      }
+    },
+    {
+      "name": "bt_memo",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "BT-MEMO",
+        "offset": 67,
+        "size": 40,
+        "pic": "X(40)",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "BANK-TXN",
+    "recordLength": 107,
+    "minRecordLength": 107
+  }
+}

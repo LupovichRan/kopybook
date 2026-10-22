@@ -1,0 +1,26 @@
+<assembly xmlns="http://maven.apache.org/ASSEMBLY/2.1.1"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.1.1 https://maven.apache.org/xsd/assembly-2.1.1.xsd">
+  <!-- Confluent Hub component layout: <name>/manifest.json + lib/ + doc/ -->
+  <id>connect-plugin</id>
+  <formats><format>zip</format><format>dir</format></formats>
+  <includeBaseDirectory>true</includeBaseDirectory>
+  <baseDirectory>kopybook-connect-${project.version}</baseDirectory>
+  <files>
+    <file><source>${project.basedir}/manifest.json</source><outputDirectory>.</outputDirectory><filtered>true</filtered></file>
+    <file><source>${project.basedir}/../LICENSE</source><outputDirectory>doc</outputDirectory></file>
+    <file><source>${project.basedir}/../NOTICE</source><outputDirectory>doc</outputDirectory></file>
+    <file><source>${project.basedir}/../docs/connect.md</source><outputDirectory>doc</outputDirectory><destName>README.md</destName></file>
+    <file><source>${project.basedir}/../docs/SPEC.md</source><outputDirectory>doc</outputDirectory></file>
+  </files>
+  <fileSets>
+    <fileSet><directory>${project.basedir}/src/main/etc</directory><outputDirectory>etc</outputDirectory></fileSet>
+  </fileSets>
+  <dependencySets>
+    <dependencySet>
+      <outputDirectory>lib</outputDirectory>
+      <useProjectArtifact>true</useProjectArtifact>
+      <scope>runtime</scope>
+    </dependencySet>
+  </dependencySets>
+</assembly>

@@ -1,0 +1,211 @@
+{
+  "type": "record",
+  "name": "PartyRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "party_id",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "PARTY-ID",
+        "offset": 0,
+        "size": 8,
+        "pic": "9(8)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "bill_address",
+      "type": {
+        "type": "record",
+        "name": "BillAddress",
+        "fields": [
+          {
+            "name": "bill_street",
+            "type": "string",
+            "cobol": {
+              "level": 10,
+              "name": "BILL-STREET",
+              "offset": 8,
+              "size": 25,
+              "pic": "X(25)",
+              "usage": "DISPLAY"
+            }
+          },
+          {
+            "name": "bill_city",
+            "type": "string",
+            "cobol": {
+              "level": 10,
+              "name": "BILL-CITY",
+              "offset": 33,
+              "size": 15,
+              "pic": "X(15)",
+              "usage": "DISPLAY"
+            }
+          },
+          {
+            "name": "bill_zip",
+            "type": "int",
+            "cobol": {
+              "level": 10,
+              "name": "BILL-ZIP",
+              "offset": 48,
+              "size": 5,
+              "pic": "9(5)",
+              "usage": "DISPLAY"
+            }
+          }
+        ]
+      },
+      "cobol": {
+        "level": 5,
+        "name": "BILL-ADDRESS",
+        "offset": 8,
+        "size": 45
+      }
+    },
+    {
+      "name": "ship_address",
+      "type": {
+        "type": "record",
+        "name": "ShipAddress",
+        "fields": [
+          {
+            "name": "ship_street",
+            "type": "string",
+            "cobol": {
+              "level": 10,
+              "name": "SHIP-STREET",
+              "offset": 53,
+              "size": 25,
+              "pic": "X(25)",
+              "usage": "DISPLAY"
+            }
+          },
+          {
+            "name": "ship_city",
+            "type": "string",
+            "cobol": {
+              "level": 10,
+              "name": "SHIP-CITY",
+              "offset": 78,
+              "size": 15,
+              "pic": "X(15)",
+              "usage": "DISPLAY"
+            }
+          },
+          {
+            "name": "ship_zip",
+            "type": "int",
+            "cobol": {
+              "level": 10,
+              "name": "SHIP-ZIP",
+              "offset": 93,
+              "size": 5,
+              "pic": "9(5)",
+              "usage": "DISPLAY"
+            }
+          }
+        ]
+      },
+      "cobol": {
+        "level": 5,
+        "name": "SHIP-ADDRESS",
+        "offset": 53,
+        "size": 45
+      }
+    },
+    {
+      "name": "party_amounts",
+      "type": {
+        "type": "record",
+        "name": "PartyAmounts",
+        "fields": [
+          {
+            "name": "pty_gross",
+            "type": {
+              "type": "bytes",
+              "logicalType": "decimal",
+              "precision": 11,
+              "scale": 2
+            },
+            "cobol": {
+              "level": 10,
+              "name": "PTY-GROSS",
+              "offset": 98,
+              "size": 6,
+              "pic": "S9(9)V99",
+              "usage": "COMP-3"
+            }
+          },
+          {
+            "name": "pty_net",
+            "type": {
+              "type": "bytes",
+              "logicalType": "decimal",
+              "precision": 11,
+              "scale": 2
+            },
+            "cobol": {
+              "level": 10,
+              "name": "PTY-NET",
+              "offset": 104,
+              "size": 6,
+              "pic": "S9(9)V99",
+              "usage": "COMP-3"
+            }
+          },
+          {
+            "name": "pty_ccy",
+            "type": "string",
+            "cobol": {
+              "level": 10,
+              "name": "PTY-CCY",
+              "offset": 110,
+              "size": 3,
+              "pic": "X(3)",
+              "usage": "DISPLAY"
+            }
+          }
+        ]
+      },
+      "cobol": {
+        "level": 5,
+        "name": "PARTY-AMOUNTS",
+        "offset": 98,
+        "size": 15
+      }
+    },
+    {
+      "name": "trl_seq",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "TRL-SEQ",
+        "offset": 113,
+        "size": 6,
+        "pic": "9(6)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "trl_stamp",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "TRL-STAMP",
+        "offset": 119,
+        "size": 26,
+        "pic": "X(26)",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "PARTY-REC",
+    "recordLength": 145,
+    "minRecordLength": 145
+  }
+}

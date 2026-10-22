@@ -1,0 +1,87 @@
+{
+  "type": "record",
+  "name": "FreeRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "rec_id",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "REC-ID",
+        "offset": 0,
+        "size": 6,
+        "pic": "X(6)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "amount",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 7,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "AMOUNT",
+        "offset": 6,
+        "size": 4,
+        "pic": "S9(5)V99",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "items",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "Items",
+          "fields": [
+            {
+              "name": "item_code",
+              "type": "string",
+              "cobol": {
+                "level": 10,
+                "name": "ITEM-CODE",
+                "offset": 10,
+                "size": 2,
+                "pic": "XX",
+                "usage": "DISPLAY"
+              }
+            },
+            {
+              "name": "item_qty",
+              "type": "int",
+              "cobol": {
+                "level": 10,
+                "name": "ITEM-QTY",
+                "offset": 12,
+                "size": 3,
+                "pic": "9(3)",
+                "usage": "DISPLAY"
+              }
+            }
+          ]
+        }
+      },
+      "cobol": {
+        "level": 5,
+        "name": "ITEMS",
+        "offset": 10,
+        "size": 5,
+        "occurs": [
+          2,
+          2
+        ]
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "FREE-REC",
+    "recordLength": 20,
+    "minRecordLength": 20
+  }
+}

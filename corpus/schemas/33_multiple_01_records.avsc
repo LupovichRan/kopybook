@@ -1,0 +1,77 @@
+{
+  "type": "record",
+  "name": "FileDetail",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "fd_type",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "FD-TYPE",
+        "offset": 0,
+        "size": 1,
+        "pic": "X",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "fd_item",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "FD-ITEM",
+        "offset": 1,
+        "size": 10,
+        "pic": "X(10)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "fd_qty",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "FD-QTY",
+        "offset": 11,
+        "size": 4,
+        "pic": "S9(7)",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "fd_price",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 9,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "FD-PRICE",
+        "offset": 15,
+        "size": 5,
+        "pic": "S9(7)V99",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "fd_desc",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "FD-DESC",
+        "offset": 20,
+        "size": 21,
+        "pic": "X(21)",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "FILE-DETAIL",
+    "recordLength": 41,
+    "minRecordLength": 41
+  }
+}

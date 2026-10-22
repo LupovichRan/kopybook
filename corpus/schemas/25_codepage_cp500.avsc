@@ -1,0 +1,54 @@
+{
+  "type": "record",
+  "name": "IntlRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "brackets",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "BRACKETS",
+        "offset": 0,
+        "size": 10,
+        "pic": "X(10)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "NAME",
+        "offset": 10,
+        "size": 20,
+        "pic": "X(20)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "amount",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 7,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "AMOUNT",
+        "offset": 30,
+        "size": 7,
+        "pic": "S9(5)V99",
+        "usage": "DISPLAY",
+        "sign": "TRAILING"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "INTL-REC",
+    "recordLength": 37,
+    "minRecordLength": 37
+  }
+}

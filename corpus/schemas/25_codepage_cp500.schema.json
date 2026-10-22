@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "IntlRec",
+  "type": "object",
+  "properties": {
+    "brackets": {
+      "type": "string",
+      "maxLength": 10,
+      "x-cobol": {
+        "level": 5,
+        "name": "BRACKETS",
+        "offset": 0,
+        "size": 10,
+        "pic": "X(10)",
+        "usage": "DISPLAY"
+      }
+    },
+    "name": {
+      "type": "string",
+      "maxLength": 20,
+      "x-cobol": {
+        "level": 5,
+        "name": "NAME",
+        "offset": 10,
+        "size": 20,
+        "pic": "X(20)",
+        "usage": "DISPLAY"
+      }
+    },
+    "amount": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,5}\\.[0-9]{2}$",
+      "x-decimal": {
+        "precision": 7,
+        "scale": 2
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "AMOUNT",
+        "offset": 30,
+        "size": 7,
+        "pic": "S9(5)V99",
+        "usage": "DISPLAY",
+        "sign": "TRAILING"
+      }
+    }
+  },
+  "required": [
+    "brackets",
+    "name",
+    "amount"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "INTL-REC",
+    "recordLength": 37,
+    "minRecordLength": 37
+  }
+}

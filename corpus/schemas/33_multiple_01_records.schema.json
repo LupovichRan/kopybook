@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FileDetail",
+  "type": "object",
+  "properties": {
+    "fd_type": {
+      "type": "string",
+      "maxLength": 1,
+      "x-cobol": {
+        "level": 5,
+        "name": "FD-TYPE",
+        "offset": 0,
+        "size": 1,
+        "pic": "X",
+        "usage": "DISPLAY"
+      }
+    },
+    "fd_item": {
+      "type": "string",
+      "maxLength": 10,
+      "x-cobol": {
+        "level": 5,
+        "name": "FD-ITEM",
+        "offset": 1,
+        "size": 10,
+        "pic": "X(10)",
+        "usage": "DISPLAY"
+      }
+    },
+    "fd_qty": {
+      "type": "integer",
+      "minimum": -9999999,
+      "maximum": 9999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "FD-QTY",
+        "offset": 11,
+        "size": 4,
+        "pic": "S9(7)",
+        "usage": "COMP-3"
+      }
+    },
+    "fd_price": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,7}\\.[0-9]{2}$",
+      "x-decimal": {
+        "precision": 9,
+        "scale": 2
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "FD-PRICE",
+        "offset": 15,
+        "size": 5,
+        "pic": "S9(7)V99",
+        "usage": "COMP-3"
+      }
+    },
+    "fd_desc": {
+      "type": "string",
+      "maxLength": 21,
+      "x-cobol": {
+        "level": 5,
+        "name": "FD-DESC",
+        "offset": 20,
+        "size": 21,
+        "pic": "X(21)",
+        "usage": "DISPLAY"
+      }
+    }
+  },
+  "required": [
+    "fd_type",
+    "fd_item",
+    "fd_qty",
+    "fd_price",
+    "fd_desc"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "FILE-DETAIL",
+    "recordLength": 41,
+    "minRecordLength": 41
+  }
+}

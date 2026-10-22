@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ValueRec",
+  "type": "object",
+  "properties": {
+    "v_text": {
+      "type": "string",
+      "maxLength": 5,
+      "x-cobol": {
+        "level": 5,
+        "name": "V-TEXT",
+        "offset": 0,
+        "size": 5,
+        "pic": "X(5)",
+        "usage": "DISPLAY"
+      }
+    },
+    "v_num": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 99999,
+      "x-cobol": {
+        "level": 5,
+        "name": "V-NUM",
+        "offset": 5,
+        "size": 5,
+        "pic": "9(5)",
+        "usage": "DISPLAY"
+      }
+    },
+    "v_pack": {
+      "type": "integer",
+      "minimum": -99999,
+      "maximum": 99999,
+      "x-cobol": {
+        "level": 5,
+        "name": "V-PACK",
+        "offset": 10,
+        "size": 3,
+        "pic": "S9(5)",
+        "usage": "COMP-3"
+      }
+    },
+    "v_quote": {
+      "type": "string",
+      "maxLength": 4,
+      "x-cobol": {
+        "level": 5,
+        "name": "V-QUOTE",
+        "offset": 13,
+        "size": 4,
+        "pic": "X(4)",
+        "usage": "DISPLAY"
+      }
+    },
+    "v_hex": {
+      "type": "string",
+      "maxLength": 2,
+      "x-cobol": {
+        "level": 5,
+        "name": "V-HEX",
+        "offset": 17,
+        "size": 2,
+        "pic": "X(2)",
+        "usage": "DISPLAY"
+      }
+    },
+    "v_just": {
+      "type": "string",
+      "maxLength": 8,
+      "x-cobol": {
+        "level": 5,
+        "name": "V-JUST",
+        "offset": 19,
+        "size": 8,
+        "pic": "X(8)",
+        "usage": "DISPLAY"
+      }
+    },
+    "v_blank": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9999,
+      "x-cobol": {
+        "level": 5,
+        "name": "V-BLANK",
+        "offset": 27,
+        "size": 4,
+        "pic": "9(4)",
+        "usage": "DISPLAY"
+      }
+    }
+  },
+  "required": [
+    "v_text",
+    "v_num",
+    "v_pack",
+    "v_quote",
+    "v_hex",
+    "v_just",
+    "v_blank"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "VALUE-REC",
+    "recordLength": 31,
+    "minRecordLength": 31
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EditedRec",
+  "type": "object",
+  "properties": {
+    "ed_amount": {
+      "type": "string",
+      "maxLength": 11,
+      "x-cobol": {
+        "level": 5,
+        "name": "ED-AMOUNT",
+        "offset": 0,
+        "size": 11,
+        "pic": "ZZZ,ZZ9.99-",
+        "usage": "DISPLAY"
+      }
+    },
+    "ed_currency": {
+      "type": "string",
+      "maxLength": 10,
+      "x-cobol": {
+        "level": 5,
+        "name": "ED-CURRENCY",
+        "offset": 11,
+        "size": 10,
+        "pic": "$$$,$$9.99",
+        "usage": "DISPLAY"
+      }
+    },
+    "ed_stars": {
+      "type": "string",
+      "maxLength": 4,
+      "x-cobol": {
+        "level": 5,
+        "name": "ED-STARS",
+        "offset": 21,
+        "size": 4,
+        "pic": "***9",
+        "usage": "DISPLAY"
+      }
+    },
+    "ed_cr": {
+      "type": "string",
+      "maxLength": 11,
+      "x-cobol": {
+        "level": 5,
+        "name": "ED-CR",
+        "offset": 25,
+        "size": 11,
+        "pic": "Z(5)9.99CR",
+        "usage": "DISPLAY"
+      }
+    },
+    "ed_date": {
+      "type": "string",
+      "maxLength": 10,
+      "x-cobol": {
+        "level": 5,
+        "name": "ED-DATE",
+        "offset": 36,
+        "size": 10,
+        "pic": "99/99/9999",
+        "usage": "DISPLAY"
+      }
+    }
+  },
+  "required": [
+    "ed_amount",
+    "ed_currency",
+    "ed_stars",
+    "ed_cr",
+    "ed_date"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "EDITED-REC",
+    "recordLength": 46,
+    "minRecordLength": 46
+  }
+}

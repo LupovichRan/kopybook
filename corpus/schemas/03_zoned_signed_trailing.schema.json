@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ZonedSRec",
+  "type": "object",
+  "properties": {
+    "delta": {
+      "type": "integer",
+      "minimum": -9,
+      "maximum": 9,
+      "x-cobol": {
+        "level": 5,
+        "name": "DELTA",
+        "offset": 0,
+        "size": 1,
+        "pic": "S9",
+        "usage": "DISPLAY",
+        "sign": "TRAILING"
+      }
+    },
+    "adjust": {
+      "type": "integer",
+      "minimum": -99999,
+      "maximum": 99999,
+      "x-cobol": {
+        "level": 5,
+        "name": "ADJUST",
+        "offset": 1,
+        "size": 5,
+        "pic": "S9(5)",
+        "usage": "DISPLAY",
+        "sign": "TRAILING"
+      }
+    },
+    "balance": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,9}\\.[0-9]{2}$",
+      "x-decimal": {
+        "precision": 11,
+        "scale": 2
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "BALANCE",
+        "offset": 6,
+        "size": 11,
+        "pic": "S9(9)V99",
+        "usage": "DISPLAY",
+        "sign": "TRAILING"
+      }
+    },
+    "ledger": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,15}\\.[0-9]{3}$",
+      "x-decimal": {
+        "precision": 18,
+        "scale": 3
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "LEDGER",
+        "offset": 17,
+        "size": 18,
+        "pic": "S9(15)V9(3)",
+        "usage": "DISPLAY",
+        "sign": "TRAILING"
+      }
+    },
+    "tiny": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,1}\\.[0-9]{2}$",
+      "x-decimal": {
+        "precision": 2,
+        "scale": 2
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "TINY",
+        "offset": 35,
+        "size": 2,
+        "pic": "SV99",
+        "usage": "DISPLAY",
+        "sign": "TRAILING"
+      }
+    }
+  },
+  "required": [
+    "delta",
+    "adjust",
+    "balance",
+    "ledger",
+    "tiny"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "ZONED-S-REC",
+    "recordLength": 37,
+    "minRecordLength": 37
+  }
+}

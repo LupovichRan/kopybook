@@ -1,0 +1,93 @@
+{
+  "type": "record",
+  "name": "PackedBigRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "p18",
+      "type": "long",
+      "cobol": {
+        "level": 5,
+        "name": "P18",
+        "offset": 0,
+        "size": 10,
+        "pic": "S9(18)",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "p19",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 19,
+        "scale": 0
+      },
+      "cobol": {
+        "level": 5,
+        "name": "P19",
+        "offset": 10,
+        "size": 10,
+        "pic": "S9(19)",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "p31",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 31,
+        "scale": 0
+      },
+      "cobol": {
+        "level": 5,
+        "name": "P31",
+        "offset": 20,
+        "size": 16,
+        "pic": "S9(31)",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "p31_scaled",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 31,
+        "scale": 6
+      },
+      "cobol": {
+        "level": 5,
+        "name": "P31-SCALED",
+        "offset": 36,
+        "size": 16,
+        "pic": "S9(25)V9(6)",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "z31",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 31,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "Z31",
+        "offset": 52,
+        "size": 31,
+        "pic": "S9(29)V99",
+        "usage": "DISPLAY",
+        "sign": "TRAILING"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "PACKED-BIG-REC",
+    "recordLength": 83,
+    "minRecordLength": 83
+  }
+}

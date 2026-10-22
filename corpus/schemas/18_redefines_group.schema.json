@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DateRec",
+  "type": "object",
+  "properties": {
+    "event_date": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 99999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "EVENT-DATE",
+        "offset": 0,
+        "size": 8,
+        "pic": "9(8)",
+        "usage": "DISPLAY"
+      }
+    },
+    "event_date_parts": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "ev_yyyy": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9999,
+          "x-cobol": {
+            "level": 10,
+            "name": "EV-YYYY",
+            "offset": 0,
+            "size": 4,
+            "pic": "9(4)",
+            "usage": "DISPLAY"
+          }
+        },
+        "ev_mm": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 99,
+          "x-cobol": {
+            "level": 10,
+            "name": "EV-MM",
+            "offset": 4,
+            "size": 2,
+            "pic": "99",
+            "usage": "DISPLAY"
+          }
+        },
+        "ev_dd": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 99,
+          "x-cobol": {
+            "level": 10,
+            "name": "EV-DD",
+            "offset": 6,
+            "size": 2,
+            "pic": "99",
+            "usage": "DISPLAY"
+          }
+        }
+      },
+      "required": [
+        "ev_yyyy",
+        "ev_mm",
+        "ev_dd"
+      ],
+      "additionalProperties": false,
+      "x-cobol": {
+        "level": 5,
+        "name": "EVENT-DATE-PARTS",
+        "offset": 0,
+        "size": 8,
+        "redefines": "EVENT-DATE"
+      }
+    },
+    "event_time": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "EVENT-TIME",
+        "offset": 8,
+        "size": 6,
+        "pic": "9(6)",
+        "usage": "DISPLAY"
+      }
+    }
+  },
+  "required": [
+    "event_time"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "DATE-REC",
+    "recordLength": 14,
+    "minRecordLength": 14
+  }
+}

@@ -1,0 +1,228 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PartyRec",
+  "type": "object",
+  "properties": {
+    "party_id": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 99999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "PARTY-ID",
+        "offset": 0,
+        "size": 8,
+        "pic": "9(8)",
+        "usage": "DISPLAY"
+      }
+    },
+    "bill_address": {
+      "type": "object",
+      "properties": {
+        "bill_street": {
+          "type": "string",
+          "maxLength": 25,
+          "x-cobol": {
+            "level": 10,
+            "name": "BILL-STREET",
+            "offset": 8,
+            "size": 25,
+            "pic": "X(25)",
+            "usage": "DISPLAY"
+          }
+        },
+        "bill_city": {
+          "type": "string",
+          "maxLength": 15,
+          "x-cobol": {
+            "level": 10,
+            "name": "BILL-CITY",
+            "offset": 33,
+            "size": 15,
+            "pic": "X(15)",
+            "usage": "DISPLAY"
+          }
+        },
+        "bill_zip": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 99999,
+          "x-cobol": {
+            "level": 10,
+            "name": "BILL-ZIP",
+            "offset": 48,
+            "size": 5,
+            "pic": "9(5)",
+            "usage": "DISPLAY"
+          }
+        }
+      },
+      "required": [
+        "bill_street",
+        "bill_city",
+        "bill_zip"
+      ],
+      "additionalProperties": false,
+      "x-cobol": {
+        "level": 5,
+        "name": "BILL-ADDRESS",
+        "offset": 8,
+        "size": 45
+      }
+    },
+    "ship_address": {
+      "type": "object",
+      "properties": {
+        "ship_street": {
+          "type": "string",
+          "maxLength": 25,
+          "x-cobol": {
+            "level": 10,
+            "name": "SHIP-STREET",
+            "offset": 53,
+            "size": 25,
+            "pic": "X(25)",
+            "usage": "DISPLAY"
+          }
+        },
+        "ship_city": {
+          "type": "string",
+          "maxLength": 15,
+          "x-cobol": {
+            "level": 10,
+            "name": "SHIP-CITY",
+            "offset": 78,
+            "size": 15,
+            "pic": "X(15)",
+            "usage": "DISPLAY"
+          }
+        },
+        "ship_zip": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 99999,
+          "x-cobol": {
+            "level": 10,
+            "name": "SHIP-ZIP",
+            "offset": 93,
+            "size": 5,
+            "pic": "9(5)",
+            "usage": "DISPLAY"
+          }
+        }
+      },
+      "required": [
+        "ship_street",
+        "ship_city",
+        "ship_zip"
+      ],
+      "additionalProperties": false,
+      "x-cobol": {
+        "level": 5,
+        "name": "SHIP-ADDRESS",
+        "offset": 53,
+        "size": 45
+      }
+    },
+    "party_amounts": {
+      "type": "object",
+      "properties": {
+        "pty_gross": {
+          "type": "string",
+          "pattern": "^-?[0-9]{1,9}\\.[0-9]{2}$",
+          "x-decimal": {
+            "precision": 11,
+            "scale": 2
+          },
+          "x-cobol": {
+            "level": 10,
+            "name": "PTY-GROSS",
+            "offset": 98,
+            "size": 6,
+            "pic": "S9(9)V99",
+            "usage": "COMP-3"
+          }
+        },
+        "pty_net": {
+          "type": "string",
+          "pattern": "^-?[0-9]{1,9}\\.[0-9]{2}$",
+          "x-decimal": {
+            "precision": 11,
+            "scale": 2
+          },
+          "x-cobol": {
+            "level": 10,
+            "name": "PTY-NET",
+            "offset": 104,
+            "size": 6,
+            "pic": "S9(9)V99",
+            "usage": "COMP-3"
+          }
+        },
+        "pty_ccy": {
+          "type": "string",
+          "maxLength": 3,
+          "x-cobol": {
+            "level": 10,
+            "name": "PTY-CCY",
+            "offset": 110,
+            "size": 3,
+            "pic": "X(3)",
+            "usage": "DISPLAY"
+          }
+        }
+      },
+      "required": [
+        "pty_gross",
+        "pty_net",
+        "pty_ccy"
+      ],
+      "additionalProperties": false,
+      "x-cobol": {
+        "level": 5,
+        "name": "PARTY-AMOUNTS",
+        "offset": 98,
+        "size": 15
+      }
+    },
+    "trl_seq": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "TRL-SEQ",
+        "offset": 113,
+        "size": 6,
+        "pic": "9(6)",
+        "usage": "DISPLAY"
+      }
+    },
+    "trl_stamp": {
+      "type": "string",
+      "maxLength": 26,
+      "x-cobol": {
+        "level": 5,
+        "name": "TRL-STAMP",
+        "offset": 119,
+        "size": 26,
+        "pic": "X(26)",
+        "usage": "DISPLAY"
+      }
+    }
+  },
+  "required": [
+    "party_id",
+    "bill_address",
+    "ship_address",
+    "party_amounts",
+    "trl_seq",
+    "trl_stamp"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "PARTY-REC",
+    "recordLength": 145,
+    "minRecordLength": 145
+  }
+}

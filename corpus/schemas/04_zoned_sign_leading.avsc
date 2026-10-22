@@ -1,0 +1,61 @@
+{
+  "type": "record",
+  "name": "SignLeadRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "amount_l",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 9,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "AMOUNT-L",
+        "offset": 0,
+        "size": 9,
+        "pic": "S9(7)V99",
+        "usage": "DISPLAY",
+        "sign": "LEADING"
+      }
+    },
+    {
+      "name": "count_l",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "COUNT-L",
+        "offset": 9,
+        "size": 4,
+        "pic": "S9(4)",
+        "usage": "DISPLAY",
+        "sign": "LEADING"
+      }
+    },
+    {
+      "name": "amount_t",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 9,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "AMOUNT-T",
+        "offset": 13,
+        "size": 9,
+        "pic": "S9(7)V99",
+        "usage": "DISPLAY",
+        "sign": "TRAILING"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "SIGN-LEAD-REC",
+    "recordLength": 22,
+    "minRecordLength": 22
+  }
+}

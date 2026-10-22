@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SignSepRec",
+  "type": "object",
+  "properties": {
+    "amt_ts": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,5}\\.[0-9]{2}$",
+      "x-decimal": {
+        "precision": 7,
+        "scale": 2
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "AMT-TS",
+        "offset": 0,
+        "size": 8,
+        "pic": "S9(5)V99",
+        "usage": "DISPLAY",
+        "sign": "TRAILING SEPARATE"
+      }
+    },
+    "amt_ls": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,5}\\.[0-9]{2}$",
+      "x-decimal": {
+        "precision": 7,
+        "scale": 2
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "AMT-LS",
+        "offset": 8,
+        "size": 8,
+        "pic": "S9(5)V99",
+        "usage": "DISPLAY",
+        "sign": "LEADING SEPARATE"
+      }
+    },
+    "qty_ls": {
+      "type": "integer",
+      "minimum": -999,
+      "maximum": 999,
+      "x-cobol": {
+        "level": 5,
+        "name": "QTY-LS",
+        "offset": 16,
+        "size": 4,
+        "pic": "S9(3)",
+        "usage": "DISPLAY",
+        "sign": "LEADING SEPARATE"
+      }
+    }
+  },
+  "required": [
+    "amt_ts",
+    "amt_ls",
+    "qty_ls"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "SIGN-SEP-REC",
+    "recordLength": 20,
+    "minRecordLength": 20
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "type": "record",
+  "name": "PortfolioRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "pf_id",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "PF-ID",
+        "offset": 0,
+        "size": 8,
+        "pic": "X(8)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "pf_holdings",
+      "type": {
+        "type": "record",
+        "name": "PfHoldings",
+        "fields": [
+          {
+            "name": "pf_n",
+            "type": "int",
+            "cobol": {
+              "level": 10,
+              "name": "PF-N",
+              "offset": 8,
+              "size": 2,
+              "pic": "S9(3)",
+              "usage": "COMP-3"
+            }
+          },
+          {
+            "name": "pf_position",
+            "type": {
+              "type": "array",
+              "items": {
+                "type": "record",
+                "name": "PfHoldings_PfPosition",
+                "fields": [
+                  {
+                    "name": "pf_symbol",
+                    "type": "string",
+                    "cobol": {
+                      "level": 15,
+                      "name": "PF-SYMBOL",
+                      "offset": 10,
+                      "size": 6,
+                      "pic": "X(6)",
+                      "usage": "DISPLAY"
+                    }
+                  },
+                  {
+                    "name": "pf_qty",
+                    "type": "int",
+                    "cobol": {
+                      "level": 15,
+                      "name": "PF-QTY",
+                      "offset": 16,
+                      "size": 4,
+                      "pic": "S9(9)",
+                      "usage": "BINARY"
+                    }
+                  },
+                  {
+                    "name": "pf_price",
+                    "type": {
+                      "type": "bytes",
+                      "logicalType": "decimal",
+                      "precision": 9,
+                      "scale": 4
+                    },
+                    "cobol": {
+                      "level": 15,
+                      "name": "PF-PRICE",
+                      "offset": 20,
+                      "size": 5,
+                      "pic": "S9(5)V9(4)",
+                      "usage": "COMP-3"
+                    }
+                  }
+                ]
+              }
+            },
+            "cobol": {
+              "level": 10,
+              "name": "PF-POSITION",
+              "offset": 10,
+              "size": 15,
+              "occurs": [
+                0,
+                6
+              ],
+              "dependingOn": "PF-N"
+            }
+          }
+        ]
+      },
+      "cobol": {
+        "level": 5,
+        "name": "PF-HOLDINGS",
+        "offset": 8,
+        "size": 92
+      }
+    },
+    {
+      "name": "pf_as_of",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "PF-AS-OF",
+        "offset": 100,
+        "size": 8,
+        "pic": "9(8)",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "PORTFOLIO-REC",
+    "recordLength": 108,
+    "minRecordLength": 18
+  }
+}

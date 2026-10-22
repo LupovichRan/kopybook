@@ -1,0 +1,61 @@
+{
+  "type": "record",
+  "name": "OdoRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "acct",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "ACCT",
+        "offset": 0,
+        "size": 8,
+        "pic": "9(8)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "txn_count",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "TXN-COUNT",
+        "offset": 8,
+        "size": 2,
+        "pic": "S9(4)",
+        "usage": "BINARY"
+      }
+    },
+    {
+      "name": "txn_amount",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "bytes",
+          "logicalType": "decimal",
+          "precision": 9,
+          "scale": 2
+        }
+      },
+      "cobol": {
+        "level": 5,
+        "name": "TXN-AMOUNT",
+        "offset": 10,
+        "size": 5,
+        "pic": "S9(7)V99",
+        "usage": "COMP-3",
+        "occurs": [
+          0,
+          20
+        ],
+        "dependingOn": "TXN-COUNT"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "ODO-REC",
+    "recordLength": 110,
+    "minRecordLength": 10
+  }
+}

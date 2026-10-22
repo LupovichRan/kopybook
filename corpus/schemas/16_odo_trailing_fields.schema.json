@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "VarlocRec",
+  "type": "object",
+  "properties": {
+    "hdr_id": {
+      "type": "string",
+      "maxLength": 4,
+      "x-cobol": {
+        "level": 5,
+        "name": "HDR-ID",
+        "offset": 0,
+        "size": 4,
+        "pic": "X(4)",
+        "usage": "DISPLAY"
+      }
+    },
+    "n_notes": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9,
+      "x-cobol": {
+        "level": 5,
+        "name": "N-NOTES",
+        "offset": 4,
+        "size": 1,
+        "pic": "9",
+        "usage": "DISPLAY"
+      }
+    },
+    "note_text": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "maxLength": 10
+      },
+      "minItems": 0,
+      "maxItems": 5,
+      "x-cobol": {
+        "level": 5,
+        "name": "NOTE-TEXT",
+        "offset": 5,
+        "size": 10,
+        "pic": "X(10)",
+        "usage": "DISPLAY",
+        "occurs": [
+          0,
+          5
+        ],
+        "dependingOn": "N-NOTES"
+      }
+    },
+    "after_amount": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,5}\\.[0-9]{2}$",
+      "x-decimal": {
+        "precision": 7,
+        "scale": 2
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "AFTER-AMOUNT",
+        "offset": 55,
+        "size": 4,
+        "pic": "S9(5)V99",
+        "usage": "COMP-3"
+      }
+    },
+    "after_code": {
+      "type": "string",
+      "maxLength": 3,
+      "x-cobol": {
+        "level": 5,
+        "name": "AFTER-CODE",
+        "offset": 59,
+        "size": 3,
+        "pic": "X(3)",
+        "usage": "DISPLAY"
+      }
+    }
+  },
+  "required": [
+    "hdr_id",
+    "n_notes",
+    "note_text",
+    "after_amount",
+    "after_code"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "VARLOC-REC",
+    "recordLength": 62,
+    "minRecordLength": 12
+  }
+}

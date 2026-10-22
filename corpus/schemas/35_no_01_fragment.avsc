@@ -1,0 +1,80 @@
+{
+  "type": "record",
+  "name": "Record",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "frag_id",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "FRAG-ID",
+        "offset": 0,
+        "size": 6,
+        "pic": "X(6)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "frag_value",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 7,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "FRAG-VALUE",
+        "offset": 6,
+        "size": 4,
+        "pic": "S9(5)V99",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "frag_group",
+      "type": {
+        "type": "record",
+        "name": "FragGroup",
+        "fields": [
+          {
+            "name": "frag_a",
+            "type": "int",
+            "cobol": {
+              "level": 10,
+              "name": "FRAG-A",
+              "offset": 10,
+              "size": 2,
+              "pic": "9(2)",
+              "usage": "DISPLAY"
+            }
+          },
+          {
+            "name": "frag_b",
+            "type": "string",
+            "cobol": {
+              "level": 10,
+              "name": "FRAG-B",
+              "offset": 12,
+              "size": 2,
+              "pic": "X(2)",
+              "usage": "DISPLAY"
+            }
+          }
+        ]
+      },
+      "cobol": {
+        "level": 5,
+        "name": "FRAG-GROUP",
+        "offset": 10,
+        "size": 4
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "RECORD",
+    "recordLength": 14,
+    "minRecordLength": 14
+  }
+}

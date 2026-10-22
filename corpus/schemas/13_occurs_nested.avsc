@@ -1,0 +1,104 @@
+{
+  "type": "record",
+  "name": "MatrixRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "region",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "Region",
+          "fields": [
+            {
+              "name": "region_code",
+              "type": "string",
+              "cobol": {
+                "level": 10,
+                "name": "REGION-CODE",
+                "offset": 0,
+                "size": 2,
+                "pic": "XX",
+                "usage": "DISPLAY"
+              }
+            },
+            {
+              "name": "quarter",
+              "type": {
+                "type": "array",
+                "items": {
+                  "type": "record",
+                  "name": "Region_Quarter",
+                  "fields": [
+                    {
+                      "name": "sales",
+                      "type": "int",
+                      "cobol": {
+                        "level": 15,
+                        "name": "SALES",
+                        "offset": 2,
+                        "size": 4,
+                        "pic": "S9(7)",
+                        "usage": "COMP-3"
+                      }
+                    },
+                    {
+                      "name": "units",
+                      "type": "int",
+                      "cobol": {
+                        "level": 15,
+                        "name": "UNITS",
+                        "offset": 6,
+                        "size": 5,
+                        "pic": "9(5)",
+                        "usage": "DISPLAY"
+                      }
+                    }
+                  ]
+                }
+              },
+              "cobol": {
+                "level": 10,
+                "name": "QUARTER",
+                "offset": 2,
+                "size": 9,
+                "occurs": [
+                  4,
+                  4
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "cobol": {
+        "level": 5,
+        "name": "REGION",
+        "offset": 0,
+        "size": 38,
+        "occurs": [
+          3,
+          3
+        ]
+      }
+    },
+    {
+      "name": "trailer",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "TRAILER",
+        "offset": 114,
+        "size": 4,
+        "pic": "X(4)",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "MATRIX-REC",
+    "recordLength": 118,
+    "minRecordLength": 118
+  }
+}

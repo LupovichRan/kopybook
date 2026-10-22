@@ -1,0 +1,122 @@
+{
+  "type": "record",
+  "name": "ClaimRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "claim_id",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "CLAIM-ID",
+        "offset": 0,
+        "size": 12,
+        "pic": "X(12)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "line_count",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "LINE-COUNT",
+        "offset": 12,
+        "size": 2,
+        "pic": "99",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "claim_line",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "ClaimLine",
+          "fields": [
+            {
+              "name": "proc_code",
+              "type": "string",
+              "cobol": {
+                "level": 10,
+                "name": "PROC-CODE",
+                "offset": 14,
+                "size": 5,
+                "pic": "X(5)",
+                "usage": "DISPLAY"
+              }
+            },
+            {
+              "name": "billed",
+              "type": {
+                "type": "bytes",
+                "logicalType": "decimal",
+                "precision": 9,
+                "scale": 2
+              },
+              "cobol": {
+                "level": 10,
+                "name": "BILLED",
+                "offset": 19,
+                "size": 5,
+                "pic": "S9(7)V99",
+                "usage": "COMP-3"
+              }
+            },
+            {
+              "name": "paid",
+              "type": {
+                "type": "bytes",
+                "logicalType": "decimal",
+                "precision": 9,
+                "scale": 2
+              },
+              "cobol": {
+                "level": 10,
+                "name": "PAID",
+                "offset": 24,
+                "size": 5,
+                "pic": "S9(7)V99",
+                "usage": "COMP-3"
+              }
+            },
+            {
+              "name": "denied_flag",
+              "type": "string",
+              "cobol": {
+                "level": 10,
+                "name": "DENIED-FLAG",
+                "offset": 29,
+                "size": 1,
+                "pic": "X",
+                "usage": "DISPLAY",
+                "conditions88": {
+                  "DENIED": [
+                    "Y"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      },
+      "cobol": {
+        "level": 5,
+        "name": "CLAIM-LINE",
+        "offset": 14,
+        "size": 16,
+        "occurs": [
+          1,
+          15
+        ],
+        "dependingOn": "LINE-COUNT"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "CLAIM-REC",
+    "recordLength": 254,
+    "minRecordLength": 30
+  }
+}

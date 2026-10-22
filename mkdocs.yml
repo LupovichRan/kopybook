@@ -1,0 +1,28 @@
+site_name: Kopybook — COBOL copybooks to Kafka
+site_description: Copybook-driven EBCDIC decoding, Avro/JSON Schema generation and a Kafka Connect plugin.
+repo_url: https://github.com/LupovichRan/kopybook
+repo_name: LupovichRan/kopybook
+edit_uri: ""
+theme:
+  name: material
+  features: [navigation.sections, content.code.copy]
+  palette:
+    - scheme: default
+      primary: indigo
+markdown_extensions:
+  - admonition
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+nav:
+  - Home: index.md
+  - Quickstart: quickstart.md
+  - CLI: cli.md
+  - Kafka Connect: connect.md
+  - Supported COBOL: SPEC.md
+  - Golden corpus: corpus.md
+  - Kopybook Pro: pro.md

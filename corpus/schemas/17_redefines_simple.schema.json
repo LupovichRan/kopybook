@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RedefRec",
+  "type": "object",
+  "properties": {
+    "raw_key": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 8,
+      "x-cobol": {
+        "level": 5,
+        "name": "RAW-KEY",
+        "offset": 0,
+        "size": 8,
+        "pic": "X(8)",
+        "usage": "DISPLAY"
+      }
+    },
+    "num_key": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 99999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "NUM-KEY",
+        "offset": 0,
+        "size": 8,
+        "pic": "9(8)",
+        "usage": "DISPLAY",
+        "redefines": "RAW-KEY"
+      }
+    },
+    "amount_text": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 4,
+      "x-cobol": {
+        "level": 5,
+        "name": "AMOUNT-TEXT",
+        "offset": 8,
+        "size": 4,
+        "pic": "X(4)",
+        "usage": "DISPLAY"
+      }
+    },
+    "amount_bin": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": -999999999,
+      "maximum": 999999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "AMOUNT-BIN",
+        "offset": 8,
+        "size": 4,
+        "pic": "S9(9)",
+        "usage": "BINARY",
+        "redefines": "AMOUNT-TEXT"
+      }
+    }
+  },
+  "required": [],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "REDEF-REC",
+    "recordLength": 12,
+    "minRecordLength": 12
+  }
+}

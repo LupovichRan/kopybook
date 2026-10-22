@@ -1,0 +1,188 @@
+{
+  "type": "record",
+  "name": "MultiRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "rec_type",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "REC-TYPE",
+        "offset": 0,
+        "size": 1,
+        "pic": "X",
+        "usage": "DISPLAY",
+        "conditions88": {
+          "IS-PAYMENT": [
+            "P"
+          ],
+          "IS-REFUND": [
+            "R"
+          ],
+          "IS-NOTE": [
+            "N"
+          ]
+        }
+      }
+    },
+    {
+      "name": "payment_data",
+      "type": [
+        "null",
+        {
+          "type": "record",
+          "name": "PaymentData",
+          "fields": [
+            {
+              "name": "pay_amount",
+              "type": {
+                "type": "bytes",
+                "logicalType": "decimal",
+                "precision": 11,
+                "scale": 2
+              },
+              "cobol": {
+                "level": 10,
+                "name": "PAY-AMOUNT",
+                "offset": 1,
+                "size": 6,
+                "pic": "S9(9)V99",
+                "usage": "COMP-3"
+              }
+            },
+            {
+              "name": "pay_method",
+              "type": "string",
+              "cobol": {
+                "level": 10,
+                "name": "PAY-METHOD",
+                "offset": 7,
+                "size": 2,
+                "pic": "XX",
+                "usage": "DISPLAY"
+              }
+            },
+            {
+              "name": "pay_ref",
+              "type": "string",
+              "cobol": {
+                "level": 10,
+                "name": "PAY-REF",
+                "offset": 9,
+                "size": 10,
+                "pic": "X(10)",
+                "usage": "DISPLAY"
+              }
+            }
+          ]
+        }
+      ],
+      "default": null,
+      "cobol": {
+        "level": 5,
+        "name": "PAYMENT-DATA",
+        "offset": 1,
+        "size": 18
+      }
+    },
+    {
+      "name": "refund_data",
+      "type": [
+        "null",
+        {
+          "type": "record",
+          "name": "RefundData",
+          "fields": [
+            {
+              "name": "ref_amount",
+              "type": {
+                "type": "bytes",
+                "logicalType": "decimal",
+                "precision": 11,
+                "scale": 2
+              },
+              "cobol": {
+                "level": 10,
+                "name": "REF-AMOUNT",
+                "offset": 1,
+                "size": 6,
+                "pic": "S9(9)V99",
+                "usage": "COMP-3"
+              }
+            },
+            {
+              "name": "ref_reason",
+              "type": "int",
+              "cobol": {
+                "level": 10,
+                "name": "REF-REASON",
+                "offset": 7,
+                "size": 3,
+                "pic": "9(3)",
+                "usage": "DISPLAY"
+              }
+            }
+          ]
+        }
+      ],
+      "default": null,
+      "cobol": {
+        "level": 5,
+        "name": "REFUND-DATA",
+        "offset": 1,
+        "size": 9,
+        "redefines": "PAYMENT-DATA"
+      }
+    },
+    {
+      "name": "note_data",
+      "type": [
+        "null",
+        {
+          "type": "record",
+          "name": "NoteData",
+          "fields": [
+            {
+              "name": "note_text",
+              "type": "string",
+              "cobol": {
+                "level": 10,
+                "name": "NOTE-TEXT",
+                "offset": 1,
+                "size": 18,
+                "pic": "X(18)",
+                "usage": "DISPLAY"
+              }
+            }
+          ]
+        }
+      ],
+      "default": null,
+      "cobol": {
+        "level": 5,
+        "name": "NOTE-DATA",
+        "offset": 1,
+        "size": 18,
+        "redefines": "PAYMENT-DATA"
+      }
+    },
+    {
+      "name": "seq_no",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "SEQ-NO",
+        "offset": 19,
+        "size": 6,
+        "pic": "9(6)",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "MULTI-REC",
+    "recordLength": 25,
+    "minRecordLength": 25
+  }
+}

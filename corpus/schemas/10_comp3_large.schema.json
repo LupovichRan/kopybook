@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PackedBigRec",
+  "type": "object",
+  "properties": {
+    "p18": {
+      "type": "integer",
+      "minimum": -999999999999999999,
+      "maximum": 999999999999999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "P18",
+        "offset": 0,
+        "size": 10,
+        "pic": "S9(18)",
+        "usage": "COMP-3"
+      }
+    },
+    "p19": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,19}$",
+      "x-decimal": {
+        "precision": 19,
+        "scale": 0
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "P19",
+        "offset": 10,
+        "size": 10,
+        "pic": "S9(19)",
+        "usage": "COMP-3"
+      }
+    },
+    "p31": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,31}$",
+      "x-decimal": {
+        "precision": 31,
+        "scale": 0
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "P31",
+        "offset": 20,
+        "size": 16,
+        "pic": "S9(31)",
+        "usage": "COMP-3"
+      }
+    },
+    "p31_scaled": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,25}\\.[0-9]{6}$",
+      "x-decimal": {
+        "precision": 31,
+        "scale": 6
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "P31-SCALED",
+        "offset": 36,
+        "size": 16,
+        "pic": "S9(25)V9(6)",
+        "usage": "COMP-3"
+      }
+    },
+    "z31": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,29}\\.[0-9]{2}$",
+      "x-decimal": {
+        "precision": 31,
+        "scale": 2
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "Z31",
+        "offset": 52,
+        "size": 31,
+        "pic": "S9(29)V99",
+        "usage": "DISPLAY",
+        "sign": "TRAILING"
+      }
+    }
+  },
+  "required": [
+    "p18",
+    "p19",
+    "p31",
+    "p31_scaled",
+    "z31"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "PACKED-BIG-REC",
+    "recordLength": 83,
+    "minRecordLength": 83
+  }
+}

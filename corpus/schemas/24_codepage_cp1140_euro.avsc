@@ -1,0 +1,65 @@
+{
+  "type": "record",
+  "name": "EuroRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "currency_sign",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "CURRENCY-SIGN",
+        "offset": 0,
+        "size": 1,
+        "pic": "X",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "price_text",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "PRICE-TEXT",
+        "offset": 1,
+        "size": 12,
+        "pic": "X(12)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "price",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 9,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "PRICE",
+        "offset": 13,
+        "size": 5,
+        "pic": "S9(7)V99",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "DESCRIPTION",
+        "offset": 18,
+        "size": 30,
+        "pic": "X(30)",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "EURO-REC",
+    "recordLength": 48,
+    "minRecordLength": 48
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "type": "record",
+  "name": "FileHeader",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "fh_type",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "FH-TYPE",
+        "offset": 0,
+        "size": 1,
+        "pic": "X",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "fh_file_date",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "FH-FILE-DATE",
+        "offset": 1,
+        "size": 8,
+        "pic": "9(8)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "fh_system",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "FH-SYSTEM",
+        "offset": 9,
+        "size": 8,
+        "pic": "X(8)",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "FILE-HEADER",
+    "recordLength": 40,
+    "minRecordLength": 40
+  }
+}

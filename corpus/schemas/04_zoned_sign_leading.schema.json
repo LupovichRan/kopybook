@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SignLeadRec",
+  "type": "object",
+  "properties": {
+    "amount_l": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,7}\\.[0-9]{2}$",
+      "x-decimal": {
+        "precision": 9,
+        "scale": 2
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "AMOUNT-L",
+        "offset": 0,
+        "size": 9,
+        "pic": "S9(7)V99",
+        "usage": "DISPLAY",
+        "sign": "LEADING"
+      }
+    },
+    "count_l": {
+      "type": "integer",
+      "minimum": -9999,
+      "maximum": 9999,
+      "x-cobol": {
+        "level": 5,
+        "name": "COUNT-L",
+        "offset": 9,
+        "size": 4,
+        "pic": "S9(4)",
+        "usage": "DISPLAY",
+        "sign": "LEADING"
+      }
+    },
+    "amount_t": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,7}\\.[0-9]{2}$",
+      "x-decimal": {
+        "precision": 9,
+        "scale": 2
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "AMOUNT-T",
+        "offset": 13,
+        "size": 9,
+        "pic": "S9(7)V99",
+        "usage": "DISPLAY",
+        "sign": "TRAILING"
+      }
+    }
+  },
+  "required": [
+    "amount_l",
+    "count_l",
+    "amount_t"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "SIGN-LEAD-REC",
+    "recordLength": 22,
+    "minRecordLength": 22
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StatusRec",
+  "type": "object",
+  "properties": {
+    "acct_status": {
+      "type": "string",
+      "maxLength": 1,
+      "x-cobol": {
+        "level": 5,
+        "name": "ACCT-STATUS",
+        "offset": 0,
+        "size": 1,
+        "pic": "X",
+        "usage": "DISPLAY",
+        "conditions88": {
+          "ST-ACTIVE": [
+            "A"
+          ],
+          "ST-CLOSED": [
+            "C",
+            "X"
+          ],
+          "ST-ANY-OPEN": [
+            [
+              "THRU",
+              "A",
+              "B"
+            ]
+          ]
+        }
+      }
+    },
+    "risk_score": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 999,
+      "x-cobol": {
+        "level": 5,
+        "name": "RISK-SCORE",
+        "offset": 1,
+        "size": 3,
+        "pic": "9(3)",
+        "usage": "DISPLAY",
+        "conditions88": {
+          "LOW-RISK": [
+            [
+              "THRU",
+              0,
+              299
+            ]
+          ],
+          "MED-RISK": [
+            [
+              "THRU",
+              300,
+              699
+            ]
+          ],
+          "HIGH-RISK": [
+            [
+              "THRU",
+              700,
+              999
+            ]
+          ]
+        }
+      }
+    },
+    "vip_flag": {
+      "type": "string",
+      "maxLength": 1,
+      "x-cobol": {
+        "level": 5,
+        "name": "VIP-FLAG",
+        "offset": 4,
+        "size": 1,
+        "pic": "X",
+        "usage": "DISPLAY",
+        "conditions88": {
+          "IS-VIP": [
+            "Y"
+          ],
+          "NOT-VIP": [
+            "N",
+            " "
+          ]
+        }
+      }
+    }
+  },
+  "required": [
+    "acct_status",
+    "risk_score",
+    "vip_flag"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "STATUS-REC",
+    "recordLength": 5,
+    "minRecordLength": 5
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "type": "record",
+  "name": "VarlocRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "hdr_id",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "HDR-ID",
+        "offset": 0,
+        "size": 4,
+        "pic": "X(4)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "n_notes",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "N-NOTES",
+        "offset": 4,
+        "size": 1,
+        "pic": "9",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "note_text",
+      "type": {
+        "type": "array",
+        "items": "string"
+      },
+      "cobol": {
+        "level": 5,
+        "name": "NOTE-TEXT",
+        "offset": 5,
+        "size": 10,
+        "pic": "X(10)",
+        "usage": "DISPLAY",
+        "occurs": [
+          0,
+          5
+        ],
+        "dependingOn": "N-NOTES"
+      }
+    },
+    {
+      "name": "after_amount",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 7,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "AFTER-AMOUNT",
+        "offset": 55,
+        "size": 4,
+        "pic": "S9(5)V99",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "after_code",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "AFTER-CODE",
+        "offset": 59,
+        "size": 3,
+        "pic": "X(3)",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "VARLOC-REC",
+    "recordLength": 62,
+    "minRecordLength": 12
+  }
+}

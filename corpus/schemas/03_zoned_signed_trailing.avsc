@@ -1,0 +1,92 @@
+{
+  "type": "record",
+  "name": "ZonedSRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "delta",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "DELTA",
+        "offset": 0,
+        "size": 1,
+        "pic": "S9",
+        "usage": "DISPLAY",
+        "sign": "TRAILING"
+      }
+    },
+    {
+      "name": "adjust",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "ADJUST",
+        "offset": 1,
+        "size": 5,
+        "pic": "S9(5)",
+        "usage": "DISPLAY",
+        "sign": "TRAILING"
+      }
+    },
+    {
+      "name": "balance",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 11,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "BALANCE",
+        "offset": 6,
+        "size": 11,
+        "pic": "S9(9)V99",
+        "usage": "DISPLAY",
+        "sign": "TRAILING"
+      }
+    },
+    {
+      "name": "ledger",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 18,
+        "scale": 3
+      },
+      "cobol": {
+        "level": 5,
+        "name": "LEDGER",
+        "offset": 17,
+        "size": 18,
+        "pic": "S9(15)V9(3)",
+        "usage": "DISPLAY",
+        "sign": "TRAILING"
+      }
+    },
+    {
+      "name": "tiny",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 2,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "TINY",
+        "offset": 35,
+        "size": 2,
+        "pic": "SV99",
+        "usage": "DISPLAY",
+        "sign": "TRAILING"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "ZONED-S-REC",
+    "recordLength": 37,
+    "minRecordLength": 37
+  }
+}

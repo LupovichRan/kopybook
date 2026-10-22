@@ -1,0 +1,104 @@
+{
+  "type": "record",
+  "name": "OrderRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "order_id",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "ORDER-ID",
+        "offset": 0,
+        "size": 10,
+        "pic": "X(10)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "line_item",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "LineItem",
+          "fields": [
+            {
+              "name": "sku",
+              "type": "string",
+              "cobol": {
+                "level": 10,
+                "name": "SKU",
+                "offset": 10,
+                "size": 8,
+                "pic": "X(8)",
+                "usage": "DISPLAY"
+              }
+            },
+            {
+              "name": "qty",
+              "type": "int",
+              "cobol": {
+                "level": 10,
+                "name": "QTY",
+                "offset": 18,
+                "size": 2,
+                "pic": "S9(4)",
+                "usage": "BINARY"
+              }
+            },
+            {
+              "name": "unit_price",
+              "type": {
+                "type": "bytes",
+                "logicalType": "decimal",
+                "precision": 7,
+                "scale": 2
+              },
+              "cobol": {
+                "level": 10,
+                "name": "UNIT-PRICE",
+                "offset": 20,
+                "size": 4,
+                "pic": "S9(5)V99",
+                "usage": "COMP-3"
+              }
+            }
+          ]
+        }
+      },
+      "cobol": {
+        "level": 5,
+        "name": "LINE-ITEM",
+        "offset": 10,
+        "size": 14,
+        "occurs": [
+          4,
+          4
+        ]
+      }
+    },
+    {
+      "name": "order_total",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 11,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "ORDER-TOTAL",
+        "offset": 66,
+        "size": 6,
+        "pic": "S9(9)V99",
+        "usage": "COMP-3"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "ORDER-REC",
+    "recordLength": 72,
+    "minRecordLength": 72
+  }
+}

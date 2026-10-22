@@ -1,0 +1,129 @@
+{
+  "type": "record",
+  "name": "InheritRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "totals",
+      "type": {
+        "type": "record",
+        "name": "Totals",
+        "fields": [
+          {
+            "name": "t_gross",
+            "type": {
+              "type": "bytes",
+              "logicalType": "decimal",
+              "precision": 11,
+              "scale": 2
+            },
+            "cobol": {
+              "level": 10,
+              "name": "T-GROSS",
+              "offset": 0,
+              "size": 6,
+              "pic": "S9(9)V99",
+              "usage": "COMP-3"
+            }
+          },
+          {
+            "name": "t_tax",
+            "type": {
+              "type": "bytes",
+              "logicalType": "decimal",
+              "precision": 9,
+              "scale": 2
+            },
+            "cobol": {
+              "level": 10,
+              "name": "T-TAX",
+              "offset": 6,
+              "size": 5,
+              "pic": "S9(7)V99",
+              "usage": "COMP-3"
+            }
+          },
+          {
+            "name": "t_net",
+            "type": {
+              "type": "bytes",
+              "logicalType": "decimal",
+              "precision": 11,
+              "scale": 2
+            },
+            "cobol": {
+              "level": 10,
+              "name": "T-NET",
+              "offset": 11,
+              "size": 6,
+              "pic": "S9(9)V99",
+              "usage": "COMP-3"
+            }
+          }
+        ]
+      },
+      "cobol": {
+        "level": 5,
+        "name": "TOTALS",
+        "offset": 0,
+        "size": 17
+      }
+    },
+    {
+      "name": "counters",
+      "type": {
+        "type": "record",
+        "name": "Counters",
+        "fields": [
+          {
+            "name": "c_items",
+            "type": "int",
+            "cobol": {
+              "level": 10,
+              "name": "C-ITEMS",
+              "offset": 17,
+              "size": 2,
+              "pic": "S9(4)",
+              "usage": "BINARY"
+            }
+          },
+          {
+            "name": "c_lines",
+            "type": "int",
+            "cobol": {
+              "level": 10,
+              "name": "C-LINES",
+              "offset": 19,
+              "size": 4,
+              "pic": "S9(9)",
+              "usage": "BINARY"
+            }
+          }
+        ]
+      },
+      "cobol": {
+        "level": 5,
+        "name": "COUNTERS",
+        "offset": 17,
+        "size": 6
+      }
+    },
+    {
+      "name": "label",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "LABEL",
+        "offset": 23,
+        "size": 6,
+        "pic": "X(6)",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "INHERIT-REC",
+    "recordLength": 29,
+    "minRecordLength": 29
+  }
+}

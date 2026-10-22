@@ -1,0 +1,111 @@
+{
+  "type": "record",
+  "name": "ZonedURec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "qty",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "QTY",
+        "offset": 0,
+        "size": 1,
+        "pic": "9",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "qty_4",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "QTY-4",
+        "offset": 1,
+        "size": 4,
+        "pic": "9(4)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "account_no",
+      "type": "long",
+      "cobol": {
+        "level": 5,
+        "name": "ACCOUNT-NO",
+        "offset": 5,
+        "size": 12,
+        "pic": "9(12)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "big_counter",
+      "type": "long",
+      "cobol": {
+        "level": 5,
+        "name": "BIG-COUNTER",
+        "offset": 17,
+        "size": 18,
+        "pic": "9(18)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "rate",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 7,
+        "scale": 4
+      },
+      "cobol": {
+        "level": 5,
+        "name": "RATE",
+        "offset": 35,
+        "size": 7,
+        "pic": "9(3)V9(4)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "amount",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 9,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "AMOUNT",
+        "offset": 42,
+        "size": 9,
+        "pic": "9(7)V99",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "fraction",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 3,
+        "scale": 3
+      },
+      "cobol": {
+        "level": 5,
+        "name": "FRACTION",
+        "offset": 51,
+        "size": 3,
+        "pic": "V999",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "ZONED-U-REC",
+    "recordLength": 54,
+    "minRecordLength": 54
+  }
+}

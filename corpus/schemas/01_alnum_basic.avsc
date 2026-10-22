@@ -1,0 +1,84 @@
+{
+  "type": "record",
+  "name": "AlnumRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "code_1",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "CODE-1",
+        "offset": 0,
+        "size": 1,
+        "pic": "X",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "code_2",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "CODE-2",
+        "offset": 1,
+        "size": 2,
+        "pic": "XX",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "NAME",
+        "offset": 3,
+        "size": 20,
+        "pic": "X(20)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "initials",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "INITIALS",
+        "offset": 23,
+        "size": 3,
+        "pic": "AAA",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "city",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "CITY",
+        "offset": 26,
+        "size": 15,
+        "pic": "A(15)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "note",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "NOTE",
+        "offset": 41,
+        "size": 10,
+        "pic": "X(5)X(5)",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "ALNUM-REC",
+    "recordLength": 51,
+    "minRecordLength": 51
+  }
+}

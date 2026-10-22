@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CompRec",
+  "type": "object",
+  "properties": {
+    "half_s": {
+      "type": "integer",
+      "minimum": -9999,
+      "maximum": 9999,
+      "x-cobol": {
+        "level": 5,
+        "name": "HALF-S",
+        "offset": 0,
+        "size": 2,
+        "pic": "S9(4)",
+        "usage": "BINARY"
+      }
+    },
+    "half_u": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9999,
+      "x-cobol": {
+        "level": 5,
+        "name": "HALF-U",
+        "offset": 2,
+        "size": 2,
+        "pic": "9(4)",
+        "usage": "BINARY"
+      }
+    },
+    "full_s": {
+      "type": "integer",
+      "minimum": -999999999,
+      "maximum": 999999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "FULL-S",
+        "offset": 4,
+        "size": 4,
+        "pic": "S9(9)",
+        "usage": "BINARY"
+      }
+    },
+    "full_u": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 999999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "FULL-U",
+        "offset": 8,
+        "size": 4,
+        "pic": "9(9)",
+        "usage": "BINARY"
+      }
+    },
+    "dbl_s": {
+      "type": "integer",
+      "minimum": -999999999999999999,
+      "maximum": 999999999999999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "DBL-S",
+        "offset": 12,
+        "size": 8,
+        "pic": "S9(18)",
+        "usage": "BINARY"
+      }
+    },
+    "dbl_u": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 999999999999999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "DBL-U",
+        "offset": 20,
+        "size": 8,
+        "pic": "9(18)",
+        "usage": "BINARY"
+      }
+    },
+    "small": {
+      "type": "integer",
+      "minimum": -99,
+      "maximum": 99,
+      "x-cobol": {
+        "level": 5,
+        "name": "SMALL",
+        "offset": 28,
+        "size": 2,
+        "pic": "S9(2)",
+        "usage": "BINARY"
+      }
+    },
+    "price": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,7}\\.[0-9]{2}$",
+      "x-decimal": {
+        "precision": 9,
+        "scale": 2
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "PRICE",
+        "offset": 30,
+        "size": 4,
+        "pic": "S9(7)V99",
+        "usage": "BINARY"
+      }
+    }
+  },
+  "required": [
+    "half_s",
+    "half_u",
+    "full_s",
+    "full_u",
+    "dbl_s",
+    "dbl_u",
+    "small",
+    "price"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "COMP-REC",
+    "recordLength": 34,
+    "minRecordLength": 34
+  }
+}

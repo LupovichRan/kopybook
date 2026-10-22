@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Record",
+  "type": "object",
+  "properties": {
+    "frag_id": {
+      "type": "string",
+      "maxLength": 6,
+      "x-cobol": {
+        "level": 5,
+        "name": "FRAG-ID",
+        "offset": 0,
+        "size": 6,
+        "pic": "X(6)",
+        "usage": "DISPLAY"
+      }
+    },
+    "frag_value": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,5}\\.[0-9]{2}$",
+      "x-decimal": {
+        "precision": 7,
+        "scale": 2
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "FRAG-VALUE",
+        "offset": 6,
+        "size": 4,
+        "pic": "S9(5)V99",
+        "usage": "COMP-3"
+      }
+    },
+    "frag_group": {
+      "type": "object",
+      "properties": {
+        "frag_a": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 99,
+          "x-cobol": {
+            "level": 10,
+            "name": "FRAG-A",
+            "offset": 10,
+            "size": 2,
+            "pic": "9(2)",
+            "usage": "DISPLAY"
+          }
+        },
+        "frag_b": {
+          "type": "string",
+          "maxLength": 2,
+          "x-cobol": {
+            "level": 10,
+            "name": "FRAG-B",
+            "offset": 12,
+            "size": 2,
+            "pic": "X(2)",
+            "usage": "DISPLAY"
+          }
+        }
+      },
+      "required": [
+        "frag_a",
+        "frag_b"
+      ],
+      "additionalProperties": false,
+      "x-cobol": {
+        "level": 5,
+        "name": "FRAG-GROUP",
+        "offset": 10,
+        "size": 4
+      }
+    }
+  },
+  "required": [
+    "frag_id",
+    "frag_value",
+    "frag_group"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "RECORD",
+    "recordLength": 14,
+    "minRecordLength": 14
+  }
+}

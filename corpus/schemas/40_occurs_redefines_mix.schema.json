@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MixRec",
+  "type": "object",
+  "properties": {
+    "mx_kind": {
+      "type": "string",
+      "maxLength": 1,
+      "x-cobol": {
+        "level": 5,
+        "name": "MX-KIND",
+        "offset": 0,
+        "size": 1,
+        "pic": "X",
+        "usage": "DISPLAY"
+      }
+    },
+    "mx_area": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 24,
+      "x-cobol": {
+        "level": 5,
+        "name": "MX-AREA",
+        "offset": 1,
+        "size": 24,
+        "pic": "X(24)",
+        "usage": "DISPLAY"
+      }
+    },
+    "mx_table": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "mx_cell": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": -99999,
+            "maximum": 99999
+          },
+          "minItems": 8,
+          "maxItems": 8,
+          "x-cobol": {
+            "level": 10,
+            "name": "MX-CELL",
+            "offset": 1,
+            "size": 3,
+            "pic": "S9(5)",
+            "usage": "COMP-3",
+            "occurs": [
+              8,
+              8
+            ]
+          }
+        }
+      },
+      "required": [
+        "mx_cell"
+      ],
+      "additionalProperties": false,
+      "x-cobol": {
+        "level": 5,
+        "name": "MX-TABLE",
+        "offset": 1,
+        "size": 24,
+        "redefines": "MX-AREA"
+      }
+    },
+    "mx_pairs": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "properties": {
+        "mx_pair": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "mx_k": {
+                "type": "string",
+                "maxLength": 2,
+                "x-cobol": {
+                  "level": 15,
+                  "name": "MX-K",
+                  "offset": 1,
+                  "size": 2,
+                  "pic": "XX",
+                  "usage": "DISPLAY"
+                }
+              },
+              "mx_v": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9999,
+                "x-cobol": {
+                  "level": 15,
+                  "name": "MX-V",
+                  "offset": 3,
+                  "size": 4,
+                  "pic": "9(4)",
+                  "usage": "DISPLAY"
+                }
+              }
+            },
+            "required": [
+              "mx_k",
+              "mx_v"
+            ],
+            "additionalProperties": false
+          },
+          "minItems": 4,
+          "maxItems": 4,
+          "x-cobol": {
+            "level": 10,
+            "name": "MX-PAIR",
+            "offset": 1,
+            "size": 6,
+            "occurs": [
+              4,
+              4
+            ]
+          }
+        }
+      },
+      "required": [
+        "mx_pair"
+      ],
+      "additionalProperties": false,
+      "x-cobol": {
+        "level": 5,
+        "name": "MX-PAIRS",
+        "offset": 1,
+        "size": 24,
+        "redefines": "MX-AREA"
+      }
+    }
+  },
+  "required": [
+    "mx_kind"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "MIX-REC",
+    "recordLength": 25,
+    "minRecordLength": 25
+  }
+}

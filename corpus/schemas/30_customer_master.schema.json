@@ -1,0 +1,319 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CustomerMaster",
+  "type": "object",
+  "properties": {
+    "cm_key": {
+      "type": "object",
+      "properties": {
+        "cm_branch": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9999,
+          "x-cobol": {
+            "level": 10,
+            "name": "CM-BRANCH",
+            "offset": 0,
+            "size": 4,
+            "pic": "9(4)",
+            "usage": "DISPLAY"
+          }
+        },
+        "cm_cust_no": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9999999999,
+          "x-cobol": {
+            "level": 10,
+            "name": "CM-CUST-NO",
+            "offset": 4,
+            "size": 10,
+            "pic": "9(10)",
+            "usage": "DISPLAY"
+          }
+        }
+      },
+      "required": [
+        "cm_branch",
+        "cm_cust_no"
+      ],
+      "additionalProperties": false,
+      "x-cobol": {
+        "level": 5,
+        "name": "CM-KEY",
+        "offset": 0,
+        "size": 14
+      }
+    },
+    "cm_name": {
+      "type": "object",
+      "properties": {
+        "cm_last": {
+          "type": "string",
+          "maxLength": 25,
+          "x-cobol": {
+            "level": 10,
+            "name": "CM-LAST",
+            "offset": 14,
+            "size": 25,
+            "pic": "X(25)",
+            "usage": "DISPLAY"
+          }
+        },
+        "cm_first": {
+          "type": "string",
+          "maxLength": 15,
+          "x-cobol": {
+            "level": 10,
+            "name": "CM-FIRST",
+            "offset": 39,
+            "size": 15,
+            "pic": "X(15)",
+            "usage": "DISPLAY"
+          }
+        },
+        "cm_middle": {
+          "type": "string",
+          "maxLength": 1,
+          "x-cobol": {
+            "level": 10,
+            "name": "CM-MIDDLE",
+            "offset": 54,
+            "size": 1,
+            "pic": "X",
+            "usage": "DISPLAY"
+          }
+        }
+      },
+      "required": [
+        "cm_last",
+        "cm_first",
+        "cm_middle"
+      ],
+      "additionalProperties": false,
+      "x-cobol": {
+        "level": 5,
+        "name": "CM-NAME",
+        "offset": 14,
+        "size": 41
+      }
+    },
+    "cm_dob": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 99999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "CM-DOB",
+        "offset": 55,
+        "size": 8,
+        "pic": "9(8)",
+        "usage": "DISPLAY"
+      }
+    },
+    "cm_segment": {
+      "type": "string",
+      "maxLength": 2,
+      "x-cobol": {
+        "level": 5,
+        "name": "CM-SEGMENT",
+        "offset": 63,
+        "size": 2,
+        "pic": "X(2)",
+        "usage": "DISPLAY",
+        "conditions88": {
+          "CM-RETAIL": [
+            "RT"
+          ],
+          "CM-PRIVATE": [
+            "PB"
+          ]
+        }
+      }
+    },
+    "cm_address": {
+      "type": "object",
+      "properties": {
+        "cm_street": {
+          "type": "string",
+          "maxLength": 30,
+          "x-cobol": {
+            "level": 10,
+            "name": "CM-STREET",
+            "offset": 65,
+            "size": 30,
+            "pic": "X(30)",
+            "usage": "DISPLAY"
+          }
+        },
+        "cm_city": {
+          "type": "string",
+          "maxLength": 20,
+          "x-cobol": {
+            "level": 10,
+            "name": "CM-CITY",
+            "offset": 95,
+            "size": 20,
+            "pic": "X(20)",
+            "usage": "DISPLAY"
+          }
+        },
+        "cm_zip": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9999999,
+          "x-cobol": {
+            "level": 10,
+            "name": "CM-ZIP",
+            "offset": 115,
+            "size": 7,
+            "pic": "9(7)",
+            "usage": "DISPLAY"
+          }
+        }
+      },
+      "required": [
+        "cm_street",
+        "cm_city",
+        "cm_zip"
+      ],
+      "additionalProperties": false,
+      "x-cobol": {
+        "level": 5,
+        "name": "CM-ADDRESS",
+        "offset": 65,
+        "size": 57
+      }
+    },
+    "cm_balances": {
+      "type": "object",
+      "properties": {
+        "cm_current": {
+          "type": "string",
+          "pattern": "^-?[0-9]{1,11}\\.[0-9]{2}$",
+          "x-decimal": {
+            "precision": 13,
+            "scale": 2
+          },
+          "x-cobol": {
+            "level": 10,
+            "name": "CM-CURRENT",
+            "offset": 122,
+            "size": 7,
+            "pic": "S9(11)V99",
+            "usage": "COMP-3"
+          }
+        },
+        "cm_available": {
+          "type": "string",
+          "pattern": "^-?[0-9]{1,11}\\.[0-9]{2}$",
+          "x-decimal": {
+            "precision": 13,
+            "scale": 2
+          },
+          "x-cobol": {
+            "level": 10,
+            "name": "CM-AVAILABLE",
+            "offset": 129,
+            "size": 7,
+            "pic": "S9(11)V99",
+            "usage": "COMP-3"
+          }
+        },
+        "cm_overdraft": {
+          "type": "string",
+          "pattern": "^-?[0-9]{1,7}\\.[0-9]{2}$",
+          "x-decimal": {
+            "precision": 9,
+            "scale": 2
+          },
+          "x-cobol": {
+            "level": 10,
+            "name": "CM-OVERDRAFT",
+            "offset": 136,
+            "size": 5,
+            "pic": "S9(7)V99",
+            "usage": "COMP-3"
+          }
+        }
+      },
+      "required": [
+        "cm_current",
+        "cm_available",
+        "cm_overdraft"
+      ],
+      "additionalProperties": false,
+      "x-cobol": {
+        "level": 5,
+        "name": "CM-BALANCES",
+        "offset": 122,
+        "size": 19
+      }
+    },
+    "cm_opened": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 99999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "CM-OPENED",
+        "offset": 141,
+        "size": 8,
+        "pic": "9(8)",
+        "usage": "DISPLAY"
+      }
+    },
+    "cm_branch_hist": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0,
+        "maximum": 9999
+      },
+      "minItems": 3,
+      "maxItems": 3,
+      "x-cobol": {
+        "level": 5,
+        "name": "CM-BRANCH-HIST",
+        "offset": 149,
+        "size": 4,
+        "pic": "9(4)",
+        "usage": "DISPLAY",
+        "occurs": [
+          3,
+          3
+        ]
+      }
+    },
+    "cm_credit_score": {
+      "type": "integer",
+      "minimum": -9999,
+      "maximum": 9999,
+      "x-cobol": {
+        "level": 5,
+        "name": "CM-CREDIT-SCORE",
+        "offset": 161,
+        "size": 2,
+        "pic": "S9(4)",
+        "usage": "BINARY"
+      }
+    }
+  },
+  "required": [
+    "cm_key",
+    "cm_name",
+    "cm_dob",
+    "cm_segment",
+    "cm_address",
+    "cm_balances",
+    "cm_opened",
+    "cm_branch_hist",
+    "cm_credit_score"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "CUSTOMER-MASTER",
+    "recordLength": 173,
+    "minRecordLength": 173
+  }
+}

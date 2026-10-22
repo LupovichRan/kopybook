@@ -1,0 +1,77 @@
+{
+  "type": "record",
+  "name": "FixedRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "f_id",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "F-ID",
+        "offset": 0,
+        "size": 6,
+        "pic": "9(6)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "f_name",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "F-NAME",
+        "offset": 6,
+        "size": 25,
+        "pic": "X(25)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "f_amount",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 9,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "F-AMOUNT",
+        "offset": 31,
+        "size": 5,
+        "pic": "S9(7)V99",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "f_desc",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "F-DESC",
+        "offset": 36,
+        "size": 40,
+        "pic": "X(40)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "f_code",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "F-CODE",
+        "offset": 76,
+        "size": 2,
+        "pic": "XX",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "FIXED-REC",
+    "recordLength": 78,
+    "minRecordLength": 78
+  }
+}

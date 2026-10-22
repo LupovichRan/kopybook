@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "EuroRec",
+  "type": "object",
+  "properties": {
+    "currency_sign": {
+      "type": "string",
+      "maxLength": 1,
+      "x-cobol": {
+        "level": 5,
+        "name": "CURRENCY-SIGN",
+        "offset": 0,
+        "size": 1,
+        "pic": "X",
+        "usage": "DISPLAY"
+      }
+    },
+    "price_text": {
+      "type": "string",
+      "maxLength": 12,
+      "x-cobol": {
+        "level": 5,
+        "name": "PRICE-TEXT",
+        "offset": 1,
+        "size": 12,
+        "pic": "X(12)",
+        "usage": "DISPLAY"
+      }
+    },
+    "price": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,7}\\.[0-9]{2}$",
+      "x-decimal": {
+        "precision": 9,
+        "scale": 2
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "PRICE",
+        "offset": 13,
+        "size": 5,
+        "pic": "S9(7)V99",
+        "usage": "COMP-3"
+      }
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 30,
+      "x-cobol": {
+        "level": 5,
+        "name": "DESCRIPTION",
+        "offset": 18,
+        "size": 30,
+        "pic": "X(30)",
+        "usage": "DISPLAY"
+      }
+    }
+  },
+  "required": [
+    "currency_sign",
+    "price_text",
+    "price",
+    "description"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "EURO-REC",
+    "recordLength": 48,
+    "minRecordLength": 48
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "type": "record",
+  "name": "StatusRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "acct_status",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "ACCT-STATUS",
+        "offset": 0,
+        "size": 1,
+        "pic": "X",
+        "usage": "DISPLAY",
+        "conditions88": {
+          "ST-ACTIVE": [
+            "A"
+          ],
+          "ST-CLOSED": [
+            "C",
+            "X"
+          ],
+          "ST-ANY-OPEN": [
+            [
+              "THRU",
+              "A",
+              "B"
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "name": "risk_score",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "RISK-SCORE",
+        "offset": 1,
+        "size": 3,
+        "pic": "9(3)",
+        "usage": "DISPLAY",
+        "conditions88": {
+          "LOW-RISK": [
+            [
+              "THRU",
+              0,
+              299
+            ]
+          ],
+          "MED-RISK": [
+            [
+              "THRU",
+              300,
+              699
+            ]
+          ],
+          "HIGH-RISK": [
+            [
+              "THRU",
+              700,
+              999
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "name": "vip_flag",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "VIP-FLAG",
+        "offset": 4,
+        "size": 1,
+        "pic": "X",
+        "usage": "DISPLAY",
+        "conditions88": {
+          "IS-VIP": [
+            "Y"
+          ],
+          "NOT-VIP": [
+            "N",
+            " "
+          ]
+        }
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "STATUS-REC",
+    "recordLength": 5,
+    "minRecordLength": 5
+  }
+}

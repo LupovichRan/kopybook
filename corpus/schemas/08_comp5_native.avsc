@@ -1,0 +1,106 @@
+{
+  "type": "record",
+  "name": "Comp5Rec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "n_half_u",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "N-HALF-U",
+        "offset": 0,
+        "size": 2,
+        "pic": "9(4)",
+        "usage": "COMP-5"
+      }
+    },
+    {
+      "name": "n_half_s",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "N-HALF-S",
+        "offset": 2,
+        "size": 2,
+        "pic": "S9(4)",
+        "usage": "COMP-5"
+      }
+    },
+    {
+      "name": "n_full_u",
+      "type": "long",
+      "cobol": {
+        "level": 5,
+        "name": "N-FULL-U",
+        "offset": 4,
+        "size": 4,
+        "pic": "9(9)",
+        "usage": "COMP-5"
+      }
+    },
+    {
+      "name": "n_full_s",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "N-FULL-S",
+        "offset": 8,
+        "size": 4,
+        "pic": "S9(9)",
+        "usage": "COMP-5"
+      }
+    },
+    {
+      "name": "n_dbl_s",
+      "type": "long",
+      "cobol": {
+        "level": 5,
+        "name": "N-DBL-S",
+        "offset": 12,
+        "size": 8,
+        "pic": "S9(18)",
+        "usage": "COMP-5"
+      }
+    },
+    {
+      "name": "n_dbl_u",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 20,
+        "scale": 0
+      },
+      "cobol": {
+        "level": 5,
+        "name": "N-DBL-U",
+        "offset": 20,
+        "size": 8,
+        "pic": "9(18)",
+        "usage": "COMP-5"
+      }
+    },
+    {
+      "name": "n_scaled",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 10,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "N-SCALED",
+        "offset": 28,
+        "size": 4,
+        "pic": "S9(5)V99",
+        "usage": "COMP-5"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "COMP5-REC",
+    "recordLength": 32,
+    "minRecordLength": 32
+  }
+}

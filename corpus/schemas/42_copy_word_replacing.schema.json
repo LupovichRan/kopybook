@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "LedgerRec",
+  "type": "object",
+  "properties": {
+    "lg_key": {
+      "type": "string",
+      "maxLength": 10,
+      "x-cobol": {
+        "level": 5,
+        "name": "LG-KEY",
+        "offset": 0,
+        "size": 10,
+        "pic": "X(10)",
+        "usage": "DISPLAY"
+      }
+    },
+    "lg_debit": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,7}\\.[0-9]{2}$",
+      "x-decimal": {
+        "precision": 9,
+        "scale": 2
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "LG-DEBIT",
+        "offset": 10,
+        "size": 5,
+        "pic": "S9(7)V99",
+        "usage": "COMP-3"
+      }
+    },
+    "lg_credit": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,7}\\.[0-9]{2}$",
+      "x-decimal": {
+        "precision": 9,
+        "scale": 2
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "LG-CREDIT",
+        "offset": 15,
+        "size": 5,
+        "pic": "S9(7)V99",
+        "usage": "COMP-3"
+      }
+    },
+    "amt_ccy": {
+      "type": "string",
+      "maxLength": 3,
+      "x-cobol": {
+        "level": 5,
+        "name": "AMT-CCY",
+        "offset": 20,
+        "size": 3,
+        "pic": "X(3)",
+        "usage": "DISPLAY"
+      }
+    }
+  },
+  "required": [
+    "lg_key",
+    "lg_debit",
+    "lg_credit",
+    "amt_ccy"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "LEDGER-REC",
+    "recordLength": 23,
+    "minRecordLength": 23
+  }
+}

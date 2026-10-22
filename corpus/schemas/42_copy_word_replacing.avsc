@@ -1,0 +1,70 @@
+{
+  "type": "record",
+  "name": "LedgerRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "lg_key",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "LG-KEY",
+        "offset": 0,
+        "size": 10,
+        "pic": "X(10)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "lg_debit",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 9,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "LG-DEBIT",
+        "offset": 10,
+        "size": 5,
+        "pic": "S9(7)V99",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "lg_credit",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 9,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "LG-CREDIT",
+        "offset": 15,
+        "size": 5,
+        "pic": "S9(7)V99",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "amt_ccy",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "AMT-CCY",
+        "offset": 20,
+        "size": 3,
+        "pic": "X(3)",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "LEDGER-REC",
+    "recordLength": 23,
+    "minRecordLength": 23
+  }
+}

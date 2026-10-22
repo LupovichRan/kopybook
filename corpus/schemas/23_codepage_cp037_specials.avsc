@@ -1,0 +1,48 @@
+{
+  "type": "record",
+  "name": "Text37Rec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "brackets",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "BRACKETS",
+        "offset": 0,
+        "size": 10,
+        "pic": "X(10)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "accented",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "ACCENTED",
+        "offset": 10,
+        "size": 20,
+        "pic": "X(20)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "symbols",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "SYMBOLS",
+        "offset": 30,
+        "size": 12,
+        "pic": "X(12)",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "TEXT37-REC",
+    "recordLength": 42,
+    "minRecordLength": 42
+  }
+}

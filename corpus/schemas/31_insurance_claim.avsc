@@ -1,0 +1,236 @@
+{
+  "type": "record",
+  "name": "InsClaim",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "ic_header",
+      "type": {
+        "type": "record",
+        "name": "IcHeader",
+        "fields": [
+          {
+            "name": "ic_claim_no",
+            "type": "string",
+            "cobol": {
+              "level": 10,
+              "name": "IC-CLAIM-NO",
+              "offset": 0,
+              "size": 14,
+              "pic": "X(14)",
+              "usage": "DISPLAY"
+            }
+          },
+          {
+            "name": "ic_policy_no",
+            "type": "string",
+            "cobol": {
+              "level": 10,
+              "name": "IC-POLICY-NO",
+              "offset": 14,
+              "size": 12,
+              "pic": "X(12)",
+              "usage": "DISPLAY"
+            }
+          },
+          {
+            "name": "ic_loss_date",
+            "type": [
+              "null",
+              "int"
+            ],
+            "default": null,
+            "cobol": {
+              "level": 10,
+              "name": "IC-LOSS-DATE",
+              "offset": 26,
+              "size": 8,
+              "pic": "9(8)",
+              "usage": "DISPLAY"
+            }
+          },
+          {
+            "name": "ic_loss_parts",
+            "type": [
+              "null",
+              {
+                "type": "record",
+                "name": "IcHeader_IcLossParts",
+                "fields": [
+                  {
+                    "name": "ic_loss_yy",
+                    "type": "int",
+                    "cobol": {
+                      "level": 15,
+                      "name": "IC-LOSS-YY",
+                      "offset": 26,
+                      "size": 4,
+                      "pic": "9(4)",
+                      "usage": "DISPLAY"
+                    }
+                  },
+                  {
+                    "name": "ic_loss_mm",
+                    "type": "int",
+                    "cobol": {
+                      "level": 15,
+                      "name": "IC-LOSS-MM",
+                      "offset": 30,
+                      "size": 2,
+                      "pic": "99",
+                      "usage": "DISPLAY"
+                    }
+                  },
+                  {
+                    "name": "ic_loss_dd",
+                    "type": "int",
+                    "cobol": {
+                      "level": 15,
+                      "name": "IC-LOSS-DD",
+                      "offset": 32,
+                      "size": 2,
+                      "pic": "99",
+                      "usage": "DISPLAY"
+                    }
+                  }
+                ]
+              }
+            ],
+            "default": null,
+            "cobol": {
+              "level": 10,
+              "name": "IC-LOSS-PARTS",
+              "offset": 26,
+              "size": 8,
+              "redefines": "IC-LOSS-DATE"
+            }
+          },
+          {
+            "name": "ic_status",
+            "type": "string",
+            "cobol": {
+              "level": 10,
+              "name": "IC-STATUS",
+              "offset": 34,
+              "size": 1,
+              "pic": "X",
+              "usage": "DISPLAY",
+              "conditions88": {
+                "IC-OPEN": [
+                  "O"
+                ],
+                "IC-CLOSED": [
+                  "C"
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "cobol": {
+        "level": 5,
+        "name": "IC-HEADER",
+        "offset": 0,
+        "size": 35
+      }
+    },
+    {
+      "name": "ic_reserve",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 11,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "IC-RESERVE",
+        "offset": 35,
+        "size": 6,
+        "pic": "S9(9)V99",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "ic_line_cnt",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "IC-LINE-CNT",
+        "offset": 41,
+        "size": 2,
+        "pic": "S9(4)",
+        "usage": "BINARY"
+      }
+    },
+    {
+      "name": "ic_lines",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "IcLines",
+          "fields": [
+            {
+              "name": "ic_ln_type",
+              "type": "string",
+              "cobol": {
+                "level": 10,
+                "name": "IC-LN-TYPE",
+                "offset": 43,
+                "size": 2,
+                "pic": "XX",
+                "usage": "DISPLAY"
+              }
+            },
+            {
+              "name": "ic_ln_amount",
+              "type": {
+                "type": "bytes",
+                "logicalType": "decimal",
+                "precision": 9,
+                "scale": 2
+              },
+              "cobol": {
+                "level": 10,
+                "name": "IC-LN-AMOUNT",
+                "offset": 45,
+                "size": 5,
+                "pic": "S9(7)V99",
+                "usage": "COMP-3"
+              }
+            },
+            {
+              "name": "ic_ln_desc",
+              "type": "string",
+              "cobol": {
+                "level": 10,
+                "name": "IC-LN-DESC",
+                "offset": 50,
+                "size": 20,
+                "pic": "X(20)",
+                "usage": "DISPLAY"
+              }
+            }
+          ]
+        }
+      },
+      "cobol": {
+        "level": 5,
+        "name": "IC-LINES",
+        "offset": 43,
+        "size": 27,
+        "occurs": [
+          0,
+          10
+        ],
+        "dependingOn": "IC-LINE-CNT"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "INS-CLAIM",
+    "recordLength": 313,
+    "minRecordLength": 43
+  }
+}

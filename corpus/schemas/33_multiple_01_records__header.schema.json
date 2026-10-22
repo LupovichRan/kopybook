@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FileHeader",
+  "type": "object",
+  "properties": {
+    "fh_type": {
+      "type": "string",
+      "maxLength": 1,
+      "x-cobol": {
+        "level": 5,
+        "name": "FH-TYPE",
+        "offset": 0,
+        "size": 1,
+        "pic": "X",
+        "usage": "DISPLAY"
+      }
+    },
+    "fh_file_date": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 99999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "FH-FILE-DATE",
+        "offset": 1,
+        "size": 8,
+        "pic": "9(8)",
+        "usage": "DISPLAY"
+      }
+    },
+    "fh_system": {
+      "type": "string",
+      "maxLength": 8,
+      "x-cobol": {
+        "level": 5,
+        "name": "FH-SYSTEM",
+        "offset": 9,
+        "size": 8,
+        "pic": "X(8)",
+        "usage": "DISPLAY"
+      }
+    }
+  },
+  "required": [
+    "fh_type",
+    "fh_file_date",
+    "fh_system"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "FILE-HEADER",
+    "recordLength": 40,
+    "minRecordLength": 40
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "FixedRec",
+  "type": "object",
+  "properties": {
+    "f_id": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 999999,
+      "x-cobol": {
+        "level": 5,
+        "name": "F-ID",
+        "offset": 0,
+        "size": 6,
+        "pic": "9(6)",
+        "usage": "DISPLAY"
+      }
+    },
+    "f_name": {
+      "type": "string",
+      "maxLength": 25,
+      "x-cobol": {
+        "level": 5,
+        "name": "F-NAME",
+        "offset": 6,
+        "size": 25,
+        "pic": "X(25)",
+        "usage": "DISPLAY"
+      }
+    },
+    "f_amount": {
+      "type": "string",
+      "pattern": "^-?[0-9]{1,7}\\.[0-9]{2}$",
+      "x-decimal": {
+        "precision": 9,
+        "scale": 2
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "F-AMOUNT",
+        "offset": 31,
+        "size": 5,
+        "pic": "S9(7)V99",
+        "usage": "COMP-3"
+      }
+    },
+    "f_desc": {
+      "type": "string",
+      "maxLength": 40,
+      "x-cobol": {
+        "level": 5,
+        "name": "F-DESC",
+        "offset": 36,
+        "size": 40,
+        "pic": "X(40)",
+        "usage": "DISPLAY"
+      }
+    },
+    "f_code": {
+      "type": "string",
+      "maxLength": 2,
+      "x-cobol": {
+        "level": 5,
+        "name": "F-CODE",
+        "offset": 76,
+        "size": 2,
+        "pic": "XX",
+        "usage": "DISPLAY"
+      }
+    }
+  },
+  "required": [
+    "f_id",
+    "f_name",
+    "f_amount",
+    "f_desc",
+    "f_code"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "FIXED-REC",
+    "recordLength": 78,
+    "minRecordLength": 78
+  }
+}

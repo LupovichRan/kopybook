@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Text37Rec",
+  "type": "object",
+  "properties": {
+    "brackets": {
+      "type": "string",
+      "maxLength": 10,
+      "x-cobol": {
+        "level": 5,
+        "name": "BRACKETS",
+        "offset": 0,
+        "size": 10,
+        "pic": "X(10)",
+        "usage": "DISPLAY"
+      }
+    },
+    "accented": {
+      "type": "string",
+      "maxLength": 20,
+      "x-cobol": {
+        "level": 5,
+        "name": "ACCENTED",
+        "offset": 10,
+        "size": 20,
+        "pic": "X(20)",
+        "usage": "DISPLAY"
+      }
+    },
+    "symbols": {
+      "type": "string",
+      "maxLength": 12,
+      "x-cobol": {
+        "level": 5,
+        "name": "SYMBOLS",
+        "offset": 30,
+        "size": 12,
+        "pic": "X(12)",
+        "usage": "DISPLAY"
+      }
+    }
+  },
+  "required": [
+    "brackets",
+    "accented",
+    "symbols"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "TEXT37-REC",
+    "recordLength": 42,
+    "minRecordLength": 42
+  }
+}

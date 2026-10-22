@@ -1,0 +1,25 @@
+{"rec_type": "P", "payment_data": {"pay_amount": "999999999.99", "pay_method": "AB", "pay_ref": "ABCDEFGHIJ"}, "refund_data": null, "note_data": {"note_text": "rrrrræABABCDEFGHIJ"}, "seq_no": 999999}
+{"rec_type": "R", "payment_data": {"pay_amount": "-999999999.99", "pay_method": "00", "pay_ref": "0"}, "refund_data": {"ref_amount": "-999999999.99", "ref_reason": 0}, "note_data": {"note_text": "rrrrr¸000"}, "seq_no": 0}
+{"rec_type": "N", "payment_data": null, "refund_data": null, "note_data": {"note_text": "A"}, "seq_no": 0}
+{"rec_type": "P", "payment_data": {"pay_amount": "65263644.27", "pay_method": ".z", "pay_ref": "nK"}, "refund_data": null, "note_data": {"note_text": "êÄÀâ@.znK"}, "seq_no": 87}
+{"rec_type": "R", "payment_data": {"pay_amount": "-0.42", "pay_method": "00", "pay_ref": "3"}, "refund_data": {"ref_amount": "-0.42", "ref_reason": 3}, "note_data": {"note_text": "\u0000\u0000\u0000\u0000\u0005003"}, "seq_no": 360}
+{"rec_type": "N", "payment_data": null, "refund_data": null, "note_data": {"note_text": "a5?IN"}, "seq_no": 4}
+{"rec_type": "P", "payment_data": {"pay_amount": "9.06", "pay_method": "d", "pay_ref": "r"}, "refund_data": null, "note_data": {"note_text": "\u0000\u0000\u0000\u0000°%d r"}, "seq_no": 7}
+{"rec_type": "R", "payment_data": {"pay_amount": "-561319234.51", "pay_method": "02", "pay_ref": "5"}, "refund_data": {"ref_amount": "-561319234.51", "ref_reason": 25}, "note_data": {"note_text": "î\u0013\u0019á\u001d025"}, "seq_no": 10}
+{"rec_type": "N", "payment_data": null, "refund_data": null, "note_data": {"note_text": "*2m1BM"}, "seq_no": 721}
+{"rec_type": "P", "payment_data": {"pay_amount": "-3.47", "pay_method": "1Q", "pay_ref": "iz-*Jg=U"}, "refund_data": null, "note_data": {"note_text": "\u0000\u0000\u0000\u0000'1Qiz-*Jg=U"}, "seq_no": 741656}
+{"rec_type": "R", "payment_data": {"pay_amount": "-254112094.56", "pay_method": "60", "pay_ref": "8"}, "refund_data": {"ref_amount": "-254112094.56", "ref_reason": 608}, "note_data": {"note_text": "\n \u0012á_608"}, "seq_no": 10}
+{"rec_type": "N", "payment_data": null, "refund_data": null, "note_data": {"note_text": "LSS.NH?Eb+cZY"}, "seq_no": 92}
+{"rec_type": "P", "payment_data": {"pay_amount": "-0.07", "pay_method": "uH", "pay_ref": "tWq8dEBN"}, "refund_data": null, "note_data": {"note_text": "\u0000\u0000\u0000\u0000\u0000'uHtWq8dEBN"}, "seq_no": 729}
+{"rec_type": "R", "payment_data": {"pay_amount": "-9.68", "pay_method": "08", "pay_ref": "6"}, "refund_data": {"ref_amount": "-9.68", "ref_reason": 86}, "note_data": {"note_text": "\u0000\u0000\u0000\u0000oý086"}, "seq_no": 71}
+{"rec_type": "N", "payment_data": null, "refund_data": null, "note_data": {"note_text": "1 JG-IHQq"}, "seq_no": 689}
+{"rec_type": "P", "payment_data": {"pay_amount": "0.90", "pay_method": "i", "pay_ref": "GY"}, "refund_data": null, "note_data": {"note_text": "\u0000\u0000\u0000\u0000\fi GY"}, "seq_no": 313703}
+{"rec_type": "R", "payment_data": {"pay_amount": "0.09", "pay_method": "00", "pay_ref": "6"}, "refund_data": {"ref_amount": "0.09", "ref_reason": 6}, "note_data": {"note_text": "\u0000\u0000\u0000\u0000\u0000æ006"}, "seq_no": 66}
+{"rec_type": "N", "payment_data": null, "refund_data": null, "note_data": {"note_text": "ZQ"}, "seq_no": 843}
+{"rec_type": "P", "payment_data": {"pay_amount": "0.86", "pay_method": "", "pay_ref": "*C)p"}, "refund_data": null, "note_data": {"note_text": "\u0000\u0000\u0000\u0000%  *C)p"}, "seq_no": 989}
+{"rec_type": "R", "payment_data": {"pay_amount": "-628011533.42", "pay_method": "03", "pay_ref": "1"}, "refund_data": {"ref_amount": "-628011533.42", "ref_reason": 31}, "note_data": {"note_text": "ÂØ\u0011ë\u0005031"}, "seq_no": 77}
+{"rec_type": "N", "payment_data": null, "refund_data": null, "note_data": {"note_text": "O,5,ZWv8E0LWuD7s"}, "seq_no": 38}
+{"rec_type": "P", "payment_data": {"pay_amount": "-9.27", "pay_method": "=", "pay_ref": "32KF(P,"}, "refund_data": null, "note_data": {"note_text": "\u0000\u0000\u0000\u0000k'= 32KF(P,"}, "seq_no": 625005}
+{"rec_type": "R", "payment_data": {"pay_amount": "0.02", "pay_method": "00", "pay_ref": "1"}, "refund_data": {"ref_amount": "0.02", "ref_reason": 1}, "note_data": {"note_text": "\u0000\u0000\u0000\u0000\u0000001"}, "seq_no": 958859}
+{"rec_type": "N", "payment_data": null, "refund_data": null, "note_data": {"note_text": "rbgS9SB+ib3y)puC"}, "seq_no": 15}
+{"rec_type": "P", "payment_data": {"pay_amount": "-376448827.81", "pay_method": ",7", "pay_ref": "icr:+Uet"}, "refund_data": null, "note_data": {"note_text": "\u0004ÀçbÌ\u001d,7icr:+Uet"}, "seq_no": 435}

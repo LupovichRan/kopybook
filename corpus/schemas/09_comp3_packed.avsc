@@ -1,0 +1,116 @@
+{
+  "type": "record",
+  "name": "PackedRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "p_odd_s",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 9,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "P-ODD-S",
+        "offset": 0,
+        "size": 5,
+        "pic": "S9(7)V99",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "p_even_s",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "P-EVEN-S",
+        "offset": 5,
+        "size": 4,
+        "pic": "S9(6)",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "p_unsigned",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "P-UNSIGNED",
+        "offset": 9,
+        "size": 3,
+        "pic": "9(5)",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "p_one",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "P-ONE",
+        "offset": 12,
+        "size": 1,
+        "pic": "S9",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "p_packed_dec",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 13,
+        "scale": 2
+      },
+      "cobol": {
+        "level": 5,
+        "name": "P-PACKED-DEC",
+        "offset": 13,
+        "size": 7,
+        "pic": "S9(11)V99",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "p_computational_3",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 4,
+        "scale": 1
+      },
+      "cobol": {
+        "level": 5,
+        "name": "P-COMPUTATIONAL-3",
+        "offset": 20,
+        "size": 3,
+        "pic": "9(3)V9",
+        "usage": "COMP-3"
+      }
+    },
+    {
+      "name": "p_fraction",
+      "type": {
+        "type": "bytes",
+        "logicalType": "decimal",
+        "precision": 5,
+        "scale": 5
+      },
+      "cobol": {
+        "level": 5,
+        "name": "P-FRACTION",
+        "offset": 23,
+        "size": 3,
+        "pic": "SV9(5)",
+        "usage": "COMP-3"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "PACKED-REC",
+    "recordLength": 26,
+    "minRecordLength": 26
+  }
+}

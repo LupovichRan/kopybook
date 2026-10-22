@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ClaimRec",
+  "type": "object",
+  "properties": {
+    "claim_id": {
+      "type": "string",
+      "maxLength": 12,
+      "x-cobol": {
+        "level": 5,
+        "name": "CLAIM-ID",
+        "offset": 0,
+        "size": 12,
+        "pic": "X(12)",
+        "usage": "DISPLAY"
+      }
+    },
+    "line_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 99,
+      "x-cobol": {
+        "level": 5,
+        "name": "LINE-COUNT",
+        "offset": 12,
+        "size": 2,
+        "pic": "99",
+        "usage": "DISPLAY"
+      }
+    },
+    "claim_line": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "proc_code": {
+            "type": "string",
+            "maxLength": 5,
+            "x-cobol": {
+              "level": 10,
+              "name": "PROC-CODE",
+              "offset": 14,
+              "size": 5,
+              "pic": "X(5)",
+              "usage": "DISPLAY"
+            }
+          },
+          "billed": {
+            "type": "string",
+            "pattern": "^-?[0-9]{1,7}\\.[0-9]{2}$",
+            "x-decimal": {
+              "precision": 9,
+              "scale": 2
+            },
+            "x-cobol": {
+              "level": 10,
+              "name": "BILLED",
+              "offset": 19,
+              "size": 5,
+              "pic": "S9(7)V99",
+              "usage": "COMP-3"
+            }
+          },
+          "paid": {
+            "type": "string",
+            "pattern": "^-?[0-9]{1,7}\\.[0-9]{2}$",
+            "x-decimal": {
+              "precision": 9,
+              "scale": 2
+            },
+            "x-cobol": {
+              "level": 10,
+              "name": "PAID",
+              "offset": 24,
+              "size": 5,
+              "pic": "S9(7)V99",
+              "usage": "COMP-3"
+            }
+          },
+          "denied_flag": {
+            "type": "string",
+            "maxLength": 1,
+            "x-cobol": {
+              "level": 10,
+              "name": "DENIED-FLAG",
+              "offset": 29,
+              "size": 1,
+              "pic": "X",
+              "usage": "DISPLAY",
+              "conditions88": {
+                "DENIED": [
+                  "Y"
+                ]
+              }
+            }
+          }
+        },
+        "required": [
+          "proc_code",
+          "billed",
+          "paid",
+          "denied_flag"
+        ],
+        "additionalProperties": false
+      },
+      "minItems": 1,
+      "maxItems": 15,
+      "x-cobol": {
+        "level": 5,
+        "name": "CLAIM-LINE",
+        "offset": 14,
+        "size": 16,
+        "occurs": [
+          1,
+          15
+        ],
+        "dependingOn": "LINE-COUNT"
+      }
+    }
+  },
+  "required": [
+    "claim_id",
+    "line_count",
+    "claim_line"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "CLAIM-REC",
+    "recordLength": 254,
+    "minRecordLength": 30
+  }
+}

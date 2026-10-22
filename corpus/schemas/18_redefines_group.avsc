@@ -1,0 +1,96 @@
+{
+  "type": "record",
+  "name": "DateRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "event_date",
+      "type": [
+        "null",
+        "int"
+      ],
+      "default": null,
+      "cobol": {
+        "level": 5,
+        "name": "EVENT-DATE",
+        "offset": 0,
+        "size": 8,
+        "pic": "9(8)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "event_date_parts",
+      "type": [
+        "null",
+        {
+          "type": "record",
+          "name": "EventDateParts",
+          "fields": [
+            {
+              "name": "ev_yyyy",
+              "type": "int",
+              "cobol": {
+                "level": 10,
+                "name": "EV-YYYY",
+                "offset": 0,
+                "size": 4,
+                "pic": "9(4)",
+                "usage": "DISPLAY"
+              }
+            },
+            {
+              "name": "ev_mm",
+              "type": "int",
+              "cobol": {
+                "level": 10,
+                "name": "EV-MM",
+                "offset": 4,
+                "size": 2,
+                "pic": "99",
+                "usage": "DISPLAY"
+              }
+            },
+            {
+              "name": "ev_dd",
+              "type": "int",
+              "cobol": {
+                "level": 10,
+                "name": "EV-DD",
+                "offset": 6,
+                "size": 2,
+                "pic": "99",
+                "usage": "DISPLAY"
+              }
+            }
+          ]
+        }
+      ],
+      "default": null,
+      "cobol": {
+        "level": 5,
+        "name": "EVENT-DATE-PARTS",
+        "offset": 0,
+        "size": 8,
+        "redefines": "EVENT-DATE"
+      }
+    },
+    {
+      "name": "event_time",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "EVENT-TIME",
+        "offset": 8,
+        "size": 6,
+        "pic": "9(6)",
+        "usage": "DISPLAY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "DATE-REC",
+    "recordLength": 14,
+    "minRecordLength": 14
+  }
+}

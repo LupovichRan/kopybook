@@ -1,0 +1,172 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ShipmentRec",
+  "type": "object",
+  "properties": {
+    "bill_to": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 20,
+          "x-cobol": {
+            "level": 10,
+            "name": "NAME",
+            "offset": 0,
+            "size": 20,
+            "pic": "X(20)",
+            "usage": "DISPLAY"
+          }
+        },
+        "addr": {
+          "type": "object",
+          "properties": {
+            "street": {
+              "type": "string",
+              "maxLength": 25,
+              "x-cobol": {
+                "level": 15,
+                "name": "STREET",
+                "offset": 20,
+                "size": 25,
+                "pic": "X(25)",
+                "usage": "DISPLAY"
+              }
+            },
+            "zip": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 99999,
+              "x-cobol": {
+                "level": 15,
+                "name": "ZIP",
+                "offset": 45,
+                "size": 5,
+                "pic": "9(5)",
+                "usage": "DISPLAY"
+              }
+            }
+          },
+          "required": [
+            "street",
+            "zip"
+          ],
+          "additionalProperties": false,
+          "x-cobol": {
+            "level": 10,
+            "name": "ADDR",
+            "offset": 20,
+            "size": 30
+          }
+        }
+      },
+      "required": [
+        "name",
+        "addr"
+      ],
+      "additionalProperties": false,
+      "x-cobol": {
+        "level": 5,
+        "name": "BILL-TO",
+        "offset": 0,
+        "size": 50
+      }
+    },
+    "ship_to": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "maxLength": 20,
+          "x-cobol": {
+            "level": 10,
+            "name": "NAME",
+            "offset": 50,
+            "size": 20,
+            "pic": "X(20)",
+            "usage": "DISPLAY"
+          }
+        },
+        "addr": {
+          "type": "object",
+          "properties": {
+            "street": {
+              "type": "string",
+              "maxLength": 25,
+              "x-cobol": {
+                "level": 15,
+                "name": "STREET",
+                "offset": 70,
+                "size": 25,
+                "pic": "X(25)",
+                "usage": "DISPLAY"
+              }
+            },
+            "zip": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 99999,
+              "x-cobol": {
+                "level": 15,
+                "name": "ZIP",
+                "offset": 95,
+                "size": 5,
+                "pic": "9(5)",
+                "usage": "DISPLAY"
+              }
+            }
+          },
+          "required": [
+            "street",
+            "zip"
+          ],
+          "additionalProperties": false,
+          "x-cobol": {
+            "level": 10,
+            "name": "ADDR",
+            "offset": 70,
+            "size": 30
+          }
+        }
+      },
+      "required": [
+        "name",
+        "addr"
+      ],
+      "additionalProperties": false,
+      "x-cobol": {
+        "level": 5,
+        "name": "SHIP-TO",
+        "offset": 50,
+        "size": 50
+      }
+    },
+    "weight": {
+      "type": "string",
+      "pattern": "^[0-9]{1,5}\\.[0-9]{1}$",
+      "x-decimal": {
+        "precision": 6,
+        "scale": 1
+      },
+      "x-cobol": {
+        "level": 5,
+        "name": "WEIGHT",
+        "offset": 100,
+        "size": 4,
+        "pic": "9(5)V9",
+        "usage": "COMP-3"
+      }
+    }
+  },
+  "required": [
+    "bill_to",
+    "ship_to",
+    "weight"
+  ],
+  "additionalProperties": false,
+  "x-cobol-record": {
+    "name": "SHIPMENT-REC",
+    "recordLength": 104,
+    "minRecordLength": 104
+  }
+}

@@ -1,0 +1,294 @@
+{
+  "type": "record",
+  "name": "CustomerMaster",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "cm_key",
+      "type": {
+        "type": "record",
+        "name": "CmKey",
+        "fields": [
+          {
+            "name": "cm_branch",
+            "type": "int",
+            "cobol": {
+              "level": 10,
+              "name": "CM-BRANCH",
+              "offset": 0,
+              "size": 4,
+              "pic": "9(4)",
+              "usage": "DISPLAY"
+            }
+          },
+          {
+            "name": "cm_cust_no",
+            "type": "long",
+            "cobol": {
+              "level": 10,
+              "name": "CM-CUST-NO",
+              "offset": 4,
+              "size": 10,
+              "pic": "9(10)",
+              "usage": "DISPLAY"
+            }
+          }
+        ]
+      },
+      "cobol": {
+        "level": 5,
+        "name": "CM-KEY",
+        "offset": 0,
+        "size": 14
+      }
+    },
+    {
+      "name": "cm_name",
+      "type": {
+        "type": "record",
+        "name": "CmName",
+        "fields": [
+          {
+            "name": "cm_last",
+            "type": "string",
+            "cobol": {
+              "level": 10,
+              "name": "CM-LAST",
+              "offset": 14,
+              "size": 25,
+              "pic": "X(25)",
+              "usage": "DISPLAY"
+            }
+          },
+          {
+            "name": "cm_first",
+            "type": "string",
+            "cobol": {
+              "level": 10,
+              "name": "CM-FIRST",
+              "offset": 39,
+              "size": 15,
+              "pic": "X(15)",
+              "usage": "DISPLAY"
+            }
+          },
+          {
+            "name": "cm_middle",
+            "type": "string",
+            "cobol": {
+              "level": 10,
+              "name": "CM-MIDDLE",
+              "offset": 54,
+              "size": 1,
+              "pic": "X",
+              "usage": "DISPLAY"
+            }
+          }
+        ]
+      },
+      "cobol": {
+        "level": 5,
+        "name": "CM-NAME",
+        "offset": 14,
+        "size": 41
+      }
+    },
+    {
+      "name": "cm_dob",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "CM-DOB",
+        "offset": 55,
+        "size": 8,
+        "pic": "9(8)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "cm_segment",
+      "type": "string",
+      "cobol": {
+        "level": 5,
+        "name": "CM-SEGMENT",
+        "offset": 63,
+        "size": 2,
+        "pic": "X(2)",
+        "usage": "DISPLAY",
+        "conditions88": {
+          "CM-RETAIL": [
+            "RT"
+          ],
+          "CM-PRIVATE": [
+            "PB"
+          ]
+        }
+      }
+    },
+    {
+      "name": "cm_address",
+      "type": {
+        "type": "record",
+        "name": "CmAddress",
+        "fields": [
+          {
+            "name": "cm_street",
+            "type": "string",
+            "cobol": {
+              "level": 10,
+              "name": "CM-STREET",
+              "offset": 65,
+              "size": 30,
+              "pic": "X(30)",
+              "usage": "DISPLAY"
+            }
+          },
+          {
+            "name": "cm_city",
+            "type": "string",
+            "cobol": {
+              "level": 10,
+              "name": "CM-CITY",
+              "offset": 95,
+              "size": 20,
+              "pic": "X(20)",
+              "usage": "DISPLAY"
+            }
+          },
+          {
+            "name": "cm_zip",
+            "type": "int",
+            "cobol": {
+              "level": 10,
+              "name": "CM-ZIP",
+              "offset": 115,
+              "size": 7,
+              "pic": "9(7)",
+              "usage": "DISPLAY"
+            }
+          }
+        ]
+      },
+      "cobol": {
+        "level": 5,
+        "name": "CM-ADDRESS",
+        "offset": 65,
+        "size": 57
+      }
+    },
+    {
+      "name": "cm_balances",
+      "type": {
+        "type": "record",
+        "name": "CmBalances",
+        "fields": [
+          {
+            "name": "cm_current",
+            "type": {
+              "type": "bytes",
+              "logicalType": "decimal",
+              "precision": 13,
+              "scale": 2
+            },
+            "cobol": {
+              "level": 10,
+              "name": "CM-CURRENT",
+              "offset": 122,
+              "size": 7,
+              "pic": "S9(11)V99",
+              "usage": "COMP-3"
+            }
+          },
+          {
+            "name": "cm_available",
+            "type": {
+              "type": "bytes",
+              "logicalType": "decimal",
+              "precision": 13,
+              "scale": 2
+            },
+            "cobol": {
+              "level": 10,
+              "name": "CM-AVAILABLE",
+              "offset": 129,
+              "size": 7,
+              "pic": "S9(11)V99",
+              "usage": "COMP-3"
+            }
+          },
+          {
+            "name": "cm_overdraft",
+            "type": {
+              "type": "bytes",
+              "logicalType": "decimal",
+              "precision": 9,
+              "scale": 2
+            },
+            "cobol": {
+              "level": 10,
+              "name": "CM-OVERDRAFT",
+              "offset": 136,
+              "size": 5,
+              "pic": "S9(7)V99",
+              "usage": "COMP-3"
+            }
+          }
+        ]
+      },
+      "cobol": {
+        "level": 5,
+        "name": "CM-BALANCES",
+        "offset": 122,
+        "size": 19
+      }
+    },
+    {
+      "name": "cm_opened",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "CM-OPENED",
+        "offset": 141,
+        "size": 8,
+        "pic": "9(8)",
+        "usage": "DISPLAY"
+      }
+    },
+    {
+      "name": "cm_branch_hist",
+      "type": {
+        "type": "array",
+        "items": "int"
+      },
+      "cobol": {
+        "level": 5,
+        "name": "CM-BRANCH-HIST",
+        "offset": 149,
+        "size": 4,
+        "pic": "9(4)",
+        "usage": "DISPLAY",
+        "occurs": [
+          3,
+          3
+        ]
+      }
+    },
+    {
+      "name": "cm_credit_score",
+      "type": "int",
+      "cobol": {
+        "level": 5,
+        "name": "CM-CREDIT-SCORE",
+        "offset": 161,
+        "size": 2,
+        "pic": "S9(4)",
+        "usage": "BINARY"
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "CUSTOMER-MASTER",
+    "recordLength": 173,
+    "minRecordLength": 173
+  }
+}

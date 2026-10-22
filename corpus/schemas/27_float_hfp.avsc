@@ -1,0 +1,63 @@
+{
+  "type": "record",
+  "name": "FloatRec",
+  "namespace": "kopybook.corpus",
+  "fields": [
+    {
+      "name": "f_short",
+      "type": "double",
+      "cobol": {
+        "level": 5,
+        "name": "F-SHORT",
+        "offset": 0,
+        "size": 4,
+        "usage": "COMP-1"
+      }
+    },
+    {
+      "name": "f_long",
+      "type": "double",
+      "cobol": {
+        "level": 5,
+        "name": "F-LONG",
+        "offset": 4,
+        "size": 8,
+        "usage": "COMP-2"
+      }
+    },
+    {
+      "name": "f_usage",
+      "type": "double",
+      "cobol": {
+        "level": 5,
+        "name": "F-USAGE",
+        "offset": 12,
+        "size": 8,
+        "usage": "COMP-2"
+      }
+    },
+    {
+      "name": "f_arr",
+      "type": {
+        "type": "array",
+        "items": "double"
+      },
+      "cobol": {
+        "level": 5,
+        "name": "F-ARR",
+        "offset": 20,
+        "size": 4,
+        "usage": "COMP-1",
+        "occurs": [
+          3,
+          3
+        ]
+      }
+    }
+  ],
+  "cobol": {
+    "copybookRecord": "FLOAT-REC",
+    "recordLength": 32,
+    "minRecordLength": 32
+  }
+}
