@@ -14,7 +14,7 @@ Semantics follow IBM Enterprise COBOL for z/OS.
 | Free format, `*>` floating comments, lower case | yes |
 | Several 01 records in one copybook | yes, choose with `--record` / `copybook.record` (default: first) |
 | Fragment without an 01 (starts at 05) | yes, wrapped in a synthetic `RECORD` |
-| `COPY name [OF\|IN lib] [SUPPRESS] [REPLACING ...]` | yes: members searched on the copy path (`-I` / `copybook.include.path`, then the copybook's own directory), names tried as-is/lower/upper with `.cpy .cbl .cob .copy .txt` or no extension, `lib` as a subdirectory; nested COPY (depth 16, recursion rejected) |
+| `COPY name [OF\|IN lib] [SUPPRESS] [REPLACING ...]` | yes: members searched on the copy path (`-I` / `copybook.include.path`, then the copybook's own directory), names tried as-is/lower/upper with `.cpy .cbl .cob .copy .txt` (upper/lower), `lib` as a subdirectory; nested COPY (depth 16, recursion rejected). Member and library names must be plain names: `/`, `\`, `..` and absolute paths are rejected, and a member whose real path (after symlinks) leaves the copy directory is rejected |
 | `REPLACING` operands | `==pseudo-text==` (single line), words, literals; `LEADING` / `TRAILING` partial-word; IBM-style `:TAG:` partial-word replacement inside words; `BY ====` deletes |
 
 ## Data description clauses
@@ -24,7 +24,7 @@ Semantics follow IBM Enterprise COBOL for z/OS.
 | Level 88 condition names (VALUE, VALUES ARE, THRU/THROUGH, several values) | parsed, carried as schema metadata (`cobol.conditions88`) |
 | Level 66 RENAMES ... THRU | parsed and validated, carried as record metadata (`cobol.renames66`) |
 | FILLER and unnamed items | skipped by default, `filler_<offset>` with `--keep-filler` |
-| `PIC X`, `PIC A`, repeat counts `X(n)`, mixed `X(5)X(5)` | string |
+| `PIC X`, `PIC A`, repeat counts `X(n)`, mixed `X(5)X(5)` | string. Any field, group or record over `MAX_RECORD_LENGTH` = 1,000,000 bytes is rejected |
 | `PIC 9`, `S9`, `V` (implied decimal), up to 38 digits | number (see type mapping) |
 | Numeric-edited (`Z`, `*`, `$`, `,`, `.`, `+`, `-`, `CR`, `DB`, `B`, `0`, `/`) | carried as text |
 | `USAGE DISPLAY` zoned decimal, sign overpunch trailing (default) | yes |

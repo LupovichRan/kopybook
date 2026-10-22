@@ -21,14 +21,26 @@ public final class Pic {
     }
 
     static String expand(String raw) {
+        return expand(raw, 0);
+    }
+
+    static String expand(String raw, int line) {
         StringBuilder sb = new StringBuilder();
         String s = raw.toUpperCase();
+        long total = 0;
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             if (i + 1 < s.length() && s.charAt(i + 1) == '(') {
                 int close = s.indexOf(')', i + 2);
-                if (close < 0) throw new CopybookException("bad PIC " + raw, 0);
-                int n = Integer.parseInt(s.substring(i + 2, close));
+                if (close < 0) throw new CopybookException("bad PIC " + raw, line);
+                String digits = s.substring(i + 2, close);
+                if (digits.isEmpty() || !digits.chars().allMatch(Character::isDigit))
+                    throw new CopybookException("bad PIC " + raw, line);
+                total += digits.length() > 9 ? CopybookParser.MAX_RECORD_LENGTH + 1L : Long.parseLong(digits);
+                if (total > CopybookParser.MAX_RECORD_LENGTH)
+                    throw new CopybookException("PIC " + (raw.length() > 64 ? raw.substring(0, 64) : raw)
+                            + ": length exceeds the maximum of " + CopybookParser.MAX_RECORD_LENGTH + " bytes", line);
+                int n = Integer.parseInt(digits);
                 sb.append(String.valueOf(c).repeat(n));
                 i = close;
             } else {
@@ -44,7 +56,7 @@ public final class Pic {
     }
 
     static Pic parse(String raw, int line) {
-        String s = expand(raw);
+        String s = expand(raw, line);
         if (s.contains("N") || s.contains("G"))
             throw new CopybookException.Unsupported("PIC " + raw + ": national/DBCS (N/G) is not supported", line);
         if (s.contains("P"))

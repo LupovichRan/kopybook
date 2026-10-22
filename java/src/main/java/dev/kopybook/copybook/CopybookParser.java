@@ -41,8 +41,14 @@ public final class CopybookParser {
     private record Tok(String text, int line, boolean literal, List<Tok> pseudo) {
         Tok(String text, int line, boolean literal) { this(text, line, literal, null); }
     }
-    private static final String[] COPY_EXTS = {"", ".cpy", ".CPY", ".cbl", ".CBL", ".cob", ".COB", ".copy", ".txt"};
+    private static final String[] COPY_EXTS = {".cpy", ".CPY", ".cbl", ".CBL", ".cob", ".COB", ".copy", ".txt"};
     private static final int MAX_COPY_DEPTH = 16;
+    /**
+     * Upper bound (bytes) for any single field and for a whole record. Real z/OS records top out around
+     * 32 KB; the cap exists so a hostile or corrupt copybook such as {@code PIC X(999999999)} cannot
+     * exhaust memory in the parser or the connector. Must match {@code kopybook.parser.MAX_RECORD_LENGTH}.
+     */
+    public static final int MAX_RECORD_LENGTH = 1_000_000;
     private record Src(int line, String code) { }
 
     private CopybookParser() { }
@@ -202,16 +208,43 @@ public final class CopybookParser {
 
     private record Rep(String mode, List<Tok> pat, List<Tok> by) { }
 
-    private static Path findMember(String name, String lib, List<Path> paths, int line) {
-        List<String> cands = List.of(name, name.toLowerCase(Locale.ROOT), name.toUpperCase(Locale.ROOT));
+    /** COPY names are library member names, never paths: reject separators, '..', NUL and absolute paths. */
+    private static void checkMemberName(String name, String what, int line) {
+        if (name == null || name.isEmpty() || name.contains("/") || name.contains("\\") || name.contains("..")
+                || name.indexOf('\0') >= 0 || (name.length() > 1 && name.charAt(1) == ':')) {
+            String shown = name == null ? "" : name.length() > 64 ? name.substring(0, 64) : name;
+            throw new CopybookException("COPY " + what + " name '" + shown
+                    + "' is not a plain member name (path separators and '..' are not allowed)", line);
+        }
+    }
+
+    /**
+     * Returns the real path of a COPY member, guaranteed to lie inside one of the copy directories.
+     * Error messages never contain member file contents.
+     */
+    static Path findMember(String name, String lib, List<Path> paths, int line) {
+        checkMemberName(name, "member", line);
+        if (lib != null) checkMemberName(lib, "library", line);
+        List<String> cands = new ArrayList<>(new LinkedHashSet<>(
+                List.of(name, name.toLowerCase(Locale.ROOT), name.toUpperCase(Locale.ROOT))));
         for (Path d : paths) {
-            List<Path> dirs = new ArrayList<>(List.of(d));
-            if (lib != null) { dirs.add(d.resolve(lib)); dirs.add(d.resolve(lib.toLowerCase(Locale.ROOT))); }
+            Path root;
+            try { root = d.toRealPath(); } catch (IOException e) { continue; }
+            if (!Files.isDirectory(root)) continue;
+            List<Path> dirs = new ArrayList<>(List.of(root));
+            if (lib != null) { dirs.add(root.resolve(lib)); dirs.add(root.resolve(lib.toLowerCase(Locale.ROOT))); }
             for (Path dd : dirs)
                 for (String c : cands)
                     for (String e : COPY_EXTS) {
                         Path p = dd.resolve(c + e);
-                        if (Files.isRegularFile(p)) return p;
+                        if (!Files.isRegularFile(p)) continue;
+                        Path real;
+                        try { real = p.toRealPath(); }
+                        catch (IOException ex) { throw new CopybookException("cannot resolve COPY member " + name, line); }
+                        if (!real.startsWith(root))
+                            throw new CopybookException("COPY member " + name
+                                    + " resolves outside the copy library (symlink escape rejected)", line);
+                        return real;
                     }
         }
         throw new CopybookException("COPY member " + name + " not found in " + paths, line);
@@ -297,12 +330,12 @@ public final class CopybookParser {
                 throw new CopybookException("incomplete COPY statement", line);
             }
             if (paths.isEmpty()) throw new CopybookException("COPY " + name + ": no copy library path given", line);
-            Path p = findMember(name, lib, paths, line).toAbsolutePath().normalize();
+            Path p = findMember(name, lib, paths, line);
             if (stack.contains(p)) throw new CopybookException("recursive COPY of " + name, line);
             if (stack.size() >= MAX_COPY_DEPTH) throw new CopybookException("COPY nesting too deep", line);
             String text;
             try { text = Files.readString(p, StandardCharsets.UTF_8); }
-            catch (IOException e) { throw new CopybookException("cannot read COPY member " + p + ": " + e.getMessage(), line); }
+            catch (IOException e) { throw new CopybookException("cannot read COPY member " + name + " (" + e.getClass().getSimpleName() + ")", line); }
             List<Path> st = new ArrayList<>(stack);
             st.add(p);
             out.addAll(applyReplacing(expandCopy(tokenize(preprocess(text, Format.AUTO)), paths, st), reps));
@@ -534,7 +567,17 @@ public final class CopybookParser {
     }
 
     private static int width(Node c) {
-        return c.size * (c.occursMax == null ? 1 : c.occursMax);
+        return (int) longWidth(c);
+    }
+
+    private static long longWidth(Node c) {
+        return (long) c.size * (c.occursMax == null ? 1 : c.occursMax);
+    }
+
+    private static void checkCap(long size, String what, int line) {
+        if (size > MAX_RECORD_LENGTH)
+            throw new CopybookException(what + " is " + size + " bytes, exceeding the maximum record length of "
+                    + MAX_RECORD_LENGTH + " bytes", line);
     }
 
     private static void resolve(Node node) {
@@ -545,13 +588,14 @@ public final class CopybookParser {
             Map<String, Node> names = new HashMap<>();
             for (Node c : node.children) names.putIfAbsent(c.name, c);
             List<Node> kids = node.children;
-            int size = 0, min = 0, i = 0;
+            long size = 0, min = 0;
+            int i = 0;
             while (i < kids.size()) {
                 Node c = kids.get(i);
                 if (c.redefines != null)
                     throw new CopybookException(c.name + " REDEFINES " + c.redefines + ", which does not immediately precede it", c.line);
-                int areaMax = width(c);
-                int areaMin = c.minSize * (c.occursMax != null ? c.occursMin : 1);
+                long areaMax = longWidth(c);
+                long areaMin = (long) c.minSize * (c.occursMax != null ? c.occursMin : 1);
                 int j = i + 1;
                 while (j < kids.size() && kids.get(j).redefines != null) {
                     Node r = kids.get(j);
@@ -564,15 +608,17 @@ public final class CopybookParser {
                     if (r.dependingOn != null || c.dependingOn != null || r.isVariable() || c.isVariable())
                         throw new CopybookException.Unsupported("REDEFINES involving variable-length data (" + r.name + ")", r.line);
                     c.redefined = true;
-                    areaMax = Math.max(areaMax, width(r));
+                    areaMax = Math.max(areaMax, longWidth(r));
                     j++;
                 }
                 size += areaMax;
                 min += j > i + 1 ? areaMax : areaMin;
                 i = j;
             }
-            node.size = size;
-            node.minSize = min;
+            boolean rec = node.level == 0 || node.level == 1 || node.level == 77;
+            checkCap(size, (rec ? "record " : "group ") + node.name, node.line);
+            node.size = (int) size;
+            node.minSize = (int) min;
             return;
         }
         if (node.level == 0) throw new CopybookException("empty record", 0);
@@ -602,6 +648,7 @@ public final class CopybookParser {
                 }
             }
         }
+        checkCap(longWidth(node), node.name, node.line);
         node.minSize = node.size;
     }
 

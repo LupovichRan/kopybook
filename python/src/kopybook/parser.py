@@ -162,20 +162,48 @@ def tokenize(src: List[Tuple[int, str]]) -> List[Tok]:
 
 # ----------------------------------------------------------------------------- COPY / REPLACING
 
-COPY_EXTS = ("", ".cpy", ".CPY", ".cbl", ".CBL", ".cob", ".COB", ".copy", ".txt")
+COPY_EXTS = (".cpy", ".CPY", ".cbl", ".CBL", ".cob", ".COB", ".copy", ".txt")
 MAX_COPY_DEPTH = 16
 
 
+def _check_member_name(name: str, what: str, line: int) -> None:
+    """COPY names are library member names, never paths: reject separators, '..', NUL and absolute paths."""
+    if (not name or "/" in name or "\\" in name or ".." in name or "\0" in name
+            or os.path.isabs(name) or (len(name) > 1 and name[1] == ":")):
+        raise CopybookError(f"COPY {what} name {name[:64]!r} is not a plain member name "
+                            "(path separators and '..' are not allowed)", line)
+
+
+def _within(path: str, root: str) -> bool:
+    try:
+        return os.path.commonpath([path, root]) == root
+    except ValueError:
+        return False
+
+
 def _find_member(name: str, lib: Optional[str], paths: List[str], line: int) -> str:
-    cands = [name, name.lower(), name.upper()]
+    """Return the real path of a COPY member, guaranteed to lie inside one of the copy directories.
+
+    Error messages never contain member file contents."""
+    _check_member_name(name, "member", line)
+    if lib is not None:
+        _check_member_name(lib, "library", line)
+    cands = list(dict.fromkeys([name, name.lower(), name.upper()]))
     for d in paths:
-        dirs = [d] + ([os.path.join(d, lib), os.path.join(d, lib.lower())] if lib else [])
+        root = os.path.realpath(d)
+        if not os.path.isdir(root):
+            continue
+        dirs = [root] + ([os.path.join(root, lib), os.path.join(root, lib.lower())] if lib else [])
         for dd in dirs:
             for c in cands:
                 for e in COPY_EXTS:
                     p = os.path.join(dd, c + e)
                     if os.path.isfile(p):
-                        return p
+                        real = os.path.realpath(p)
+                        if not _within(real, root):
+                            raise CopybookError(f"COPY member {name} resolves outside the copy library "
+                                                "(symlink escape rejected)", line)
+                        return real
     raise CopybookError(f"COPY member {name} not found in {paths}", line)
 
 
@@ -262,7 +290,7 @@ def _expand_copy(toks: List[Tok], paths: List[str], stack: List[str]) -> List[To
             raise CopybookError("incomplete COPY statement", line) from None
         if not paths:
             raise CopybookError(f"COPY {name}: no copy library path given", line)
-        path = os.path.abspath(_find_member(name, lib, paths, line))
+        path = _find_member(name, lib, paths, line)
         if path in stack:
             raise CopybookError(f"recursive COPY of {name}", line)
         if len(stack) >= MAX_COPY_DEPTH:
@@ -278,13 +306,23 @@ def _expand_copy(toks: List[Tok], paths: List[str], stack: List[str]) -> List[To
 
 _REPEAT = re.compile(r"(.)\((\d+)\)")
 
+#: Upper bound (bytes) for any single field and for a whole record. Real z/OS records top out
+#: around 32 KB (QSAM/VSAM) and spanned records far below this; the cap exists so a hostile or
+#: corrupt copybook such as ``PIC X(999999999)`` cannot exhaust memory in the parser or connector.
+MAX_RECORD_LENGTH = 1_000_000
 
-def expand_pic(raw: str) -> str:
+
+def expand_pic(raw: str, line: int = 0) -> str:
+    total = 0
+    for m in _REPEAT.finditer(raw):
+        total += int(m.group(2)) if len(m.group(2)) <= 9 else MAX_RECORD_LENGTH + 1
+        if total > MAX_RECORD_LENGTH:
+            raise CopybookError(f"PIC {raw[:64]}: length exceeds the maximum of {MAX_RECORD_LENGTH} bytes", line)
     return _REPEAT.sub(lambda m: m.group(1) * int(m.group(2)), raw.upper())
 
 
 def parse_pic(raw: str, line: int) -> Pic:
-    s = expand_pic(raw)
+    s = expand_pic(raw, line)
     if "N" in s or "G" in s:
         raise UnsupportedClause(f"PIC {raw}: national/DBCS (N/G) is not supported", line)
     if "P" in s:
@@ -578,6 +616,10 @@ def _resolve(node: Node):
             size += area_max
             min_size += area_max if j > i + 1 else area_min
             i = j
+        if size > MAX_RECORD_LENGTH:
+            what = "record" if node.level in (0, 1, 77) else "group"
+            raise CopybookError(f"{what} {node.name} is {size} bytes, exceeding the maximum record length "
+                                f"of {MAX_RECORD_LENGTH} bytes", node.line)
         node.size, node.min_size = size, min_size
         return
     if node.level == 0:
@@ -603,6 +645,9 @@ def _resolve(node: Node):
             node.size = _binary_size(p.digits, node.line)
         elif u == PACKED:
             node.size = p.digits // 2 + 1
+    if node.size * (node.occurs_max or 1) > MAX_RECORD_LENGTH:
+        raise CopybookError(f"{node.name} is {node.size * (node.occurs_max or 1)} bytes, exceeding the maximum "
+                            f"record length of {MAX_RECORD_LENGTH} bytes", node.line)
     node.min_size = node.size
 
 
