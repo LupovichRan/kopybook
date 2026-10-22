@@ -1,4 +1,4 @@
-# Licensing model (open core): DRAFT, not published
+# Licensing model (open core)
 
 | Part | Where | License |
 |---|---|---|

@@ -1,0 +1,56 @@
+# Changelog
+
+All notable changes to Kopybook are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [0.1.1] - 2026-10-22
+
+### Security
+
+- **COPY member resolution no longer reads files outside the copy library.** In 0.1.0, a crafted
+  copybook could use a `COPY` statement with a path (for example `COPY '../../etc/hostname'`) to
+  read any file the process could read, and the file's contents could be echoed back in the
+  parser's error message. This affects the 0.1.0 Python CLI and library and the 0.1.0 Java parser,
+  including the Kafka Connect converter and SMT, whenever they process copybooks from an untrusted
+  source. COPY member and library names containing `/`, `\`, `..`, NUL or an absolute path are now
+  rejected; resolved members must stay inside a configured copy directory (symlink escapes are
+  rejected); and error messages never include member file contents.
+- **Record length is now capped.** Any single field or record larger than 1,000,000 bytes (for
+  example `PIC X(999999999)` or an oversized OCCURS) is rejected with a clear error before memory is
+  allocated. The Java parser now computes sizes in `long` to avoid integer overflow.
+
+Users of 0.1.0 who process copybooks from untrusted sources should upgrade to 0.1.1.
+
+### Changed
+
+- Jackson (test scope only) upgraded from 2.17.2 to 2.18.12 through `jackson-bom`, so every
+  `com.fasterxml.jackson.*` artifact is pinned to one version. The Connect plugin's runtime
+  dependencies are unchanged.
+- The Pro schema-compatibility tests are opt-in: the Java suite reads the Pro corpus only from the
+  `-Dkopybook.pro.compat` system property and reports a skipped test when it is not set, and
+  `integration/roundtrip.py` uses Pro only when the `KOPYBOOK_PRO` environment variable is set.
+- Version is now `0.1.1` everywhere (the Java artifact is no longer a `-SNAPSHOT`).
+
+## [0.1.0] - 2026-10-22
+
+### Added
+
+- First public release.
+- COBOL copybook parser (fixed and free format, COPY ... REPLACING, levels 66 and 88, OCCURS and
+  OCCURS DEPENDING ON, REDEFINES with view selection).
+- EBCDIC decoder and encoder: zoned decimal (all sign forms), COMP-3, COMP/COMP-4/BINARY,
+  COMP-5, COMP-1/COMP-2 (IBM hex float), RDW framing, and EBCDIC code pages including cp037,
+  cp1140 and cp500.
+- Avro and JSON Schema generation with exact decimal precision and scale.
+- `kopybook` CLI (`schema`, `layout`, `decode`, `encode`, `register`) and a Docker image.
+- Kafka Connect Converter and Value/Key SMTs with no runtime dependencies beyond the Connect API.
+- Public synthetic golden corpus (42 copybooks, 43 cases, 1,075 records) decoded identically by
+  the Python and Java implementations.
+
+[Unreleased]: https://github.com/LupovichRan/kopybook/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/LupovichRan/kopybook/compare/1c80067...v0.1.1
+[0.1.0]: https://github.com/LupovichRan/kopybook/commit/1c80067
