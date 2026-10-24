@@ -33,6 +33,42 @@ def test_packed_invalid(hx):
         F.decode_packed(bytes.fromhex(hx), 3, 0, True)
 
 
+def test_packed_unsigned_rejects_negative_sign():
+    for hx in ("123D", "123B"):
+        with pytest.raises(F.FieldError):
+            F.decode_packed(bytes.fromhex(hx), 3, 0, False)
+    assert F.decode_packed(bytes.fromhex("123F"), 3, 0, False) == 123
+    assert F.decode_packed(bytes.fromhex("123C"), 3, 0, False) == 123
+    assert F.decode_packed(bytes.fromhex("123D"), 3, 0, True) == -123
+
+
+def test_packed_empty():
+    with pytest.raises(F.FieldError):
+        F.decode_packed(b"", 1, 0, True)
+
+
+def test_packed_negative_zero():
+    assert F.decode_packed(bytes.fromhex("0D"), 1, 0, True) == 0
+
+
+@pytest.mark.parametrize("hx,d", [
+    ("123C", 2),            # PIC 9(2): spare leading nibble must be 0 (would give 123)
+    ("9" * 39 + "C", 38),   # S9(38): 39 digits
+    ("9" * 19 + "C", 18),   # S9(18): 19 digits
+    ("00123C", 3),          # 3 bytes for 3 digits
+    ("3C", 3),              # 1 byte for 3 digits
+])
+def test_packed_too_many_digits_or_wrong_length(hx, d):
+    with pytest.raises(F.FieldError):
+        F.decode_packed(bytes.fromhex(hx), d, 0, True)
+
+
+def test_packed_even_digits_ok():
+    assert F.decode_packed(bytes.fromhex("012F"), 2, 0, False) == 12
+    assert F.decode_packed(bytes.fromhex("099D"), 2, 0, True) == -99
+    assert F.decode_packed(bytes.fromhex("0" + "9" * 38 + "C"), 38, 0, True) == 10 ** 38 - 1
+
+
 ZONED = [  # value, digits, scale, signed, leading, separate, hex
     (123, 3, 0, False, False, False, "F1F2F3"),
     (123, 3, 0, True, False, False, "F1F2C3"),

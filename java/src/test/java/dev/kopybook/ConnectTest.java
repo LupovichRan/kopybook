@@ -182,6 +182,19 @@ class ConnectTest {
     }
 
     @Test
+    void smtSkipsPackedOverflow() {
+        Map<String, Object> p = new java.util.HashMap<>(Map.of("copybook.text", "       01  R.\n           05  A  PIC S9(18) COMP-3.\n", "on.error", "skip"));
+        CopybookDecode.Value<SourceRecord> skip = new CopybookDecode.Value<>();
+        skip.configure(p);
+        byte[] nines = java.util.HexFormat.of().parseHex("9999999999999999999C");
+        assertNull(skip.apply(new SourceRecord(null, null, "t", 0, null, null, Schema.BYTES_SCHEMA, nines)));
+        p.put("on.error", "fail");
+        CopybookDecode.Value<SourceRecord> fail = new CopybookDecode.Value<>();
+        fail.configure(p);
+        assertThrows(DataException.class, () -> fail.apply(new SourceRecord(null, null, "t", 0, null, null, Schema.BYTES_SCHEMA, nines)));
+    }
+
+    @Test
     void inlineCopybookAndConfigErrors() {
         CopybookConverter conv = new CopybookConverter();
         conv.configure(Map.of("copybook.text", "       01  R.\n           05  A PIC S9(3) COMP-3.\n"), false);

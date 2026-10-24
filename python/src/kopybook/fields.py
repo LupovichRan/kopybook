@@ -42,6 +42,10 @@ def _unscaled(value: Number, scale: int) -> int:
 # ---------------------------------------------------------------- packed (COMP-3)
 
 def decode_packed(b: bytes, digits: int, scale: int, signed: bool) -> Number:
+    if not b:
+        raise FieldError("empty packed field")
+    if len(b) != digits // 2 + 1:
+        raise FieldError(f"packed field of {digits} digits must be {digits // 2 + 1} bytes, got {len(b)}")
     nibbles = []
     for x in b:
         nibbles.append(x >> 4)
@@ -50,7 +54,11 @@ def decode_packed(b: bytes, digits: int, scale: int, signed: bool) -> Number:
     for d in nibbles:
         if d > 9:
             raise FieldError(f"invalid packed digit nibble {d:X} in {b.hex()}")
+    if len(nibbles) > digits and nibbles[0] != 0:
+        raise FieldError(f"packed value in {b.hex()} has more than {digits} digits")
     if sign in NEG_ZONES:
+        if not signed:
+            raise FieldError(f"negative packed sign nibble {sign:X} in unsigned field {b.hex()}")
         neg = True
     elif sign in POS_ZONES:
         neg = False

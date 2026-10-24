@@ -1,6 +1,7 @@
 package dev.kopybook;
 
 import dev.kopybook.codec.FieldCodec;
+import dev.kopybook.codec.DecodeException;
 import dev.kopybook.codec.FieldException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,6 +29,53 @@ class FieldCodecTest {
     void packedInvalid() {
         assertThrows(FieldException.class, () -> FieldCodec.packed(h("1235"), 0, 2));
         assertThrows(FieldException.class, () -> FieldCodec.packed(h("1A3C"), 0, 2));
+        assertThrows(FieldException.class, () -> FieldCodec.packed(h("F23C"), 0, 2));
+        assertThrows(FieldException.class, () -> FieldCodec.packed(new byte[0], 0, 0, 1, true));
+    }
+
+    @Test
+    void packedAltSigns() {
+        assertEquals(new BigInteger("-123"), FieldCodec.packed(h("123B"), 0, 2, 3, true));
+        assertEquals(new BigInteger("123"), FieldCodec.packed(h("123A"), 0, 2, 3, true));
+        assertEquals(new BigInteger("123"), FieldCodec.packed(h("123E"), 0, 2, 3, true));
+        assertEquals(BigInteger.ZERO, FieldCodec.packed(h("0D"), 0, 1, 1, true));
+    }
+
+    @Test
+    void packedUnsignedRejectsNegativeSign() {
+        assertThrows(FieldException.class, () -> FieldCodec.packed(h("123D"), 0, 2, 3, false));
+        assertThrows(FieldException.class, () -> FieldCodec.packed(h("123B"), 0, 2, 3, false));
+        assertEquals(new BigInteger("123"), FieldCodec.packed(h("123F"), 0, 2, 3, false));
+        assertEquals(new BigInteger("123"), FieldCodec.packed(h("123C"), 0, 2, 3, false));
+        assertEquals(new BigInteger("-123"), FieldCodec.packed(h("123D"), 0, 2, 3, true));
+    }
+
+    @ParameterizedTest
+    @CsvSource({"123C,2", "999999999999999999999999999999999999999C,38", "9999999999999999999C,18", "00123C,3", "3C,3"})
+    void packedTooManyDigitsOrWrongLength(String hex, int digits) {
+        byte[] b = h(hex);
+        assertThrows(FieldException.class, () -> FieldCodec.packed(b, 0, b.length, digits, true));
+    }
+
+    @Test
+    void packedEvenDigitsOk() {
+        assertEquals(new BigInteger("12"), FieldCodec.packed(h("012F"), 0, 2, 2, false));
+        assertEquals(new BigInteger("-99"), FieldCodec.packed(h("099D"), 0, 2, 2, true));
+        byte[] b = h("0" + "9".repeat(38) + "C");
+        assertEquals(BigInteger.TEN.pow(38).subtract(BigInteger.ONE), FieldCodec.packed(b, 0, b.length, 38, true));
+    }
+
+    static dev.kopybook.codec.RecordDecoder rec(String pic) {
+        return new dev.kopybook.codec.RecordDecoder(dev.kopybook.copybook.CopybookParser.parse(
+                "       01  R.\n           05  A  PIC " + pic + " COMP-3.\n").record(null), new dev.kopybook.codec.DecodeOptions());
+    }
+
+    @Test
+    void recordDecoderPacked() {
+        assertThrows(DecodeException.class, () -> rec("9(3)").decode(h("123D")));
+        assertEquals(-123, rec("S9(3)").decode(h("123D")).get("a"));
+        assertThrows(DecodeException.class, () -> rec("9(2)").decode(h("123C")));
+        assertThrows(DecodeException.class, () -> rec("S9(18)").decode(h("9999999999999999999C")));
     }
 
     @ParameterizedTest

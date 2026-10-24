@@ -33,6 +33,15 @@ public final class FieldCodec {
     }
 
     public static BigInteger packed(byte[] b, int off, int len) {
+        return packed(b, off, len, len * 2 - 1, true);
+    }
+
+    public static BigInteger packed(byte[] b, int off, int len, int digits, boolean signed) {
+        if (len <= 0) throw new FieldException("empty packed field");
+        if (len != digits / 2 + 1)
+            throw new FieldException("packed field of " + digits + " digits must be " + (digits / 2 + 1) + " bytes, got " + len);
+        if (len * 2 - 1 > digits && (b[off] & 0xF0) != 0)
+            throw new FieldException("packed value in " + hex(b, off, len) + " has more than " + digits + " digits");
         long acc = 0;
         BigInteger big = null;
         int nibbles = len * 2 - 1;
@@ -49,7 +58,10 @@ public final class FieldCodec {
         }
         int sign = b[off + len - 1] & 0xF;
         BigInteger v = big != null ? big : BigInteger.valueOf(acc);
-        if (neg(sign)) return v.negate();
+        if (neg(sign)) {
+            if (!signed) throw new FieldException("negative packed sign nibble " + Integer.toHexString(sign).toUpperCase() + " in unsigned field " + hex(b, off, len));
+            return v.negate();
+        }
         if (pos(sign)) return v;
         throw new FieldException("invalid packed sign nibble " + Integer.toHexString(sign).toUpperCase() + " in " + hex(b, off, len));
     }
