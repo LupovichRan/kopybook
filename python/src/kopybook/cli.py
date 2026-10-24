@@ -2,8 +2,12 @@
 from __future__ import annotations
 
 import argparse
+import base64
 import json
+import os
 import sys
+import urllib.error
+import urllib.parse
 import urllib.request
 
 from . import __version__, avro, codec, jsonschema_gen, parser
@@ -122,13 +126,48 @@ def cmd_license(a):
     return pro.license_command(a)
 
 
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, *args, **kwargs):
+        return None  # never forward the Authorization header to another location
+
+
+def _registry_request(registry, subject, body):
+    """Build the POST request. Errors never include the URL or credentials."""
+    try:
+        parts = urllib.parse.urlsplit(registry)
+    except ValueError:
+        raise ValueError("--registry is not a valid URL") from None
+    if "@" in parts.netloc:
+        raise ValueError("--registry must not contain credentials; "
+                         "set KOPYBOOK_REGISTRY_USER and KOPYBOOK_REGISTRY_PASSWORD instead")
+    if parts.scheme not in ("http", "https") or not parts.netloc:
+        raise ValueError("--registry must be an http:// or https:// URL")
+    headers = {"Content-Type": "application/vnd.schemaregistry.v1+json"}
+    user = os.environ.get("KOPYBOOK_REGISTRY_USER")
+    password = os.environ.get("KOPYBOOK_REGISTRY_PASSWORD")
+    if user or password:
+        if not (user and password):
+            raise ValueError("set both KOPYBOOK_REGISTRY_USER and KOPYBOOK_REGISTRY_PASSWORD, or neither")
+        if parts.scheme != "https":
+            raise ValueError("refusing to send registry credentials over plain http; use an https:// --registry")
+        headers["Authorization"] = "Basic " + base64.b64encode(f"{user}:{password}".encode()).decode()
+    return urllib.request.Request(f"{registry.rstrip('/')}/subjects/{subject}/versions", data=body,
+                                  method="POST", headers=headers)
+
+
 def cmd_register(a):
     s = _avro(a, a.copybook)
     body = json.dumps({"schemaType": "AVRO", "schema": json.dumps(s)}).encode()
-    req = urllib.request.Request(f"{a.registry.rstrip('/')}/subjects/{a.subject}/versions", data=body,
-                                 method="POST", headers={"Content-Type": "application/vnd.schemaregistry.v1+json"})
-    with urllib.request.urlopen(req, timeout=10) as r:
-        print(r.read().decode())
+    req = _registry_request(a.registry, a.subject, body)
+    try:
+        with urllib.request.build_opener(_NoRedirect).open(req, timeout=10) as r:
+            print(r.read().decode())
+    except urllib.error.HTTPError as e:
+        print(f"error: Schema Registry returned HTTP {e.code}", file=sys.stderr)
+        return 69
+    except Exception as e:  # URLError, InvalidURL, timeouts: the text may contain the URL
+        print(f"error: could not reach Schema Registry ({type(e).__name__})", file=sys.stderr)
+        return 69
     return 0
 
 
@@ -208,7 +247,8 @@ def build_parser():
 
     s = sub.add_parser("register", help="register the Avro schema in Schema Registry")
     s.add_argument("copybook")
-    s.add_argument("--registry", required=True)
+    s.add_argument("--registry", required=True,
+                   help="Schema Registry URL, without credentials (use $KOPYBOOK_REGISTRY_USER / $KOPYBOOK_REGISTRY_PASSWORD)")
     s.add_argument("--subject", required=True)
     common(s)
     s.set_defaults(fn=cmd_register)
