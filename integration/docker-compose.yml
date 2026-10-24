@@ -39,7 +39,7 @@ services:
     restart: on-failure
     depends_on: [kafka, schema-registry]
     volumes:
-      - ../java/target/kopybook-connect-0.1.1/kopybook-connect-0.1.1:/usr/share/kopybook-plugins/kopybook-connect:ro
+      - ../java/target/kopybook-connect-0.1.2/kopybook-connect-0.1.2:/usr/share/kopybook-plugins/kopybook-connect:ro
       - ../corpus/copybooks:/etc/kopybook/copybooks:ro
     environment:
       CONNECT_BOOTSTRAP_SERVERS: localhost:9092

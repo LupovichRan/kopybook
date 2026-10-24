@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-10-24
+
+### Security
+
+- **`kopybook register` no longer accepts credentials in the `--registry` URL.** In 0.1.1 and
+  earlier, credentials written into the URL (for example `https://user:password@host`) were not
+  used to authenticate; they were treated as part of the host name and could appear in error
+  messages and logs, or be sent in a DNS lookup. Such URLs are now refused, without echoing them.
+  Credentials are read from `KOPYBOOK_REGISTRY_USER` and `KOPYBOOK_REGISTRY_PASSWORD`, sent only
+  as an HTTP Basic `Authorization` header to an `https://` registry, and error messages never
+  include the URL or credentials. Only `kopybook register` is affected. If you ever passed
+  credentials in `--registry`, upgrade and rotate them.
+
+### Fixed
+
+- Packed decimal (COMP-3): an unsigned field (`PIC 9`) with a negative sign nibble (`D` or `B`) was
+  decoded as a negative number. It is now rejected as invalid data, in both Python and Java.
+- Packed decimal: a value with more digits than the PIC allows (a non-zero spare leading half-byte
+  for an even digit count, for example `PIC 9(2)` holding `12 3C`) or a field whose byte length does
+  not match the PIC is now rejected instead of decoded. In Java, such values no longer escape as an
+  `ArithmeticException`; they are reported as decode errors, so `on.error=skip` and optional
+  REDEFINES views handle them.
+- Packed decimal: an empty field now raises a field error instead of an internal `IndexError`.
+- Packed decimal: a negative zero (`0D`) decodes as `0`.
+
 ## [0.1.1] - 2026-10-22
 
 ### Security
@@ -51,6 +76,7 @@ Users of 0.1.0 who process copybooks from untrusted sources should upgrade to 0.
 - Public synthetic golden corpus (42 copybooks, 43 cases, 1,075 records) decoded identically by
   the Python and Java implementations.
 
-[Unreleased]: https://github.com/LupovichRan/kopybook/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/LupovichRan/kopybook/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/LupovichRan/kopybook/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/LupovichRan/kopybook/compare/1c80067...v0.1.1
 [0.1.0]: https://github.com/LupovichRan/kopybook/commit/1c80067
