@@ -33,6 +33,13 @@ kopybook license                                [Pro] show the installed license
 | `--keep-going` | report bad records on stderr and continue |
 | `-o FILE` | write to a file instead of stdout |
 
+## register
+
+Posts the Avro schema to `--registry`/subjects/`--subject`/versions. Do not put credentials in the
+URL; it is refused. For HTTP Basic auth, set `KOPYBOOK_REGISTRY_USER` and
+`KOPYBOOK_REGISTRY_PASSWORD`; credentials are sent only to an `https://` registry, and redirects
+are not followed.
+
 ## Exit codes
 
 | Code | Meaning |
@@ -44,3 +51,4 @@ kopybook license                                [Pro] show the installed license
 | 4 | Pro license missing, expired or invalid |
 | 64 | bad option value |
 | 65 | copybook syntax error or unsupported clause |
+| 69 | `register`: Schema Registry unreachable or returned an error |

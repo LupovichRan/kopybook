@@ -1,6 +1,6 @@
 # Kopybook: COBOL copybooks → Kafka
 
-> **Status: pre-release (0.1.1).** [Changelog](CHANGELOG.md) · Docs: [docs/](docs/index.md) · Issues: https://github.com/LupovichRan/kopybook/issues
+> **Status: pre-release (0.1.2).** [Changelog](CHANGELOG.md) · Docs: [docs/](docs/index.md) · Issues: https://github.com/LupovichRan/kopybook/issues
 
 [![CI](https://github.com/LupovichRan/kopybook/actions/workflows/ci.yml/badge.svg)](https://github.com/LupovichRan/kopybook/actions/workflows/ci.yml)
 ![License](https://img.shields.io/badge/license-Apache--2.0-blue)

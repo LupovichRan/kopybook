@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>dev.kopybook</groupId>
   <artifactId>kopybook-connect</artifactId>
-  <version>0.1.1</version>
+  <version>0.1.2</version>
   <name>kopybook Kafka Connect copybook converter and SMT</name>
   <description>Decodes COBOL/EBCDIC records into Kafka Connect Structs using a copybook.</description>
   <licenses>

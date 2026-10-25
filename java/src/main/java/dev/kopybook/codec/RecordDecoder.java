@@ -219,7 +219,7 @@ public final class RecordDecoder {
         BigInteger u;
         switch (n.usage()) {
             case DISPLAY -> u = FieldCodec.zoned(b, pos, n.size(), p.signed, n.signLeading(), n.signSeparate());
-            case PACKED -> u = FieldCodec.packed(b, pos, n.size());
+            case PACKED -> u = FieldCodec.packed(b, pos, n.size(), p.digits, p.signed);
             case BINARY, NATIVE -> {
                 u = FieldCodec.binary(b, pos, n.size(), p.signed);
                 if (n.usage() == Node.Usage.BINARY && "std".equals(o.trunc) && u.abs().compareTo(BigInteger.TEN.pow(p.digits)) >= 0)
@@ -233,10 +233,14 @@ public final class RecordDecoder {
     private Object value(Node n, BigInteger u, Ctx c) {
         LType t = types.get(n);
         if (n.pic().scale == 0 && u.bitLength() < 63) c.odo.put(n.name, u.longValue());
-        return switch (t.kind()) {
-            case INT -> u.intValueExact();
-            case LONG -> u.longValueExact();
-            default -> FieldCodec.scaled(u, n.pic().scale);
-        };
+        try {
+            return switch (t.kind()) {
+                case INT -> u.intValueExact();
+                case LONG -> u.longValueExact();
+                default -> FieldCodec.scaled(u, n.pic().scale);
+            };
+        } catch (ArithmeticException e) {
+            throw new FieldException("value " + u + " does not fit " + t.kind());
+        }
     }
 }
