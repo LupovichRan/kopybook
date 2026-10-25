@@ -297,6 +297,8 @@ class _Encoder:
                 if not isinstance(value, (str, int, float, Decimal, type(None))):
                     raise TypeError
                 f = float(value or 0.0)
+            except OverflowError:
+                raise F.FieldError(f"{node.path()}: value is not a finite number") from None
             except (ValueError, TypeError, AttributeError):
                 raise F.FieldError(f"{node.path()}: value is not a number") from None
             if not math.isfinite(f):
