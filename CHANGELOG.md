@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-10-25
+
 ### Security
 
 - Field errors no longer include field data: no raw bytes (hex or otherwise), no decoded or
@@ -26,6 +28,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   non-number type) for a numeric or COMP-1/COMP-2 field as `PATH: value is not a number` (or
   `not a finite number`), as Java does, instead of a raw `ValueError`, `TypeError` or
   `InvalidOperation` that could quote the input.
+  Inputs that are not a `str`, `int`, `float`, `Decimal` or `None`, including `bytes`, `bytearray` and
+  `Fraction`, are now rejected with the same `FieldError` instead of being converted.
+- Python COMP-1/COMP-2 encode of an integer too large for a float (an `OverflowError`) is reported
+  as `PATH: value is not a finite number` instead of escaping as a raw exception.
 
 ### Documentation
 
@@ -101,7 +107,8 @@ Users of 0.1.0 who process copybooks from untrusted sources should upgrade to 0.
 - Public synthetic golden corpus (42 copybooks, 43 cases, 1,075 records) decoded identically by
   the Python and Java implementations.
 
-[Unreleased]: https://github.com/LupovichRan/kopybook/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/LupovichRan/kopybook/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/LupovichRan/kopybook/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/LupovichRan/kopybook/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/LupovichRan/kopybook/compare/1c80067...v0.1.1
 [0.1.0]: https://github.com/LupovichRan/kopybook/commit/1c80067

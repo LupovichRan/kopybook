@@ -137,3 +137,30 @@ def test_cli_encode_non_number_has_no_value(tmp_path, capsys):
     err = capsys.readouterr().err
     assert "value is not a number" in err
     _assert_no_raw(err, values=["9876", "SECRET"])
+
+
+def test_float_encode_of_huge_int_is_field_error():
+    with pytest.raises(F.FieldError) as e:
+        codec.encode(_enc_rec("COMP-2"), {"a": 98765 * 10 ** 400})
+    _assert_no_raw(str(e.value), values=["98765"])
+
+
+_WRAPPED = [(pic, v) for pic in ("COMP-1", "COMP-2", "PIC S9(5) COMP-3")
+            for v in ("9876SECRET", object(), b"98765", bytearray(b"98765"))]
+_WRAPPED += [("COMP-1", 98765 * 10 ** 400), ("COMP-2", 98765 * 10 ** 400)]
+
+
+@pytest.mark.parametrize("pic,value", _WRAPPED,
+                         ids=[f"{p}-{type(v).__name__}" for p, v in _WRAPPED])
+def test_encode_wrap_suppresses_exception_context(pic, value):
+    with pytest.raises(F.FieldError) as e:
+        codec.encode(_enc_rec(pic), {"a": value})
+    assert e.value.__cause__ is None
+    assert e.value.__suppress_context__ is True
+
+
+def test_encode_rejects_fraction():
+    from fractions import Fraction
+    for pic in ("COMP-1", "PIC S9(5)V99"):
+        with pytest.raises(F.FieldError, match="value is not a number"):
+            codec.encode(_enc_rec(pic), {"a": Fraction(98765, 7)})
