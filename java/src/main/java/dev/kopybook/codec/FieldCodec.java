@@ -26,29 +26,25 @@ public final class FieldCodec {
     private static boolean pos(int z) { return z == 0xC || z == 0xF || z == 0xA || z == 0xE; }
     private static boolean neg(int z) { return z == 0xD || z == 0xB; }
 
-    private static String hex(byte[] b, int off, int len) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < len; i++) sb.append(String.format("%02x", b[off + i] & 0xFF));
-        return sb.toString();
-    }
-
     public static BigInteger packed(byte[] b, int off, int len) {
         return packed(b, off, len, len * 2 - 1, true);
     }
 
     public static BigInteger packed(byte[] b, int off, int len, int digits, boolean signed) {
         if (len <= 0) throw new FieldException("empty packed field");
+        if (off < 0 || off > b.length - len)
+            throw new FieldException("packed field at " + off + " of " + len + " bytes exceeds " + b.length + "-byte buffer");
         if (len != digits / 2 + 1)
             throw new FieldException("packed field of " + digits + " digits must be " + (digits / 2 + 1) + " bytes, got " + len);
         if (len * 2 - 1 > digits && (b[off] & 0xF0) != 0)
-            throw new FieldException("packed value in " + hex(b, off, len) + " has more than " + digits + " digits");
+            throw new FieldException("packed value in " + len + "-byte field has more than " + digits + " digits");
         long acc = 0;
         BigInteger big = null;
         int nibbles = len * 2 - 1;
         for (int i = 0; i < nibbles; i++) {
             int x = b[off + i / 2] & 0xFF;
             int d = (i % 2 == 0) ? x >> 4 : x & 0xF;
-            if (d > 9) throw new FieldException("invalid packed digit nibble " + Integer.toHexString(d).toUpperCase() + " in " + hex(b, off, len));
+            if (d > 9) throw new FieldException("invalid packed digit nibble " + Integer.toHexString(d).toUpperCase() + " in " + len + "-byte field");
             if (big == null && acc < 99_999_999_999_999_999L / 10) {
                 acc = acc * 10 + d;
             } else {
@@ -59,11 +55,11 @@ public final class FieldCodec {
         int sign = b[off + len - 1] & 0xF;
         BigInteger v = big != null ? big : BigInteger.valueOf(acc);
         if (neg(sign)) {
-            if (!signed) throw new FieldException("negative packed sign nibble " + Integer.toHexString(sign).toUpperCase() + " in unsigned field " + hex(b, off, len));
+            if (!signed) throw new FieldException("negative packed sign nibble " + Integer.toHexString(sign).toUpperCase() + " in unsigned " + len + "-byte field");
             return v.negate();
         }
         if (pos(sign)) return v;
-        throw new FieldException("invalid packed sign nibble " + Integer.toHexString(sign).toUpperCase() + " in " + hex(b, off, len));
+        throw new FieldException("invalid packed sign nibble " + Integer.toHexString(sign).toUpperCase() + " in " + len + "-byte field");
     }
 
     public static BigInteger zoned(byte[] b, int off, int len, boolean signed, boolean leading, boolean separate) {
@@ -80,12 +76,12 @@ public final class FieldCodec {
         for (int i = start; i < end; i++) {
             int x = b[i] & 0xFF, zone = x >> 4, d = x & 0xF;
             boolean signPos = leading ? i == start : i == end - 1;
-            if (d > 9) throw new FieldException("invalid zoned digit " + String.format("%02X", x) + " in " + hex(b, off, len));
+            if (d > 9) throw new FieldException("invalid zoned digit " + String.format("%02X", x) + " in " + len + "-byte field");
             if (signed && !separate && signPos) {
                 if (neg(zone)) negative = true;
-                else if (!pos(zone)) throw new FieldException("invalid zoned sign " + String.format("%02X", x) + " in " + hex(b, off, len));
+                else if (!pos(zone)) throw new FieldException("invalid zoned sign " + String.format("%02X", x) + " in " + len + "-byte field");
             } else if (zone != 0xF && !(signPos && pos(zone))) {
-                throw new FieldException("invalid zoned byte " + String.format("%02X", x) + " in " + hex(b, off, len));
+                throw new FieldException("invalid zoned byte " + String.format("%02X", x) + " in " + len + "-byte field");
             }
             if (big == null && acc < 99_999_999_999_999_999L / 10) {
                 acc = acc * 10 + d;
@@ -122,7 +118,7 @@ public final class FieldCodec {
             s = cs.newDecoder().onMalformedInput(CodingErrorAction.REPORT).onUnmappableCharacter(CodingErrorAction.REPORT)
                     .decode(ByteBuffer.wrap(b, off, len)).toString();
         } catch (CharacterCodingException e) {
-            throw new FieldException("bytes not valid in " + cs.name() + ": " + hex(b, off, len));
+            throw new FieldException("bytes not valid in " + cs.name() + " in " + len + "-byte field");
         }
         switch (trim) {
             case "right": {

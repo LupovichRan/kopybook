@@ -53,17 +53,17 @@ def decode_packed(b: bytes, digits: int, scale: int, signed: bool) -> Number:
     sign = nibbles.pop()
     for d in nibbles:
         if d > 9:
-            raise FieldError(f"invalid packed digit nibble {d:X} in {b.hex()}")
+            raise FieldError(f"invalid packed digit nibble {d:X} in {len(b)}-byte field")
     if len(nibbles) > digits and nibbles[0] != 0:
-        raise FieldError(f"packed value in {b.hex()} has more than {digits} digits")
+        raise FieldError(f"packed value in {len(b)}-byte field has more than {digits} digits")
     if sign in NEG_ZONES:
         if not signed:
-            raise FieldError(f"negative packed sign nibble {sign:X} in unsigned field {b.hex()}")
+            raise FieldError(f"negative packed sign nibble {sign:X} in unsigned {len(b)}-byte field")
         neg = True
     elif sign in POS_ZONES:
         neg = False
     else:
-        raise FieldError(f"invalid packed sign nibble {sign:X} in {b.hex()}")
+        raise FieldError(f"invalid packed sign nibble {sign:X} in {len(b)}-byte field")
     v = 0
     for d in nibbles:
         v = v * 10 + d
@@ -104,16 +104,16 @@ def decode_zoned(b: bytes, digits: int, scale: int, signed: bool,
         zone, d = x >> 4, x & 0xF
         sign_pos = (i == 0) if leading else (i == n - 1)
         if d > 9:
-            raise FieldError(f"invalid zoned digit {x:02X} in {b.hex()}")
+            raise FieldError(f"invalid zoned digit {x:02X} in {len(b)}-byte field")
         if signed and not separate and sign_pos:
             if zone in NEG_ZONES:
                 neg = True
             elif zone not in POS_ZONES:
-                raise FieldError(f"invalid zoned sign {x:02X} in {b.hex()}")
+                raise FieldError(f"invalid zoned sign {x:02X} in {len(b)}-byte field")
         elif zone != 0xF:
             # unsigned fields written by some tools carry C zone on the last byte
             if not (sign_pos and zone in POS_ZONES):
-                raise FieldError(f"invalid zoned byte {x:02X} in {b.hex()}")
+                raise FieldError(f"invalid zoned byte {x:02X} in {len(b)}-byte field")
         v = v * 10 + d
     return _scaled(-v if neg else v, scale)
 

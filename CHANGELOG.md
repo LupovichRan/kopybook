@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- Field decode errors no longer include the field's raw bytes in hex. They still name the COBOL
+  path, byte offset, field length and reason.
+
+### Fixed
+
+- Java `FieldCodec.packed` checks the offset and length against the buffer and throws
+  `FieldException` instead of `ArrayIndexOutOfBoundsException`. Python already raised a field or
+  decode error here; both now have tests.
+
+### Documentation
+
+- SPEC: COMP-3 byte length (`digits // 2 + 1`), `0D` decodes as 0, and `D`/`B` signs are invalid on
+  unsigned fields.
+
 ## [0.1.2] - 2026-10-24
 
 ### Security

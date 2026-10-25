@@ -240,6 +240,9 @@ public final class RecordDecoder {
                 default -> FieldCodec.scaled(u, n.pic().scale);
             };
         } catch (ArithmeticException e) {
+            // R2 guard: an over-wide value (e.g. COMP-3 overflow) must surface as FieldException, which
+            // single() wraps in DecodeException. Not reachable through decode() today, because packed()
+            // and LType already bound values by PIC digits/storage size; kept as defence in depth.
             throw new FieldException("value " + u + " does not fit " + t.kind());
         }
     }

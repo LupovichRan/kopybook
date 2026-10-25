@@ -108,4 +108,26 @@ class FieldCodecTest {
         assertEquals(text, FieldCodec.text(h(hex), 0, 1, FieldCodec.charset(cp), "right"));
         assertArrayEquals(h(hex), FieldCodec.encodeText(text, 1, FieldCodec.charset(cp)));
     }
+
+    @Test
+    void packedOutOfBoundsIsFieldException() {
+        assertThrows(FieldException.class, () -> FieldCodec.packed(h("123C"), 1, 2, 3, true));
+        assertThrows(FieldException.class, () -> FieldCodec.packed(h("123C"), 0, 3, 5, true));
+        assertThrows(FieldException.class, () -> FieldCodec.packed(h("123C"), -1, 2, 3, true));
+        assertThrows(FieldException.class, () -> FieldCodec.packed(h("1C"), 0, 3));
+    }
+
+    @Test
+    void fieldErrorsDoNotIncludeRawBytes() {
+        String m = assertThrows(FieldException.class, () -> FieldCodec.packed(h("987654321A5B"), 0, 6, 11, true)).getMessage();
+        assertFalse(m.toLowerCase().contains("98765"), m);
+        assertTrue(m.contains("6-byte field"), m);
+        m = assertThrows(FieldException.class, () -> FieldCodec.packed(h("987654321D"), 0, 5, 9, false)).getMessage();
+        assertFalse(m.toLowerCase().contains("98765"), m);
+        m = assertThrows(FieldException.class, () -> FieldCodec.zoned(h("F9F8F7F6F5FA"), 0, 6, false, false, false)).getMessage();
+        assertFalse(m.toLowerCase().contains("f9f8f7"), m);
+        DecodeException d = assertThrows(DecodeException.class, () -> rec("S9(9)").decode(h("98765432A5")));
+        assertTrue(d.getMessage().contains("offset 0"), d.getMessage());
+        assertFalse(d.getMessage().toLowerCase().contains("98765"), d.getMessage());
+    }
 }
