@@ -299,6 +299,8 @@ class _Encoder:
                 f = float(value or 0.0)
             except (ValueError, TypeError, AttributeError):
                 raise F.FieldError(f"{node.path()}: value is not a number") from None
+            except OverflowError:
+                raise F.FieldError(f"{node.path()}: value is not a finite number") from None
             if not math.isfinite(f):
                 raise F.FieldError(f"{node.path()}: value is not a finite number")
             return F.encode_hfp(f, node.size)
