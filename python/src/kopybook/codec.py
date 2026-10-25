@@ -175,7 +175,7 @@ class _Decoder:
             if n < node.occurs_min or n > node.occurs_max:
                 if self.o.odo_strict:
                     raise DecodeError(node.path(), pos,
-                                      f"{node.depending_on}={n} outside {node.occurs_min}..{node.occurs_max}")
+                                      f"{node.depending_on} value outside {node.occurs_min}..{node.occurs_max}")
                 n = max(node.occurs_min, min(n, node.occurs_max))
         else:
             n = node.occurs_max
@@ -277,7 +277,7 @@ class _Encoder:
                 raise F.FieldError(f"{node.path()}: ODO object {node.depending_on} not encoded first")
             vals = value or []
             if len(vals) != n:
-                raise F.FieldError(f"{node.path()}: {len(vals)} items but {node.depending_on}={n}")
+                raise F.FieldError(f"{node.path()}: {len(vals)} items do not match {node.depending_on}")
         else:
             n = node.occurs_max
             vals = value if value is not None else [None] * n

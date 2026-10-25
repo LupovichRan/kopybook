@@ -69,5 +69,6 @@ class CorpusTest {
         bad[9] = 99;
         Exception ex = assertThrows(dev.kopybook.codec.DecodeException.class, () -> new RecordDecoder(k.root(), k.options()).decode(bad));
         assertTrue(ex.getMessage().contains("outside 0..20"), ex.getMessage());
+        assertFalse(ex.getMessage().contains("99"), ex.getMessage());
     }
 }

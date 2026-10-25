@@ -115,6 +115,10 @@ class FieldCodecTest {
         assertThrows(FieldException.class, () -> FieldCodec.packed(h("123C"), 0, 3, 5, true));
         assertThrows(FieldException.class, () -> FieldCodec.packed(h("123C"), -1, 2, 3, true));
         assertThrows(FieldException.class, () -> FieldCodec.packed(h("1C"), 0, 3));
+        // valid digits that run one byte past the end of the buffer
+        assertThrows(FieldException.class, () -> FieldCodec.packed(h("0000"), 1, 2, 3, true));
+        assertThrows(FieldException.class, () -> FieldCodec.packed(h("1234"), 0, 3, 5, true));
+        assertThrows(FieldException.class, () -> FieldCodec.packed(h("00123C"), 2, 2, 3, true));
     }
 
     @Test

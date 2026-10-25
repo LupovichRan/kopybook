@@ -111,7 +111,7 @@ def test_odo_out_of_range():
     bad = recs[0][:8] + (99).to_bytes(2, "big") + recs[0][10:]
     with pytest.raises(Exception) as e:
         codec.decode(root, bad)
-    assert "outside 0..20" in str(e.value)
+    assert "outside 0..20" in str(e.value) and "99" not in str(e.value)
 
 
 def test_redefines_first_strategy():

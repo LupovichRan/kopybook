@@ -65,7 +65,7 @@ public final class RecordEncoder {
             if (cnt == null) throw new FieldException(n.path() + ": ODO object " + n.dependingOn() + " not encoded first");
             count = cnt;
             if (vals == null) vals = List.of();
-            if (vals.size() != count) throw new FieldException(n.path() + ": " + vals.size() + " items but " + n.dependingOn() + "=" + count);
+            if (vals.size() != count) throw new FieldException(n.path() + ": " + vals.size() + " items do not match " + n.dependingOn());
         } else {
             count = n.occursMax();
             if (vals == null) vals = Collections.nCopies((int) count, null);
@@ -89,23 +89,28 @@ public final class RecordEncoder {
             default -> { }
         }
         var p = n.pic();
-        BigDecimal d = value == null ? BigDecimal.ZERO : new BigDecimal(value.toString());
+        BigDecimal d;
+        try {
+            d = value == null ? BigDecimal.ZERO : new BigDecimal(value.toString());
+        } catch (NumberFormatException e) {
+            throw new FieldException(n.path() + ": value is not a number");
+        }
         BigInteger u;
         try {
             u = d.setScale(p.scale).unscaledValue();
         } catch (ArithmeticException e) {
-            throw new FieldException(n.path() + ": " + value + " has more than " + p.scale + " decimals");
+            throw new FieldException(n.path() + ": value has more than " + p.scale + " decimals");
         }
         if (p.scale == 0) ctx.put(n.name, u.longValue());
         switch (n.usage()) {
             case DISPLAY -> out.writeBytes(FieldCodec.encodeZoned(u, p.digits, p.signed, n.signLeading(), n.signSeparate()));
             case PACKED -> {
-                if (u.abs().toString().length() > p.digits) throw new FieldException(n.path() + ": " + value + " does not fit " + p.digits + " digits");
+                if (u.abs().toString().length() > p.digits) throw new FieldException(n.path() + ": value does not fit " + p.digits + " digits");
                 out.writeBytes(FieldCodec.encodePacked(u, p.signed, n.size()));
             }
             case BINARY, NATIVE -> {
                 if (n.usage() == Node.Usage.BINARY && "std".equals(o.trunc) && u.abs().compareTo(BigInteger.TEN.pow(p.digits)) >= 0)
-                    throw new FieldException(n.path() + ": " + value + " does not fit " + p.digits + " digits");
+                    throw new FieldException(n.path() + ": value does not fit " + p.digits + " digits");
                 out.writeBytes(FieldCodec.encodeBinary(u, p.signed, n.size()));
             }
             default -> throw new FieldException("unsupported usage " + n.usage());

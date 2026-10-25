@@ -44,7 +44,7 @@ public final class FieldCodec {
         for (int i = 0; i < nibbles; i++) {
             int x = b[off + i / 2] & 0xFF;
             int d = (i % 2 == 0) ? x >> 4 : x & 0xF;
-            if (d > 9) throw new FieldException("invalid packed digit nibble " + Integer.toHexString(d).toUpperCase() + " in " + len + "-byte field");
+            if (d > 9) throw new FieldException("invalid packed digit nibble at byte " + i / 2 + " of " + len + "-byte field");
             if (big == null && acc < 99_999_999_999_999_999L / 10) {
                 acc = acc * 10 + d;
             } else {
@@ -55,11 +55,11 @@ public final class FieldCodec {
         int sign = b[off + len - 1] & 0xF;
         BigInteger v = big != null ? big : BigInteger.valueOf(acc);
         if (neg(sign)) {
-            if (!signed) throw new FieldException("negative packed sign nibble " + Integer.toHexString(sign).toUpperCase() + " in unsigned " + len + "-byte field");
+            if (!signed) throw new FieldException("negative packed sign in unsigned " + len + "-byte field");
             return v.negate();
         }
         if (pos(sign)) return v;
-        throw new FieldException("invalid packed sign nibble " + Integer.toHexString(sign).toUpperCase() + " in " + len + "-byte field");
+        throw new FieldException("invalid packed sign nibble at byte " + (len - 1) + " of " + len + "-byte field");
     }
 
     public static BigInteger zoned(byte[] b, int off, int len, boolean signed, boolean leading, boolean separate) {
@@ -68,7 +68,7 @@ public final class FieldCodec {
         if (signed && separate) {
             int sc = b[leading ? off : off + len - 1] & 0xFF;
             if (sc == EBCDIC_MINUS) negative = true;
-            else if (sc != EBCDIC_PLUS) throw new FieldException("invalid separate sign byte " + String.format("%02X", sc));
+            else if (sc != EBCDIC_PLUS) throw new FieldException("invalid separate sign at byte " + (leading ? 0 : len - 1) + " of " + len + "-byte field");
             if (leading) start++; else end--;
         }
         long acc = 0;
@@ -76,12 +76,12 @@ public final class FieldCodec {
         for (int i = start; i < end; i++) {
             int x = b[i] & 0xFF, zone = x >> 4, d = x & 0xF;
             boolean signPos = leading ? i == start : i == end - 1;
-            if (d > 9) throw new FieldException("invalid zoned digit " + String.format("%02X", x) + " in " + len + "-byte field");
+            if (d > 9) throw new FieldException("invalid zoned digit nibble at byte " + (i - off) + " of " + len + "-byte field");
             if (signed && !separate && signPos) {
                 if (neg(zone)) negative = true;
-                else if (!pos(zone)) throw new FieldException("invalid zoned sign " + String.format("%02X", x) + " in " + len + "-byte field");
+                else if (!pos(zone)) throw new FieldException("invalid zoned sign zone at byte " + (i - off) + " of " + len + "-byte field");
             } else if (zone != 0xF && !(signPos && pos(zone))) {
-                throw new FieldException("invalid zoned byte " + String.format("%02X", x) + " in " + len + "-byte field");
+                throw new FieldException("invalid zoned zone nibble at byte " + (i - off) + " of " + len + "-byte field");
             }
             if (big == null && acc < 99_999_999_999_999_999L / 10) {
                 acc = acc * 10 + d;
@@ -143,7 +143,7 @@ public final class FieldCodec {
         if (u.signum() < 0 && !signed) throw new FieldException("negative value for unsigned field");
         String s = u.abs().toString();
         int nib = size * 2 - 1;
-        if (s.length() > nib) throw new FieldException(u + " does not fit " + size + " packed bytes");
+        if (s.length() > nib) throw new FieldException("value does not fit " + size + " packed bytes");
         s = "0".repeat(nib - s.length()) + s;
         int sign = !signed ? 0xF : (u.signum() < 0 ? 0xD : 0xC);
         byte[] out = new byte[size];
@@ -158,7 +158,7 @@ public final class FieldCodec {
     public static byte[] encodeZoned(BigInteger u, int digits, boolean signed, boolean leading, boolean separate) {
         if (u.signum() < 0 && !signed) throw new FieldException("negative value for unsigned field");
         String s = u.abs().toString();
-        if (s.length() > digits) throw new FieldException(u + " does not fit " + digits + " digits");
+        if (s.length() > digits) throw new FieldException("value does not fit " + digits + " digits");
         s = "0".repeat(digits - s.length()) + s;
         byte[] body = new byte[digits];
         for (int i = 0; i < digits; i++) body[i] = (byte) (0xF0 | (s.charAt(i) - '0'));
@@ -182,8 +182,8 @@ public final class FieldCodec {
         byte pad = (byte) (u.signum() < 0 ? 0xFF : 0x00);
         int skip = 0;
         while (raw.length - skip > size && raw[skip] == 0 && !signed) skip++;
-        if (raw.length - skip > size || (!signed && u.signum() < 0)) throw new FieldException(u + " does not fit " + size + " bytes");
-        if (signed && raw.length == size + 1 && raw[0] == 0) throw new FieldException(u + " does not fit " + size + " bytes");
+        if (raw.length - skip > size || (!signed && u.signum() < 0)) throw new FieldException("value does not fit " + size + " bytes");
+        if (signed && raw.length == size + 1 && raw[0] == 0) throw new FieldException("value does not fit " + size + " bytes");
         java.util.Arrays.fill(out, pad);
         System.arraycopy(raw, skip, out, size - (raw.length - skip), raw.length - skip);
         return out;

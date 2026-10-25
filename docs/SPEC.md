@@ -43,8 +43,9 @@ Semantics follow IBM Enterprise COBOL for z/OS.
 | REDEFINES of variable-length data | **rejected** |
 
 COMP-3 notes: a field of `n` digits is `n // 2 + 1` bytes (one leading pad nibble when `n` is
-even); any other length is a decode error. A negative zero (`0D`) decodes as `0`. The negative signs
-`D`/`B` are invalid on an unsigned field (`PIC 9`, not `S9`) and give a decode error.
+even); any other length is a decode error. On a signed field a negative zero (`0D`) decodes as
+`0`. The negative signs `D`/`B` are invalid on an unsigned field (`PIC 9`, not `S9`) and give a
+decode error, so `0D` is an error there too.
 
 ## Code pages
 Any Python codec / Java charset. Tested: **cp037** (default), **cp1140** (cp037 + euro at 0x9F),
@@ -74,7 +75,7 @@ with a 4-byte RDW. Trailing bytes after the record are an error unless `allow.tr
 
 ## Errors
 Every decode error names the COBOL path and byte offset, e.g.
-`PACKED-REC.P-ODD-S @ offset 0: invalid packed sign nibble 5 in 5-byte field`.
+`PACKED-REC.P-ODD-S @ offset 0: invalid packed sign nibble at byte 4 of 5-byte field`.
 In Connect they surface as `DataException`, so `errors.tolerance` and the DLQ work as usual.
 The SMT also has `on.error=skip`.
 
