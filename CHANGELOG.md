@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Security
+
+- Field errors no longer include field data: no raw bytes (hex or otherwise), no decoded or
+  encoded values and no text. This covers COMP-3, zoned and separate-sign errors (which now give
+  the byte position and the kind of fault), the binary `exceeds PIC digits` error under
+  `trunc=std`, the ODO counter range error, text that is not valid in the code page, and all
+  encode errors. Messages still name the COBOL path, byte offset, field length and reason.
+- Python `invalid RDW` errors (`--rdw`) no longer print the RDW bytes; they give the offset only.
+
+### Fixed
+
+- Java `FieldCodec.packed` checks the offset and length against the buffer and throws
+  `FieldException` instead of `ArrayIndexOutOfBoundsException`. Python already raised a field or
+  decode error here; both now have tests.
+- Python wraps code-page errors in text fields in a field error, as Java already did.
+- Python record encode reports a non-numeric value (bad string, NaN or infinity, or a
+  non-number type) for a numeric or COMP-1/COMP-2 field as `PATH: value is not a number` (or
+  `not a finite number`), as Java does, instead of a raw `ValueError`, `TypeError` or
+  `InvalidOperation` that could quote the input.
+
+### Documentation
+
+- SPEC: COMP-3 byte length (`digits // 2 + 1`), `0D` decodes as 0 on signed fields, and `D`/`B`
+  signs are invalid on unsigned fields.
+
 ## [0.1.2] - 2026-10-24
 
 ### Security

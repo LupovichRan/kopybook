@@ -30,12 +30,12 @@ def _unscaled(value: Number, scale: int) -> int:
     if scale == 0:
         if isinstance(value, Decimal):
             if value != value.to_integral_value():
-                raise FieldError(f"{value} has a fraction but field has no decimals")
+                raise FieldError("value has a fraction but field has no decimals")
             return int(value)
         return int(value)
     d = Decimal(value).scaleb(scale, _CTX)
     if d != d.to_integral_value():
-        raise FieldError(f"{value} has more than {scale} decimals")
+        raise FieldError(f"value has more than {scale} decimals")
     return int(d)
 
 
@@ -51,19 +51,19 @@ def decode_packed(b: bytes, digits: int, scale: int, signed: bool) -> Number:
         nibbles.append(x >> 4)
         nibbles.append(x & 0xF)
     sign = nibbles.pop()
-    for d in nibbles:
+    for i, d in enumerate(nibbles):
         if d > 9:
-            raise FieldError(f"invalid packed digit nibble {d:X} in {b.hex()}")
+            raise FieldError(f"invalid packed digit nibble at byte {i // 2} of {len(b)}-byte field")
     if len(nibbles) > digits and nibbles[0] != 0:
-        raise FieldError(f"packed value in {b.hex()} has more than {digits} digits")
+        raise FieldError(f"packed value in {len(b)}-byte field has more than {digits} digits")
     if sign in NEG_ZONES:
         if not signed:
-            raise FieldError(f"negative packed sign nibble {sign:X} in unsigned field {b.hex()}")
+            raise FieldError(f"negative packed sign in unsigned {len(b)}-byte field")
         neg = True
     elif sign in POS_ZONES:
         neg = False
     else:
-        raise FieldError(f"invalid packed sign nibble {sign:X} in {b.hex()}")
+        raise FieldError(f"invalid packed sign nibble at byte {len(b) - 1} of {len(b)}-byte field")
     v = 0
     for d in nibbles:
         v = v * 10 + d
@@ -75,9 +75,9 @@ def decode_packed(b: bytes, digits: int, scale: int, signed: bool) -> Number:
 def encode_packed(value: Number, digits: int, scale: int, signed: bool, size: int) -> bytes:
     u = _unscaled(value, scale)
     if u < 0 and not signed:
-        raise FieldError(f"negative value {value} for unsigned field")
+        raise FieldError("negative value for unsigned field")
     if abs(u) >= 10 ** digits:
-        raise FieldError(f"{value} does not fit {digits} digits")
+        raise FieldError(f"value does not fit {digits} digits")
     s = str(abs(u)).rjust(size * 2 - 1, "0")
     sign = 0xF if not signed else (0xD if u < 0 else 0xC)
     nib = [int(c) for c in s] + [sign]
@@ -95,25 +95,26 @@ def decode_zoned(b: bytes, digits: int, scale: int, signed: bool,
         if sc == EBCDIC_MINUS:
             neg = True
         elif sc != EBCDIC_PLUS:
-            raise FieldError(f"invalid separate sign byte {sc:02X}")
+            raise FieldError(f"invalid separate sign at byte {0 if leading else len(b) - 1} of {len(b)}-byte field")
     else:
         body = b
     v = 0
     n = len(body)
+    first = 1 if signed and separate and leading else 0
     for i, x in enumerate(body):
         zone, d = x >> 4, x & 0xF
         sign_pos = (i == 0) if leading else (i == n - 1)
         if d > 9:
-            raise FieldError(f"invalid zoned digit {x:02X} in {b.hex()}")
+            raise FieldError(f"invalid zoned digit nibble at byte {first + i} of {len(b)}-byte field")
         if signed and not separate and sign_pos:
             if zone in NEG_ZONES:
                 neg = True
             elif zone not in POS_ZONES:
-                raise FieldError(f"invalid zoned sign {x:02X} in {b.hex()}")
+                raise FieldError(f"invalid zoned sign zone at byte {first + i} of {len(b)}-byte field")
         elif zone != 0xF:
             # unsigned fields written by some tools carry C zone on the last byte
             if not (sign_pos and zone in POS_ZONES):
-                raise FieldError(f"invalid zoned byte {x:02X} in {b.hex()}")
+                raise FieldError(f"invalid zoned zone nibble at byte {first + i} of {len(b)}-byte field")
         v = v * 10 + d
     return _scaled(-v if neg else v, scale)
 
@@ -122,9 +123,9 @@ def encode_zoned(value: Number, digits: int, scale: int, signed: bool,
                  leading: bool, separate: bool) -> bytes:
     u = _unscaled(value, scale)
     if u < 0 and not signed:
-        raise FieldError(f"negative value {value} for unsigned field")
+        raise FieldError("negative value for unsigned field")
     if abs(u) >= 10 ** digits:
-        raise FieldError(f"{value} does not fit {digits} digits")
+        raise FieldError(f"value does not fit {digits} digits")
     body = bytearray(0xF0 | int(c) for c in str(abs(u)).rjust(digits, "0"))
     if signed and separate:
         sc = EBCDIC_MINUS if u < 0 else EBCDIC_PLUS
@@ -141,7 +142,7 @@ def encode_zoned(value: Number, digits: int, scale: int, signed: bool,
 def decode_binary(b: bytes, digits: int, scale: int, signed: bool, truncate_to_pic: bool) -> Number:
     v = int.from_bytes(b, "big", signed=signed)
     if truncate_to_pic and abs(v) >= 10 ** digits:
-        raise FieldError(f"binary value {v} exceeds PIC digits ({digits}); use COMP-5 or trunc=bin")
+        raise FieldError(f"binary value exceeds PIC digits ({digits}) in {len(b)}-byte field; use COMP-5 or trunc=bin")
     return _scaled(v, scale)
 
 
@@ -149,11 +150,11 @@ def encode_binary(value: Number, digits: int, scale: int, signed: bool, size: in
                   truncate_to_pic: bool) -> bytes:
     u = _unscaled(value, scale)
     if truncate_to_pic and abs(u) >= 10 ** digits:
-        raise FieldError(f"{value} does not fit {digits} digits")
+        raise FieldError(f"value does not fit {digits} digits")
     try:
         return u.to_bytes(size, "big", signed=signed)
     except OverflowError:
-        raise FieldError(f"{value} does not fit {size} bytes")
+        raise FieldError(f"value does not fit {size} bytes")
 
 
 # ---------------------------------------------------------------- IBM hex float
@@ -185,10 +186,10 @@ def encode_hfp(value: float, size: int) -> bytes:
         q -= 1
     exp = q + 64
     if not 0 <= exp <= 127:
-        raise FieldError(f"{value} out of HFP range")
+        raise FieldError("value out of HFP range")
     frac = int(f * (1 << frac_bits))
     if frac / (1 << frac_bits) != f:
-        raise FieldError(f"{value} not exactly representable in {size}-byte HFP")
+        raise FieldError(f"value not exactly representable in {size}-byte HFP")
     word = (sign << (size * 8 - 1)) | (exp << frac_bits) | frac
     return word.to_bytes(size, "big")
 
@@ -196,7 +197,10 @@ def encode_hfp(value: float, size: int) -> bytes:
 # ---------------------------------------------------------------- text
 
 def decode_text(b: bytes, codepage: str, trim: str = "right") -> str:
-    s = b.decode(codepage)
+    try:
+        s = b.decode(codepage)
+    except UnicodeDecodeError:
+        raise FieldError(f"bytes not valid in {codepage} in {len(b)}-byte field") from None
     if trim == "right":
         return s.rstrip(" ")
     if trim == "both":
@@ -205,7 +209,10 @@ def decode_text(b: bytes, codepage: str, trim: str = "right") -> str:
 
 
 def encode_text(s: str, size: int, codepage: str) -> bytes:
-    b = s.encode(codepage)
+    try:
+        b = s.encode(codepage)
+    except UnicodeEncodeError:
+        raise FieldError(f"text not representable in {codepage}") from None
     if len(b) > size:
-        raise FieldError(f"text {s!r} longer than {size}")
+        raise FieldError(f"text longer than {size}")
     return b + " ".encode(codepage) * (size - len(b))

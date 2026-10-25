@@ -179,7 +179,7 @@ public final class RecordDecoder {
             count = v;
             if (count < n.occursMin() || count > n.occursMax()) {
                 if (o.odoStrict)
-                    throw new DecodeException(n.path(), c.pos, n.dependingOn() + "=" + count + " outside " + n.occursMin() + ".." + n.occursMax());
+                    throw new DecodeException(n.path(), c.pos, n.dependingOn() + " value outside " + n.occursMin() + ".." + n.occursMax());
                 count = Math.max(n.occursMin(), Math.min(count, n.occursMax()));
             }
         } else {
@@ -223,7 +223,7 @@ public final class RecordDecoder {
             case BINARY, NATIVE -> {
                 u = FieldCodec.binary(b, pos, n.size(), p.signed);
                 if (n.usage() == Node.Usage.BINARY && "std".equals(o.trunc) && u.abs().compareTo(BigInteger.TEN.pow(p.digits)) >= 0)
-                    throw new FieldException("binary value " + u + " exceeds PIC digits (" + p.digits + "); use COMP-5 or trunc=bin");
+                    throw new FieldException("binary value exceeds PIC digits (" + p.digits + ") in " + n.size() + "-byte field; use COMP-5 or trunc=bin");
             }
             default -> throw new FieldException("unsupported usage " + n.usage());
         }
@@ -240,7 +240,10 @@ public final class RecordDecoder {
                 default -> FieldCodec.scaled(u, n.pic().scale);
             };
         } catch (ArithmeticException e) {
-            throw new FieldException("value " + u + " does not fit " + t.kind());
+            // R2 guard: an over-wide value (e.g. COMP-3 overflow) must surface as FieldException, which
+            // single() wraps in DecodeException. Not reachable through decode() today, because packed()
+            // and LType already bound values by PIC digits/storage size; kept as defence in depth.
+            throw new FieldException("value does not fit " + t.kind());
         }
     }
 }
