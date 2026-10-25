@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   the byte position and the kind of fault), the binary `exceeds PIC digits` error under
   `trunc=std`, the ODO counter range error, text that is not valid in the code page, and all
   encode errors. Messages still name the COBOL path, byte offset, field length and reason.
+- Python `invalid RDW` errors (`--rdw`) no longer print the RDW bytes; they give the offset only.
 
 ### Fixed
 
@@ -21,6 +22,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `FieldException` instead of `ArrayIndexOutOfBoundsException`. Python already raised a field or
   decode error here; both now have tests.
 - Python wraps code-page errors in text fields in a field error, as Java already did.
+- Python record encode reports a non-numeric value (bad string, NaN or infinity, or a
+  non-number type) for a numeric or COMP-1/COMP-2 field as `PATH: value is not a number` (or
+  `not a finite number`), as Java does, instead of a raw `ValueError`, `TypeError` or
+  `InvalidOperation` that could quote the input.
 
 ### Documentation
 

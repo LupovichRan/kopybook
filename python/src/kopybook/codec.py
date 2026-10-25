@@ -6,7 +6,8 @@ items that follow them (variable-location items) are handled naturally.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from decimal import Decimal
+import math
+from decimal import Decimal, InvalidOperation
 from typing import Any, Dict, Iterator, List, Optional, Tuple
 
 from . import fields as F
@@ -292,11 +293,26 @@ class _Encoder:
         if node.kind in (ALNUM, EDITED):
             return F.encode_text(value or "", node.size, o.codepage)
         if node.kind == FLOAT:
-            return F.encode_hfp(float(value or 0.0), node.size)
+            try:
+                if not isinstance(value, (str, int, float, Decimal, type(None))):
+                    raise TypeError
+                f = float(value or 0.0)
+            except (ValueError, TypeError, AttributeError):
+                raise F.FieldError(f"{node.path()}: value is not a number") from None
+            if not math.isfinite(f):
+                raise F.FieldError(f"{node.path()}: value is not a finite number")
+            return F.encode_hfp(f, node.size)
         p = node.pic
         v = value if value is not None else 0
-        if isinstance(v, str):
-            v = Decimal(v)
+        try:
+            if isinstance(v, str):
+                v = Decimal(v)
+            elif not isinstance(v, (int, float, Decimal)):
+                raise TypeError
+        except (InvalidOperation, ValueError, TypeError, AttributeError):
+            raise F.FieldError(f"{node.path()}: value is not a number") from None
+        if (isinstance(v, Decimal) and not v.is_finite()) or (isinstance(v, float) and not math.isfinite(v)):
+            raise F.FieldError(f"{node.path()}: value is not a finite number")
         if p.scale == 0 and isinstance(v, Decimal):
             v = int(v)
         if isinstance(v, int):
@@ -330,7 +346,7 @@ def iter_rdw(data: bytes) -> Iterator[bytes]:
             raise ValueError(f"truncated RDW at {i}")
         n = int.from_bytes(data[i:i + 2], "big")
         if n < 4 or data[i + 2:i + 4] != b"\x00\x00" or i + n > len(data):
-            raise ValueError(f"invalid RDW {data[i:i + 4].hex()} at {i}")
+            raise ValueError(f"invalid RDW at {i}")
         yield data[i + 4:i + n]
         i += n
 

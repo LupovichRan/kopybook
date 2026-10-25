@@ -82,3 +82,58 @@ def test_record_level_binary_exceeds_has_no_value():
         codec.decode(root, H("7FFF"))
     assert "offset 0" in str(e.value) and "exceeds PIC" in str(e.value)
     _assert_no_raw(str(e.value), H("7FFF"), ["32767"])
+
+
+@pytest.mark.parametrize("data", [H("C1FA0000F9F8F7F6"), H("0008A7B9F9F8F7F6"), H("0003000098765C")],
+                         ids=["length past end", "reserved bytes", "length below 4"])
+def test_rdw_errors_have_no_raw_data(data):
+    with pytest.raises(ValueError) as e:
+        list(codec.iter_rdw(data))
+    assert "invalid RDW at 0" in str(e.value)
+    _assert_no_raw(str(e.value), data[:4], ["98765"])
+
+
+def test_cli_rdw_on_fixed_length_data_has_no_raw_data(tmp_path, capsys):
+    from kopybook.cli import main
+    cpy = tmp_path / "r.cpy"
+    cpy.write_text("       01  R.\n           05  A  PIC X(8).\n")
+    data = H("C1FAA7B9C1FAA7B9")
+    (tmp_path / "r.bin").write_bytes(data)
+    assert main(["decode", str(cpy), str(tmp_path / "r.bin"), "--rdw"]) != 0
+    err = capsys.readouterr().err
+    assert "invalid RDW" in err
+    _assert_no_raw(err, data)
+
+
+def _enc_rec(pic):
+    return parser.parse(f"       01  R.\n           05  A  {pic}.\n").record()
+
+
+BAD_VALUES = ["9876SECRET", "NaN", "Infinity", "sNaN", float("nan"), float("inf"), object(), [98765], {"SECRET": 98765}, b"98765"]
+
+
+@pytest.mark.parametrize("pic", ["COMP-1", "COMP-2", "PIC S9(5) COMP-3", "PIC S9(5)V99", "PIC S9(4) COMP"])
+@pytest.mark.parametrize("value", BAD_VALUES, ids=[type(v).__name__ + str(i) for i, v in enumerate(BAD_VALUES)])
+def test_record_encode_of_non_numbers_is_field_error_without_value(pic, value):
+    with pytest.raises(F.FieldError) as e:
+        codec.encode(_enc_rec(pic), {"a": value})
+    msg = str(e.value)
+    assert msg.startswith("R.A: value is not a")
+    _assert_no_raw(msg, values=["9876", "SECRET", "NaN", "nan", "Infinity", "inf", "object", "list", "dict", "bytes"])
+
+
+def test_float_encode_out_of_range_string_is_field_error():
+    with pytest.raises(F.FieldError) as e:
+        codec.encode(_enc_rec("COMP-1"), {"a": "9.8765e999"})
+    _assert_no_raw(str(e.value), values=["9.8765", "8765", "inf"])
+
+
+def test_cli_encode_non_number_has_no_value(tmp_path, capsys):
+    from kopybook.cli import main
+    cpy = tmp_path / "r.cpy"
+    cpy.write_text("       01  R.\n           05  A  COMP-1.\n")
+    (tmp_path / "in.jsonl").write_text('{"a": "9876SECRET"}\n')
+    assert main(["encode", str(cpy), str(tmp_path / "in.jsonl"), "-o", str(tmp_path / "out.bin")]) != 0
+    err = capsys.readouterr().err
+    assert "value is not a number" in err
+    _assert_no_raw(err, values=["9876", "SECRET"])
