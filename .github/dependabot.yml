@@ -1,0 +1,31 @@
+version: 2
+updates:
+  - package-ecosystem: maven
+    directory: /java
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: pip
+    directory: /python
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: pip
+    directory: /docs
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+
+  - package-ecosystem: docker-compose
+    directory: /integration
+    schedule:
+      interval: weekly

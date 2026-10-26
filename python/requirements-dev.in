@@ -1,0 +1,6 @@
+# Direct dependencies installed by the Python CI job.
+# Resolved for Python 3.10, the oldest version in the CI matrix.
+# fastavro 1.13+ requires Python >=3.11, so CI stays on the latest 1.12 release.
+pytest==9.1.1
+fastavro==1.12.2
+jsonschema==4.26.0
